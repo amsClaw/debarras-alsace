@@ -10,6 +10,17 @@ pour une société de débarras basée à Strasbourg intervenant dans toute l'Al
 **Process** : Process AAS V0.3 — mode **complet** (projet commercial, SEO, lead-gen, multi-pages)
 **Suivi** : projet Paperclip « Débarras Alsace — Site web » + une issue par phase/livrable
 
+| Élément | Valeur |
+|---|---|
+| Paperclip — projet | `Débarras Alsace — Site web` (id `60575f2c-3117-4465-a926-6aa85abd49a9`, statut backlog) |
+| Paperclip — issues | 14 issues `DEB — …` (une par phase/livrable), toutes en **backlog** (parked, non assignées) |
+| Paperclip — workspace | `debarras-alsace local` (id `4cf7dce6-a01e-47e4-a225-d6c74e89b80e`), `effectiveLocalFolder` = ce dossier |
+| UI | http://127.0.0.1:3100 (mode local_trusted, pas de login) |
+
+⚠️ Les issues sont volontairement **non assignées** : le dev se fait en conversation (Ams valide ici).
+Assigner une issue à un agent passe son statut en `todo` et réveille un run autonome Paperclip — à ne
+faire que pour déléguer réellement un livrable.
+
 ## Documents
 
 | Fichier | Contenu |
