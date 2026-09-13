@@ -67,3 +67,26 @@ Contrastes : texte anthracite sur beige/blanc ≥ 12:1 ; blanc sur vert/anthraci
 
 Pas de banque d'images présentée comme des photos réelles · pas de note Google inventée ·
 pas de pop-up d'entrée · pas de chatbot factice · pas de compte à rebours · pas de témoignage fictif.
+
+## 8. Illustrations (visuels de démonstration)
+
+En attendant le lot photo du client, le site utilise **24 illustrations vectorielles générées** par le projet
+lui-même (`src/illustrations.py`, aucun fichier externe, aucune banque d'images, aucune dépendance) :
+
+| Famille | Contenu | Où |
+|---|---|---|
+| Scènes avant/après | 6 locaux (appartement, maison, cave, grenier, garage, local pro) × 2 états | réalisations (accueil + page dédiée) |
+| Décors dédiés | mur de cave + ampoule, poutres de grenier + lucarne, porte de garage sectionnelle, fenêtre de séjour | idem |
+| Scènes métier | camion chargé, équipe en manutention, tri (don / recyclage / valorisation), nettoyage, succession, chantier | pages services, situations, blog, à propos, valorisation |
+| Niveaux de camion | 5 remplissages (1/8 → complet) | simulateur de volume (Tarifs + formulaire) |
+
+Règles respectées : aucune illustration ne prétend être une photo de chantier (légende explicite
+« Illustration de démonstration — les photos réelles du chantier viendront ici »), et le décor change selon
+le type de local (une cave a des murs de briques et une ampoule, un garage a une porte sectionnelle —
+pas une fenêtre de séjour).
+
+**Remplacer les illustrations par les vraies photos** (V1.1, sans toucher au code des pages) :
+remplacer les fichiers `assets/illus/<nom>.svg` par des `.webp` de même nom, ou ajouter un champ `photo`
+dans `src/data/*.py` et brancher `illus()`/`avant_apres()` sur ces fichiers. La légende « illustration de
+démonstration » est alors retirée des gabarits.
+

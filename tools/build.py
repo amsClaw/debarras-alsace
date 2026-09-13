@@ -20,6 +20,7 @@ from data.services import SERVICES  # noqa: E402
 from data.villes import VILLES  # noqa: E402
 from data.situations import SITUATIONS  # noqa: E402
 from data.articles import ARTICLES  # noqa: E402
+from illustrations import CATALOGUE  # noqa: E402
 import render  # noqa: E402
 import pages  # noqa: E402
 
@@ -119,6 +120,10 @@ def construire():
     ecrire("assets/favicon.svg", FAVICON)
     ecrire("assets/og.svg", OG)
 
+    # illustrations vectorielles générées (visuels de démonstration, cf. docs/FRONT_SPEC.md)
+    for nom, svg in CATALOGUE.items():
+        ecrire("assets/illus/%s.svg" % nom, svg)
+
     # sitemap + robots
     aujourdhui = date.today().isoformat()
     entrees = "".join(
@@ -170,6 +175,11 @@ def controler(pages_ecrites, urls):
             if lien.startswith(("http", "mailto:", "tel:")):
                 continue
             cible = os.path.normpath(os.path.join(os.path.dirname(p), lien))
+            liens_internes.add(cible)
+        for src in re.findall(r'(?is)src="([^"#?]+)"', html):
+            if src.startswith(("http", "data:")):
+                continue
+            cible = os.path.normpath(os.path.join(os.path.dirname(p), src))
             liens_internes.add(cible)
     for libelle, table in (("TITLE", titres), ("META DESCRIPTION", metas), ("H1", h1s)):
         for valeur, ou in table.items():

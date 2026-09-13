@@ -45,7 +45,25 @@ Date : 2026-09-13 · Réalisée par l'agent (validation déléguée par Ams) · 
 aucun débordement de page (0 px), menu complet sans chevauchement dès 1180 px (marge de 567 px avant les actions),
 menu burger en dessous. Captures desktop et mobile conservées dans `docs/captures/`.
 
-## 5. Ce qui reste à valider par un humain (non automatisable)
+## 5. Illustrations (visuels de démonstration) — ajoutées puis vérifiées à l'œil
+
+24 illustrations vectorielles générées par `src/illustrations.py`, branchées sur les réalisations (paires
+avant/après), les pages services, situations, blog, à propos, la section valorisation et le simulateur de
+volume (5 niveaux de camion).
+
+| Contrôle | Résultat |
+|---|---|
+| Génération | 24 SVG écrits dans `assets/illus/` à chaque build |
+| Chargement réel des images | vérifié dans le navigateur (`naturalWidth > 0`) sur réalisations 12/12, accueil 13/13, tarifs 6/6, blog 4/4, pages services 1/1 |
+| Références | contrôle automatique du build étendu aux attributs `src` : aucun fichier référencé manquant |
+| Relecture visuelle (vision) | 2 défauts corrigés : plante posée sur la ligne mur/sol (donc « flottante ») et décors incohérents (une cave ou un garage ne peuvent pas avoir une fenêtre de séjour) → décors dédiés (briques + ampoule, porte sectionnelle, poutres + lucarne) et plante posée au sol, plus grande, avec ombre portée |
+
+⚠️ **Piège rencontré** : avec `loading="lazy"`, les images restaient vides dans certains contextes
+d'aperçu/capture (défilement programmatique). Le chargement différé a été retiré pour ces SVG de quelques
+kilo-octets — il n'apporte rien ici et il masquait le rendu réel. À réintroduire uniquement pour de vraies
+photos, plus lourdes.
+
+## 6. Ce qui reste à valider par un humain (non automatisable)
 
 - Rendu sur **iPhone réel** (Safari), en particulier la barre fixe du bas et le sélecteur de photos.
 - Validation par Ams du contenu éditorial et de la direction visuelle.

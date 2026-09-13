@@ -10,7 +10,9 @@ from data.articles import ARTICLES
 
 from render import (Ctx, page, esc, ic, fil_ariane, bloc_entete, bloc_faq, bloc_cta_final, bloc_zone,
                     bloc_reassurance, bloc_process, cartes_services, cartes_situations, form_express,
-                    form_complet, jsonld_localbusiness, jsonld_faq, jsonld_ariane, jsonld, _boutons_volume)
+                    form_complet, jsonld_localbusiness, jsonld_faq, jsonld_ariane, jsonld, _boutons_volume,
+                    illus, figure_illus, avant_apres)
+from illustrations import (ILLUS_SERVICE, ILLUS_SITUATION, ILLUS_ARTICLE, ILLUS_VILLE, REALISATIONS_ILLUS)
 
 C = Ctx
 
@@ -103,8 +105,7 @@ def accueil(ctx):
         <div class="encadre-transparence">%s</div>
       </div>
       <div>
-        <div class="media-vide media-vide--large" style="border-radius:14px">Emplacement photo — tri et
-        valorisation (photos réelles à fournir)</div>
+        %s
       </div>
     </div>
   </div>
@@ -165,6 +166,8 @@ def accueil(ctx):
         "".join('<div class="valo__item">%s<div><strong>%s</strong><span>%s</span></div></div>'
                 % (ic("feuille"), esc(t), esc(x)) for t, x in VALORISATION),
         esc(VALORISATION_MESSAGE),
+        figure_illus(c, "tri", "Tri, don, recyclage et valorisation des objets",
+                     legende="Illustration de démonstration"),
         bloc_entete("Nos derniers débarras à Strasbourg et en Alsace", "Réalisations",
                     "Chaque chantier est décrit par ville, type de bien, volume et durée. Les photos avant/après seront ajoutées dès réception du lot photo de l'entreprise."),
         _galerie_render(c, limite=6), c.l("realisations/"),
@@ -186,15 +189,17 @@ def accueil(ctx):
 
 def _galerie_render(ctx, limite=6):
     html = ['<div class="cartes cartes--3">']
-    for ville, type_bien, volume, duree in REALISATIONS_EXEMPLES[:limite]:
+    for i, (ville, type_bien, volume, duree) in enumerate(REALISATIONS_EXEMPLES[:limite]):
+        avant, apres = REALISATIONS_ILLUS[i % len(REALISATIONS_ILLUS)]
         html.append("""<article class="realisation">
-  <div class="media-vide">Photo avant / après à ajouter</div>
+  %s
   <div class="realisation__corps">
     <h3>%s</h3>
     <p style="color:var(--gris);font-size:.95rem">%s</p>
     <ul class="realisation__meta"><li>%s</li><li>%s</li></ul>
+    <p class="legende">Illustration de démonstration — les photos réelles du chantier viendront ici</p>
   </div>
-</article>""" % (esc(ville), esc(type_bien), esc(volume), esc(duree)))
+</article>""" % (avant_apres(ctx, avant, apres), esc(ville), esc(type_bien), esc(volume), esc(duree)))
     html.append("</div>")
     return "".join(html)
 
@@ -232,6 +237,8 @@ def page_service(ctx, s):
   <p class="page-hero__chapeau">%s</p>
   <div class="page-hero__actions">%s%s</div>
 </div></section>
+
+<section class="section section--serre section--blanc"><div class="wrap">%s</div></section>
 
 <section class="section section--blanc"><div class="wrap deux-colonnes">
   <div class="contenu">
@@ -273,6 +280,9 @@ def page_service(ctx, s):
 %s""" % (
         fil_ariane(c, ariane), esc(s["h1"]), esc(s["intro"].split(". ")[0] + "."),
         _cta_devis(c), _cta_appel("btn--clair"),
+        figure_illus(c, ILLUS_SERVICE.get(s["slug"], "camion"),
+                     "%s : intervention de débarras" % s["nom"],
+                     legende="Illustration de démonstration — photo réelle à venir"),
         esc(s["intro"]),
         "".join("<li>%s</li>" % esc(x) for x in s["pour_qui"]),
         "".join("<li>%s<span>%s</span></li>" % (ic("check"), esc(x)) for x in s["inclus"]),
@@ -330,6 +340,7 @@ def page_situation(ctx, s):
   <p class="page-hero__chapeau">%s</p>
   <div class="page-hero__actions">%s%s</div>
 </div></section>
+<section class="section section--serre section--blanc"><div class="wrap">%s</div></section>
 <section class="section section--blanc"><div class="wrap deux-colonnes">
   <div class="contenu">
     <p>%s</p>
@@ -357,6 +368,8 @@ def page_situation(ctx, s):
 %s""" % (
         fil_ariane(c, ariane), esc(s["h1"]), esc(s["intro"].split(". ")[0] + "."),
         _cta_devis(c), _cta_appel("btn--clair"),
+        figure_illus(c, ILLUS_SITUATION.get(s["slug"], "camion"),
+                     "Situation : %s" % s["nom"], legende="Illustration de démonstration"),
         esc(s["intro"]),
         "".join("<li>%s</li>" % esc(x) for x in s["situation"]),
         "".join("<li>%s<span>%s</span></li>" % (ic("check"), esc(x)) for x in s["reponses"]),
@@ -416,6 +429,8 @@ def page_ville(ctx, v):
   <div class="page-hero__actions">%s%s</div>
 </div></section>
 
+<section class="section section--serre section--blanc"><div class="wrap">%s</div></section>
+
 <section class="section section--blanc"><div class="wrap deux-colonnes">
   <div class="contenu">
     <h2 class="mt-0">Débarras à %s : ce qui change sur place</h2>
@@ -449,6 +464,9 @@ def page_ville(ctx, v):
 %s""" % (
         fil_ariane(c, ariane), esc(v["h1"]), esc(v["nom"]), esc(v["courte"]),
         _cta_devis(c), _cta_appel("btn--clair"),
+        figure_illus(c, ILLUS_VILLE.get(v["slug"], "camion"),
+                     "Débarras à %s : type d'habitat et chantier courant" % v["nom"],
+                     legende="Illustration de démonstration — photo réelle à venir"),
         esc(v["nom"]), esc(v["intro"]),
         "".join("<li>%s</li>" % esc(q) for q in v["quartiers"]),
         esc("Nous intervenons également à " + ", ".join(v["communes_voisines"]) + "."),
@@ -542,6 +560,7 @@ def page_tarifs(ctx):
     <p>Le simulateur ci-dessous vous aide à situer votre volume. Il ne remplace pas un devis : il sert à
     savoir si l'on parle d'une remorque ou de plusieurs camions.</p>
     <div class="simulation" data-simulateur>
+      %s
       <div class="volumes">%s</div>
       <div class="resultat-simulation" role="status" aria-live="polite"></div>
     </div>
@@ -581,7 +600,8 @@ def page_tarifs(ctx):
 %s""" % (
         fil_ariane(c, [("Accueil", "/"), ("Tarifs", None)]), _cta_devis(c, "Demander mon chiffrage"), _cta_appel("btn--clair"),
         "".join("<li>%s<span>%s</span></li>" % (ic("euro"), esc(t) + " — " + esc(x)) for t, x in facteurs),
-        _boutons_volume(), bloc_faq(faq),
+        illus(c, "camion", "Camion de débarras : le volume se mesure en fractions de camion"),
+        _boutons_volume(c), bloc_faq(faq),
         c.l("contact-devis/"), esc(CTA["devis"]), SITE["telephone_lien"], esc(SITE["telephone"]),
         SITE["whatsapp_lien"],
         c.l("blog/combien-coute-un-debarras-a-strasbourg/"), c.l("blog/debarras-gratuit-est-ce-possible/"),
@@ -677,6 +697,7 @@ def page_a_propos(ctx):
 </div></section>
 <section class="section section--blanc"><div class="wrap deux-colonnes">
   <div class="contenu">
+    <div class="g2 grille mb-0">%s%s</div>
     <h2 class="mt-0">Notre façon de travailler</h2>
     <p>Un débarras n'est pas seulement un camion et de la force. C'est un moment où l'on entre chez
     quelqu'un, souvent après un décès, un déménagement contraint ou des années d'accumulation. Nous
@@ -715,6 +736,8 @@ def page_a_propos(ctx):
   </div>
 </div></section>
 %s""" % (fil_ariane(c, [("Accueil", "/"), ("À propos", None)]), _cta_devis(c), _cta_appel("btn--clair"),
+         illus(c, "equipe", "Équipe de débarras en intervention", classe="illus illus-hero"),
+         illus(c, "camion", "Chargement du camion lors d'un débarras"),
          c.l("contact-devis/"), esc(CTA["devis"]), SITE["telephone_lien"], esc(SITE["telephone"]),
          SITE["whatsapp_lien"], esc(SITE["horaires"]), bloc_cta_final(c))
     return page(c, "À propos — entreprise de débarras en Alsace | %s" % SITE["nom"],
@@ -756,10 +779,13 @@ def page_faq(ctx):
 def page_blog(ctx):
     c = ctx
     cartes = "".join("""<article class="carte">
+  %s
   <h3><a href="%s">%s</a></h3>
   <p>%s</p>
   <div class="carte__pied"><a class="lien-fleche" href="%s">Lire l'article &rsaquo;</a></div>
-</article>""" % (c.l("blog/%s/" % a["slug"]), esc(a["titre"]), esc(a["chapeau"]), c.l("blog/%s/" % a["slug"]))
+</article>""" % (illus(c, ILLUS_ARTICLE.get(a["slug"], "camion"), a["titre"], classe="illus carte__illus"),
+                    c.l("blog/%s/" % a["slug"]), esc(a["titre"]), esc(a["chapeau"]),
+                    c.l("blog/%s/" % a["slug"]))
         for a in ARTICLES)
     corps = """<section class="page-hero"><div class="wrap">
   %s
@@ -800,6 +826,7 @@ def page_article(ctx, a):
 <section class="section section--blanc"><div class="wrap deux-colonnes">
   <article class="article">
     <p class="article__meta">Publié le %s — lecture %d min</p>
+    %s
     <p class="pave-chapeau">%s</p>
     %s
     <div class="article__faq">
@@ -822,7 +849,10 @@ def page_article(ctx, a):
   </div>
 </div></section>
 %s""" % (fil_ariane(c, ariane), esc(a["titre"]), esc(a["date"] and a["meta"]),
-         esc(a["date"]), max(2, len(a["sections"]) * 2 + 2), esc(a["chapeau"]), sections, bloc_faq(a["faq"]),
+         esc(a["date"]), max(2, len(a["sections"]) * 2 + 2),
+         figure_illus(c, ILLUS_ARTICLE.get(a["slug"], "camion"), a["titre"],
+                      legende="Illustration de démonstration"),
+         esc(a["chapeau"]), sections, bloc_faq(a["faq"]),
          c.l("contact-devis/"), esc(CTA["devis"]), SITE["telephone_lien"], esc(SITE["telephone"]),
          SITE["whatsapp_lien"],
          "".join('<li><a href="%s">%s</a></li>' % (c.l("blog/%s/" % x["slug"]), esc(x["titre"]))

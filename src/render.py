@@ -9,6 +9,7 @@ from data.services import SERVICES, SERVICES_BY_SLUG, SERVICES_ACCUEIL
 from data.villes import VILLES, VILLES_BY_SLUG
 from data.situations import SITUATIONS, SITUATIONS_BY_SLUG
 from data.articles import ARTICLES, ARTICLES_BY_SLUG
+from illustrations import CATALOGUE
 
 ICONES = {
     "maison": '<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/>',
@@ -56,6 +57,34 @@ def ic(nom, classe=""):
 
 def esc(t):
     return (str(t).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+
+
+# ---------------------------------------------------------------- illustrations
+def illus(ctx, nom, alt, classe="illus", priorite=False, large=False):
+    """Illustration vectorielle générée (aucune image externe, aucune banque d'images).
+
+    Pas de `loading="lazy"` ici : ce sont des SVG de quelques kilo-octets, et le chargement
+    différé laissait des cadres vides dans certains contextes d'affichage (aperçus, captures).
+    Les vraies photos, plus lourdes, pourront l'utiliser le moment venu.
+    """
+    if nom not in CATALOGUE:
+        return ""
+    return ('<img class="%s%s" src="%s" alt="%s" width="800" height="600" decoding="async">'
+            % (classe, " illus--large" if large else "", ctx.l("assets/illus/%s.svg" % nom), esc(alt)))
+
+
+def figure_illus(ctx, nom, alt, legende=None, classe="illus-bloc", priorite=False):
+    cap = '<figcaption class="legende">%s</figcaption>' % esc(legende) if legende else ""
+    return '<figure class="%s">%s%s</figure>' % (classe, illus(ctx, nom, alt, priorite=priorite), cap)
+
+
+def avant_apres(ctx, avant, apres):
+    """Paire avant / après — le format qui parle le plus sur un débarras."""
+    return ('<div class="avant-apres">'
+            '<figure><span class="etiquette etiquette--avant">Avant</span>%s</figure>'
+            '<figure><span class="etiquette etiquette--apres">Après</span>%s</figure>'
+            '</div>' % (illus(ctx, avant, "Avant l'intervention : pièce encombrée"),
+                        illus(ctx, apres, "Après l'intervention : pièce vidée et nettoyée")))
 
 
 # ---------------------------------------------------------------- contexte de page
@@ -611,21 +640,22 @@ def form_complet(ctx):
               "".join('<span class="etapes__pt"><span class="etapes__num">%d</span>%s</span>'
                       % (i + 1, t) for i, t in enumerate(["Besoin", "Lieu", "Volume", "Accès", "Délai", "Photos", "Contact", "Envoi"])),
               "".join("<option>%s</option>" % esc(t) for t in types),
-              _boutons_volume(), ic("appareil"))
+              _boutons_volume(ctx), ic("appareil"))
 
 
-def _boutons_volume():
+def _boutons_volume(ctx):
     options = [
-        ("1/8 de camion", "environ 2 à 3", 12),
-        ("1/4 de camion", "environ 4 à 6", 25),
-        ("1/2 camion", "environ 8 à 12", 50),
-        ("3/4 de camion", "environ 12 à 16", 75),
-        ("Camion complet", "environ 18 à 22", 100),
+        ("1/8 de camion", "environ 2 à 3"),
+        ("1/4 de camion", "environ 4 à 6"),
+        ("1/2 camion", "environ 8 à 12"),
+        ("3/4 de camion", "environ 12 à 16"),
+        ("Camion complet", "environ 18 à 22"),
     ]
     html = []
-    for libelle, m3, pct in options:
+    for i, (libelle, m3) in enumerate(options, start=1):
         html.append("""<button class="volume" type="button" aria-pressed="false" data-libelle="%s"
-        data-volume-m3="%s"><span class="volume__jauge"><span><i style="width:%d%%"></i></span></span>
+        data-volume-m3="%s"><img class="volume__camion" src="%s" alt="" width="800" height="600" decoding="async">
         <span class="volume__txt"><strong>%s</strong><span>%s m³</span></span></button>"""
-                    % (esc(libelle), esc(m3), pct, esc(libelle), esc(m3)))
+                    % (esc(libelle), esc(m3), ctx.l("assets/illus/camion-niveau-%d.svg" % i),
+                       esc(libelle), esc(m3)))
     return "".join(html)
