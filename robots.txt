@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://amsclaw.github.io/debarras-alsace/sitemap.xml

@@ -7,5 +7,5 @@ build/
 *.log
 .env
 .env.local
-data/
+/data/
 tmp/
