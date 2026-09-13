@@ -5,9 +5,13 @@ pour une société de débarras basée à Strasbourg intervenant dans toute l'Al
 
 **Promesse** : « Vous nous montrez ce qui doit partir. On s'occupe du reste. »
 
-**Statut** : 🟡 Phase 0 — cadrage (brief client reçu, maquette desktop reçue)
+**Statut** : 🟢 V1 en ligne (49 pages générées, recette passée) — en attente des données client
+**Site en ligne** : **https://amsclaw.github.io/debarras-alsace/** (GitHub Pages, dépôt public `amsClaw/debarras-alsace`)
 **Dossier local** : `/Users/amsfox/projets/debarras-alsace` (repo git)
 **Process** : Process AAS V0.3 — mode **complet** (projet commercial, SEO, lead-gen, multi-pages)
+**Génération du site** : `python3 tools/build.py` (site statique, stdlib uniquement) puis
+`python3 tools/smoke.py <base>` pour le test de toutes les URLs. Le contenu se modifie dans `src/data/*.py`
+(site, services, villes, situations, articles) — jamais dans les pages HTML générées.
 **Suivi** : projet Paperclip « Débarras Alsace — Site web » + une issue par phase/livrable
 
 | Élément | Valeur |
