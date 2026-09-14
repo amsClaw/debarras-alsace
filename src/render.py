@@ -84,10 +84,10 @@ def illus(ctx, nom, alt, classe="illus", priorite=False, large=False):
 
 
 def photo(ctx, nom, alt, classe="photo", ratio=None):
-    """Photo découpée dans la maquette client (assets/photos/<nom>.png)."""
+    """Photo du site (assets/photos/<nom>.jpg, fabriquée par tools/photos.sh)."""
     style = ' style="aspect-ratio:%s"' % ratio if ratio else ""
     return ('<img class="%s" src="%s" alt="%s" loading="eager" decoding="async"%s>'
-            % (classe, ctx.l("assets/photos/%s.png" % nom), esc(alt), style))
+            % (classe, ctx.l("assets/photos/%s.jpg" % nom), esc(alt), style))
 
 
 def figure_illus(ctx, nom, alt, legende=None, classe="illus-bloc", priorite=False):
@@ -196,7 +196,6 @@ def pied(ctx):
     from data.maquette import PIED_MAQUETTE
     services = [(s["nom"], "services/%s/" % s["slug"]) for s in SERVICES]
     moitie = (len(services) + 1) // 2
-    zones = [(v["nom"], "villes/%s/" % v["slug"]) for v in VILLES]
     entreprise = [("À propos", "a-propos/"), ("Réalisations", "realisations/"), ("Avis clients", "avis-clients/"),
                   ("Tarifs", "tarifs/"), ("FAQ", "faq/"), ("Blog", "blog/"), ("Contact", "contact-devis/")]
 
@@ -207,7 +206,7 @@ def pied(ctx):
                       % (ctx.l("contact-devis/"), esc(nom), esc(nom[0])) for nom in PIED_MAQUETTE["reseaux"])
     return """<footer class="pied">
   <div class="wrap">
-    <div class="pied__colonnes pied__colonnes--maq">
+    <div class="pied__colonnes">
       <div class="pied__marque">
         <a class="marque marque--pied" href="%s">
           <svg class="marque__logo" viewBox="0 0 48 48" fill="none" aria-hidden="true">
@@ -227,7 +226,6 @@ def pied(ctx):
           <ul>%s</ul><ul>%s</ul>
         </div>
       </div>
-      <div><h3>Nos zones</h3><ul>%s</ul></div>
       <div><h3>Entreprise</h3><ul>%s</ul></div>
       <div class="pied__contact">
         <h3>Contact</h3>
@@ -239,6 +237,8 @@ def pied(ctx):
         <a class="btn btn--vert btn--sm" href="%s">Demander un devis</a>
       </div>
     </div>
+    <p class="pied__zones">Nous intervenons à Strasbourg et dans toute l'Alsace —
+      <a href="%s">voir toutes les communes</a>.</p>
     <div class="pied__bas">
       <div>%s</div>
       <div class="pied__legal">
@@ -260,10 +260,10 @@ def pied(ctx):
   <a href="%s" data-fort="1"%s>%s<span>Devis</span></a>
 </div>""" % (
         ctx.l(""), esc(SITE["nom"]), esc(SITE["baseline"]), esc(PIED_MAQUETTE["accroche"]), reseaux,
-        liens(services[:moitie]), liens(services[moitie:]), liens(zones), liens(entreprise),
+        liens(services[:moitie]), liens(services[moitie:]), liens(entreprise),
         SITE["telephone_lien"], esc(PIED_MAQUETTE["contact"]["telephone"]),
         SITE["email"], esc(PIED_MAQUETTE["contact"]["email"]), esc(PIED_MAQUETTE["contact"]["lieu"]),
-        ctx.l("contact-devis/"),
+        ctx.l("contact-devis/"), ctx.l("villes/"),
         esc(PIED_MAQUETTE["copyright"]),
         ctx.l("mentions-legales/"), ctx.l("politique-confidentialite/"), ctx.l("mentions-legales/"),
         ctx.l("mentions-legales/"), ic("bouclier"),

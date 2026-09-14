@@ -62,8 +62,10 @@ faire que pour déléguer réellement un livrable.
    interdit d'inventer une note. À remplacer par la note réelle du client (ou masquer en attendant).
 2. **Téléphone de la maquette** : 04 13 24 56 78 / 06 12 34 56 78 = numéros fictifs.
    Les vrais numéros (téléphone + WhatsApp) sont nécessaires avant mise en ligne.
-3. **Photos** : tout le site repose sur des photos réelles (avant/après, équipe, camion) —
-   le client doit fournir un lot photo, sinon V1 en placeholder assumé.
+3. **Photos** : **20 visuels générés en local** (SDXL photoréaliste, `tools/generer_photos.py`) —
+   aucun banque d'images, aucun droit tiers. Ils sont explicitement présentés comme
+   « visuels d'illustration » sous les réalisations ; les photos réelles des chantiers doivent
+   les remplacer (dépôt dans `source-client/photos-hd/` + `bash tools/photos.sh`).
 4. **Volume de contenu** : ~13 services + 7 situations + 12 villes + 12 articles = ~45 pages de
    contenu unique. C'est le vrai coût du projet (rédaction + SEO), pas le code.
 5. **Simulateur de volume** : intégré au socle dès la conception, mais sans prix ferme.

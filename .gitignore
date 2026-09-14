@@ -9,3 +9,6 @@ build/
 .env.local
 /data/
 tmp/
+
+# visuels sources générés localement (les versions publiées sont dans src/assets/photos)
+source-client/photos-hd/

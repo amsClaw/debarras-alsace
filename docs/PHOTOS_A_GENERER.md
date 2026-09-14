@@ -1,4 +1,25 @@
-# Photos à générer (voie recommandée)
+# Photos : génération locale (chaîne en place)
+
+Les photos sont générées **en local** avec SDXL photoréaliste (RealVisXL V4.0), sans API ni coût :
+
+```bash
+~/diffusion-venv/bin/python tools/generer_photos.py            # tous les visuels manquants
+~/diffusion-venv/bin/python tools/generer_photos.py hero       # un seul visuel
+~/diffusion-venv/bin/python tools/generer_photos.py hero --force   # regénérer
+bash tools/photos.sh && python3 tools/build.py                 # recadrage + publication
+```
+
+- Modèle : `SG161222/RealVisXL_V4.0` (téléchargé une fois dans `~/diffusion-modeles`, ~7 Go).
+- Environnement : `~/diffusion-venv` (torch MPS + diffusers).
+- Prompts : dans `tools/generer_photos.py`, section `PHOTOS` (un prompt par visuel, ratios et graines fixes
+  pour pouvoir regénérer un visuel à l'identique).
+- Les fichiers produits vont dans `source-client/photos-hd/` (non versionné) puis sont recadrés vers
+  `src/assets/photos/` (versionné) par `tools/photos.sh`.
+
+Si tu préfères passer par ChatGPT, la voie reste valable : dépose les images dans
+`source-client/photos-hd/` avec les noms ci-dessous et lance `bash tools/photos.sh && python3 tools/build.py`.
+
+## Liste des visuels attendus
 
 Les photos actuelles du site sont **découpées dans la maquette**, donc minuscules (59 × 68 px pour les
 avant/après, 86 × 50 px pour les cartes services, 272 × 320 px pour le héro). Elles servent à valider la

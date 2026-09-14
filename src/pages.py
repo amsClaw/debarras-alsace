@@ -61,16 +61,17 @@ def accueil(ctx):
         for i, (nom_icone, titre, desc) in enumerate(PROCESS_MAQUETTE["etapes"], 1))
     valo_items = "".join('<li>%s<span>%s</span></li>' % (ic(nom_icone), esc(lib))
                          for nom_icone, lib in VALORISATION_MAQUETTE["items"])
+    _sous_real = ["Succession : appartement vidé intégralement, meubles et objets triés.",
+                  "Maison vidée en une journée, encombrants évacués et objets valorisables triés.",
+                  "Cave dégagée : ferraille et encombrants évacués, sol balayé."]
     cartes_real = "".join(
         """<article class="carte-real">
-  <div class="carte-real__paire">
-    <figure><span class="etiquette etiquette--avant">Avant</span>%s</figure>
-    <figure><span class="etiquette etiquette--apres">Après</span>%s</figure>
-  </div>
+  <figure>%s</figure>
   <p class="carte-real__titre">%s</p>
-</article>""" % (photo(c, avant, "Avant débarras — %s" % titre), photo(c, apres, "Après débarras — %s" % titre),
-                esc(titre))
-        for titre, avant, apres in REALISATIONS_MAQUETTE["cartes"])
+  <p class="carte-real__sous">%s</p>
+</article>""" % (photo(c, avant, "Exemple d'intervention — %s" % titre, "carte-real__photo"), esc(titre),
+                 esc(_sous_real[i % len(_sous_real)]))
+        for i, (titre, avant, apres) in enumerate(REALISATIONS_MAQUETTE["cartes"]))
     cartes_avis = "".join(
         """<blockquote class="carte-avis">
   <span class="carte-avis__etoiles" aria-label="5 étoiles sur 5">%s</span>
@@ -229,8 +230,8 @@ def accueil(ctx):
       <a class="btn btn--clair" href="%s">%s &rarr;</a>
     </div>
     <div class="grille-real">%s</div>
-    <p class="legende legende--centre">Photos avant / après extraites de la maquette — les originaux
-    haute définition seront fournis par l'entreprise.</p>
+    <p class="legende legende--centre">Visuels d'illustration — les photos avant/après des chantiers
+    réels de l'entreprise remplaceront ces images.</p>
   </div>
 </section>
 

@@ -40,7 +40,7 @@
 }
 .hero-maq::before{
   content:""; position:absolute; inset:0;
-  background-image:url("photos/hero.png"); background-size:cover; background-position:72% center;
+  background-image:url("photos/hero.jpg"); background-size:cover; background-position:72% center;
 }
 .hero-maq::after{
   content:""; position:absolute; inset:0;
@@ -180,7 +180,10 @@
 .carte-real__paire{display:grid; grid-template-columns:1fr 1fr; gap:2px}
 .carte-real__paire figure{position:relative; margin:0}
 .carte-real__paire img{width:100%; height:150px; object-fit:cover; display:block; border-radius:0}
-.carte-real__titre{margin:0; padding:13px 15px; font-weight:700; color:var(--vert); font-size:.98rem}
+.carte-real figure{margin:0}
+.carte-real__photo{width:100%; height:210px; object-fit:cover; display:block; border-radius:0}
+.carte-real__titre{margin:0; padding:13px 15px 4px; font-weight:700; color:var(--vert); font-size:.98rem}
+.carte-real__sous{margin:0; padding:0 15px 15px; color:var(--gris); font-size:.9rem; line-height:1.45}
 .legende--centre{text-align:center; justify-content:center; margin-top:18px}
 
 /* ---------- avis ---------- */
@@ -221,7 +224,7 @@
 .feuille-gauche,.feuille-droite{display:none}
 
 /* ---------- pied de page maquette ---------- */
-.pied__colonnes--maq{gap:28px}
+.pied__colonnes{gap:28px}
 .pied__accroche{color:#9fb3a6; font-size:.9rem; margin:12px 0}
 .pied__reseaux{display:flex; gap:8px}
 .pied__social{
@@ -280,6 +283,13 @@
   .grille-real{grid-template-columns:repeat(3,1fr)}
   .grille-avis{grid-template-columns:repeat(3,1fr)}
   .grille-zones{grid-template-columns:repeat(3,1fr)}
-  .pied__colonnes--maq{grid-template-columns:1.6fr 1.4fr 1fr 1fr 1.2fr}
+  .pied__colonnes{grid-template-columns:1.5fr 1.5fr 1fr 1.3fr}
   .zone-bande__trust{grid-template-columns:repeat(4,1fr)}
 }
+
+/* ligne de zones (remplace l'ancienne liste de villes du pied de page) */
+.pied__zones{
+  margin:26px 0 0; padding-top:20px; border-top:1px solid #374151;
+  color:#9fb3a6; font-size:.92rem;
+}
+.pied__zones a{color:#cbd5e1; text-decoration:underline}
