@@ -90,3 +90,25 @@ remplacer les fichiers `assets/illus/<nom>.svg` par des `.webp` de même nom, ou
 dans `src/data/*.py` et brancher `illus()`/`avant_apres()` sur ces fichiers. La légende « illustration de
 démonstration » est alors retirée des gabarits.
 
+## 9. Mobile first (vérifié par mesure, pas à l'œil)
+
+Le CSS est écrit **mobile d'abord** : les styles de base sont ceux du téléphone, les media queries ne font
+qu'élargir. Points de rupture : **560 px** (apparition du CTA d'en-tête) et **1180 px** (menu complet).
+
+| Élément | Mobile (< 560 px) | Desktop (≥ 1180 px) |
+|---|---|---|
+| En-tête | logo + menu burger | logo + menu complet + téléphone + CTA devis |
+| CTA principal | **barre collante en bas** (Appeler · WhatsApp · Devis) | bouton dans l'en-tête |
+| Bandeau d'info | message court (horaires masqués) | message + horaires |
+| Grilles | 1 colonne | 2 à 4 colonnes |
+| Corps | 1,02 rem, interligne 1,65 | idem |
+| Cibles tactiles | **≥ 44 px** sur tous les liens de contenu | idem |
+| Textes secondaires | **≥ 14 px** | idem |
+| Ancrages | défilement compensé sous l'en-tête collant (`scroll-margin-top`) | idem |
+
+Corrections apportées lors de l'audit mobile : l'ancien en-tête superposait 11 entrées de menu + téléphone +
+CTA et **repoussait le bouton menu hors de l'écran en dessous de 450 px** (58 px de débordement à 390 px) ;
+le CTA d'en-tête est désormais réservé au desktop, et la page n'a plus aucun débordement horizontal de
+320 px à 1440 px. Les polices d'aide et les légendes sont passées à 14 px minimum, les liens de cartes à
+44 px de hauteur, et `overflow-x: clip` sert de garde-fou.
+

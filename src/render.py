@@ -11,6 +11,16 @@ from data.situations import SITUATIONS, SITUATIONS_BY_SLUG
 from data.articles import ARTICLES, ARTICLES_BY_SLUG
 from illustrations import CATALOGUE
 
+# Version des assets, posée par tools/build.py (empreinte du CSS + du JS) : évite qu'un
+# visiteur garde l'ancien CSS après une mise à jour du site.
+VERSION_ASSETS = "1"
+
+
+def set_version(v):
+    global VERSION_ASSETS
+    VERSION_ASSETS = v
+
+
 ICONES = {
     "maison": '<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/>',
     "immeuble": '<path d="M4 21V4h10v17"/><path d="M14 9h6v12h-6"/><path d="M7 8h4M7 12h4M7 16h4M17 13h1M17 17h1"/>',
@@ -133,7 +143,7 @@ def _liens_nav(ctx):
 def entete(ctx):
     liens = "".join('<a href="%s">%s</a>' % (ctx.l(u), esc(l)) for l, u in NAV)
     return """<a class="skip" href="#contenu">Aller au contenu</a>
-<div class="bandeau-info">Devis gratuit et sans engagement — réponse sous 24 h ouvrées&nbsp;&middot;&nbsp;<a href="%s">%s</a>&nbsp;&middot;&nbsp;%s</div>
+<div class="bandeau-info">Devis gratuit et sans engagement — réponse sous 24 h ouvrées&nbsp;&middot;&nbsp;<a href="%s">%s</a><span class="bandeau-info__horaires">&nbsp;&middot;&nbsp;%s</span></div>
 <header class="entete">
   <div class="wrap barre">
     <a class="marque" href="%s" aria-label="%s, accueil">
@@ -147,7 +157,7 @@ def entete(ctx):
     <nav class="nav" aria-label="Navigation principale">%s</nav>
     <div class="entete__actions">
       <a class="entete__tel" href="tel:%s">%s<span>%s</span></a>
-      <a class="btn btn--accent btn--sm" href="%s">Demander un devis</a>
+      <a class="btn btn--accent btn--sm entete__cta" href="%s">Demander un devis</a>
       <button class="burger" type="button" data-menu-ouvrir aria-expanded="false" aria-controls="panneau" aria-label="Ouvrir le menu">%s</button>
     </div>
   </div>
@@ -292,7 +302,7 @@ def page(ctx, titre, meta, corps, jsonld_sup=None, classe=""):
 <meta property="og:locale" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="%sassets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="%sassets/style.css">
+<link rel="stylesheet" href="%sassets/style.css?v=%s">
 %s
 </head>
 <body class="%s">
@@ -302,12 +312,12 @@ def page(ctx, titre, meta, corps, jsonld_sup=None, classe=""):
 </main>
 %s
 <script>window.DEBARRAS_ZONES = %s;</script>
-<script src="%sassets/app.js" defer></script>
+<script src="%sassets/app.js?v=%s" defer></script>
 </body>
 </html>""" % (esc(titre), esc(meta), ctx.abs(ctx.actif), esc(SITE["nom"]), esc(titre), esc(meta),
               ctx.abs(ctx.actif), SITE["url_base"], ctx.l(""), ctx.l(""),
-              jsonld_sup or "", classe, entete(ctx), corps, pied(ctx),
-              json.dumps(json_localisations()), ctx.l(""))
+              VERSION_ASSETS, jsonld_sup or "", classe, entete(ctx), corps, pied(ctx),
+ json.dumps(json_localisations()), ctx.l(""), VERSION_ASSETS)
 
 
 def json_localisations():

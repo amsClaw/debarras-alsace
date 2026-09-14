@@ -6,6 +6,7 @@ Usage : python3 tools/build.py
 Sortie : site statique à la racine du dépôt (GitHub Pages -> /), hors docs/, src/, tools/.
 Aucune dépendance externe (stdlib uniquement).
 """
+import hashlib
 import os
 import re
 import shutil
@@ -67,8 +68,17 @@ def nettoyer():
             os.remove(p)
 
 
+def empreinte_assets():
+    h = hashlib.sha1()
+    for f in ("src/assets/style.css", "src/assets/app.js"):
+        with open(os.path.join(RACINE, f), "rb") as fh:
+            h.update(fh.read())
+    return h.hexdigest()[:8]
+
+
 def construire():
     nettoyer()
+    render.set_version(empreinte_assets())
     urls = []
     pages_ecrites = []
 

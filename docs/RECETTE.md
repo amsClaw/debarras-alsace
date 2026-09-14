@@ -63,7 +63,32 @@ d'aperçu/capture (défilement programmatique). Le chargement différé a été 
 kilo-octets — il n'apporte rien ici et il masquait le rendu réel. À réintroduire uniquement pour de vraies
 photos, plus lourdes.
 
-## 6. Ce qui reste à valider par un humain (non automatisable)
+## 6. Audit mobile first (mesuré, pas estimé)
+
+| Largeur | Débordement horizontal | CTA en-tête | Menu burger | Barre collante | Horaires |
+|---|---|---|---|---|---|
+| 320 px | 0 | masqué | visible | visible | masqués |
+| 360 px | 0 | masqué | visible | visible | masqués |
+| 390 px | 0 | masqué | visible | visible | masqués |
+| 414 / 430 px | 0 | masqué | visible | visible | masqués |
+| 768 px | 0 | visible | masqué | masquée | visibles |
+| 1180 / 1440 px | 0 | visible | masqué | masquée | visibles |
+
+9 pages testées à chaque largeur (accueil, contact, réalisations, tarifs, hubs villes/services/blog, page ville,
+FAQ). Contrôles complémentaires à 360 px : **0 cible tactile entre 20 et 44 px**, **0 texte d'aide sous 14 px**,
+liens de cartes à 44 px, lien de marque à 46 px, liens du menu mobile à 55 px.
+
+Parcours mobile réel (390 px) : menu burger (ouverture/fermeture), clic sur « Devis » de la barre collante →
+arrivée sur `/contact-devis/`, formulaire présent, passage de l'étape 1 à l'étape 2 — tout fonctionne.
+
+**Défaut corrigé** : à 390 px, l'en-tête débordait de 58 px et le bouton menu sortait de l'écran
+(le CTA « Demander un devis » ne rétrécissait pas). Le CTA d'en-tête est maintenant réservé au desktop
+(≥ 560 px), le mobile garde « Devis » dans la barre collante — et le débordement est nul de 320 à 1440 px.
+
+Bonne pratique ajoutée au passage : le CSS et le JS sont appelés avec une **empreinte de version**
+(`style.css?v=2362…`) pour qu'un visiteur ne garde pas l'ancien style après une mise à jour du site.
+
+## 7. Ce qui reste à valider par un humain (non automatisable)
 
 - Rendu sur **iPhone réel** (Safari), en particulier la barre fixe du bas et le sélecteur de photos.
 - Validation par Ams du contenu éditorial et de la direction visuelle.
