@@ -11,7 +11,10 @@ from data.articles import ARTICLES
 from render import (Ctx, page, esc, ic, fil_ariane, bloc_entete, bloc_faq, bloc_cta_final, bloc_zone,
                     bloc_reassurance, bloc_process, cartes_services, cartes_situations, form_express,
                     form_complet, jsonld_localbusiness, jsonld_faq, jsonld_ariane, jsonld, _boutons_volume,
-                    illus, figure_illus, avant_apres)
+                    illus, figure_illus, avant_apres, photo)
+from data.maquette import (HERO, CARTE, ZONE, SERVICES_MAQUETTE, SITUATIONS_MAQUETTE, PROCESS_MAQUETTE,
+                           VALORISATION_MAQUETTE, REALISATIONS_MAQUETTE, AVIS_MAQUETTE, ZONES_MAQUETTE,
+                           CTA_FINAL_MAQUETTE)
 from illustrations import (ILLUS_SERVICE, ILLUS_SITUATION, ILLUS_ARTICLE, ILLUS_VILLE, REALISATIONS_ILLUS)
 
 C = Ctx
@@ -29,162 +32,312 @@ def _cta_appel(classe="btn--contour"):
 
 # ------------------------------------------------------------------ accueil
 def accueil(ctx):
+    """Page d'accueil reconstruite à l'identique de la maquette client (textes + photos)."""
     c = ctx
-    corps = """<section class="hero">
-  <div class="wrap hero__grille">
+    args_hero = "".join(
+        '<li>%s<div><strong>%s</strong><span>%s</span></div></li>' % (ic(nom_icone), esc(titre), esc(sous))
+        for nom_icone, titre, sous in HERO["arguments"])
+    trust_zone = "".join(
+        '<li>%s<div><strong>%s</strong><span>%s</span></div></li>' % (ic(nom_icone), esc(titre), esc(sous))
+        for nom_icone, titre, sous in ZONE["reassurance"])
+    cartes_services_maq = "".join(
+        """<a class="carte-photo" href="%s">
+  <span class="carte-photo__img">%s<span class="carte-photo__icone">%s</span></span>
+  <span class="carte-photo__corps"><strong>%s</strong><span>%s</span></span>
+</a>""" % (c.l("services/%s/" % slug), photo(c, nom_photo, titre), ic(nom_icone), esc(titre), esc(desc))
+        for nom_photo, nom_icone, titre, desc, slug in SERVICES_MAQUETTE["cartes"])
+    cartes_situations_maq = "".join(
+        """<a class="carte-situation" href="%s">
+  <span class="carte-situation__icone">%s</span>
+  <strong>%s</strong><span>%s</span>
+</a>""" % (c.l(("%s/" % slug) if "/" in slug else ("situations/%s/" % slug)), ic(nom_icone),
+                esc(titre), esc(desc))
+        for nom_icone, titre, desc, slug in SITUATIONS_MAQUETTE["cartes"])
+    etapes_maq = "".join(
+        """<article class="etape-maq">
+  <span class="etape-maq__num">%02d</span><span class="etape-maq__icone">%s</span>
+  <h3>%s</h3><p>%s</p>
+</article>""" % (i, ic(nom_icone), esc(titre), esc(desc))
+        for i, (nom_icone, titre, desc) in enumerate(PROCESS_MAQUETTE["etapes"], 1))
+    valo_items = "".join('<li>%s<span>%s</span></li>' % (ic(nom_icone), esc(lib))
+                         for nom_icone, lib in VALORISATION_MAQUETTE["items"])
+    cartes_real = "".join(
+        """<article class="carte-real">
+  <div class="carte-real__paire">
+    <figure><span class="etiquette etiquette--avant">Avant</span>%s</figure>
+    <figure><span class="etiquette etiquette--apres">Après</span>%s</figure>
+  </div>
+  <p class="carte-real__titre">%s</p>
+</article>""" % (photo(c, avant, "Avant débarras — %s" % titre), photo(c, apres, "Après débarras — %s" % titre),
+                esc(titre))
+        for titre, avant, apres in REALISATIONS_MAQUETTE["cartes"])
+    cartes_avis = "".join(
+        """<blockquote class="carte-avis">
+  <span class="carte-avis__etoiles" aria-label="5 étoiles sur 5">%s</span>
+  <p>« %s »</p>
+  <footer>%s – %s</footer>
+</blockquote>""" % (ic("etoile") * 5, esc(texte), esc(auteur), esc(ville))
+        for texte, auteur, ville in AVIS_MAQUETTE["temoignages"])
+    colonnes_zones = "".join(
+        '<div class="zone-col"><strong>%s</strong><ul>%s</ul></div>'
+        % (esc(titre), "".join("<li>%s</li>" % esc(l) for l in lignes if l))
+        for titre, lignes in ZONES_MAQUETTE["colonnes"])
+    types = "".join('<option>%s</option>' % esc(s["nom"]) for s in SERVICES)
+
+    corps = """<section class="hero-maq">
+  <div class="wrap hero-maq__grille">
+    <div class="hero-maq__txt">
+      <span class="hero-maq__badge">%s</span>
+      <h1><span class="hero-maq__blanc">%s</span> <span class="hero-maq__vert">%s</span></h1>
+      <p class="hero-maq__sous">%s</p>
+      <ul class="hero-maq__args">%s</ul>
+      <div class="hero-maq__cta">
+        <a class="btn btn--accent" href="%s">%s &rarr;</a>
+        <a class="btn btn--tel" href="tel:%s">%s %s</a>
+      </div>
+    </div>
+    <form class="carte-devis" data-formulaire="express" data-email="%s" novalidate>
+      <span class="carte-devis__badge">%s %s</span>
+      <h2>%s</h2>
+      <p class="carte-devis__sous">%s</p>
+      <div class="bloc-etape" data-actif="1">
+        <div class="champ">
+          <label for="maq-type">%s</label>
+          <select id="maq-type" name="type" data-etiquette="Type de débarras" required>
+            <option value="">%s</option>%s
+          </select>
+          <p class="erreur">Indiquez le type de débarras.</p>
+        </div>
+        <div class="ligne-champs">
+          <div class="champ">
+            <label for="maq-cp">%s</label>
+            <input type="text" id="maq-cp" name="code_postal" data-etiquette="Code postal" inputmode="numeric"
+                   maxlength="5" placeholder="%s" required>
+            <p class="erreur">Code postal à 5 chiffres.</p>
+          </div>
+          <div class="champ">
+            <label for="maq-tel">%s</label>
+            <input type="tel" id="maq-tel" name="telephone" data-etiquette="Téléphone" placeholder="%s" required>
+            <p class="erreur">Numéro de téléphone à vérifier.</p>
+          </div>
+        </div>
+        <div class="champ">
+          <label for="maq-photos">%s</label>
+          <label class="depot" for="maq-photos">
+            <span class="depot__icone">%s</span>
+            <span class="depot__txt">%s</span>
+          </label>
+          <input class="sr" type="file" id="maq-photos" name="photos" accept="image/*" multiple>
+          <div class="miniatures" data-photos-liste></div>
+        </div>
+        <button class="btn btn--accent btn--large" type="button" data-suivant>%s &rarr;</button>
+        <p class="carte-devis__mention">%s %s</p>
+      </div>
+      <div class="bloc-etape" data-actif="0">
+        <div class="recap" data-recap></div>
+        <div class="form-nav">
+          <a class="btn btn--accent" href="#" data-envoi>Envoyer ma demande</a>
+          <button class="btn btn--clair" type="button" data-copier>Copier</button>
+          <a class="btn btn--clair" href="%s">WhatsApp</a>
+        </div>
+        <p class="aide mt-2">Votre demande part depuis votre messagerie (les photos restent sur votre appareil).</p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section class="zone-bande">
+  <div class="wrap zone-bande__grille">
+    <div class="zone-bande__verif" data-zone>
+      <h2>%s</h2>
+      <p class="aide">%s</p>
+      <div class="zone-bande__saisie">
+        <input type="text" inputmode="numeric" maxlength="5" placeholder="%s" aria-label="Code postal">
+        <button class="btn btn--vert" type="button">%s &rarr;</button>
+      </div>
+      <div class="zone__resultat" role="status" aria-live="polite"></div>
+    </div>
+    <ul class="zone-bande__trust">%s</ul>
+  </div>
+</section>
+
+<section class="section section--blanc" id="services">
+  <div class="wrap">
+    <div class="entete-maq">
+      <div>
+        <span class="surtitre">%s</span>
+        <h2>%s</h2>
+        <p>%s</p>
+      </div>
+      <a class="btn btn--clair" href="%s">%s &rarr;</a>
+    </div>
+    <div class="grille-photos">%s</div>
+  </div>
+</section>
+
+<section class="section section--beige">
+  <div class="wrap">
+    <div class="entete-maq">
+      <div>
+        <span class="surtitre">%s</span>
+        <h2>%s</h2>
+        <p>%s</p>
+      </div>
+      <a class="btn btn--clair" href="%s">%s &rarr;</a>
+    </div>
+    <div class="bloc-situation">
+      <div class="grille-situations">%s</div>
+      <div class="bloc-situation__photo">%s</div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--blanc section-process">
+  <div class="wrap">
+    <div class="entete-maq">
+      <div>
+        <span class="surtitre">%s</span>
+        <h2>%s<span class="chiffre">%s</span>%s</h2>
+        <p>%s</p>
+      </div>
+      <a class="btn btn--accent" href="%s">%s &rarr;</a>
+    </div>
+    <div class="grille-etapes">%s</div>
+  </div>
+</section>
+
+<section class="section section--vertcl">
+  <div class="wrap bloc-valo">
+    <div class="bloc-valo__photo">%s</div>
     <div>
-      <span class="hero__badge">%s Débarras Strasbourg &amp; Alsace</span>
-      <h1>%s</h1>
-      <p class="hero__promesse">%s</p>
-      <p class="hero__texte">Maison, appartement, cave, grenier, succession, encombrants ou locaux
-      professionnels : nous vidons, trions, évacuons et nettoyons rapidement et proprement — à Strasbourg
-      et dans toute l'Alsace.</p>
-      <div class="hero__cta">
-        <a class="btn btn--accent" href="%s">%s</a>
-        <a class="btn btn--contour" href="tel:%s">%s</a>
-      </div>
-      <ul class="hero__args">%s</ul>
+      <span class="surtitre">%s</span>
+      <h2>%s</h2>
+      <p>%s</p>
+      <ul class="valo-items">%s</ul>
+      <div class="encart-partenaire">%s %s</div>
     </div>
-    %s
-  </div>
-</section>
-
-<section class="section section--serre section--blanc" id="zone">
-  <div class="wrap">
-    <div class="g2 grille" style="align-items:start">
-      <div class="contenu">
-        <h2 class="mt-0">Intervenons-nous chez vous ?</h2>
-        <p>Nous couvrons Strasbourg, l'Eurométropole, le Bas-Rhin et l'ensemble de l'Alsace. Indiquez votre
-        code postal : la réponse est immédiate, et si votre commune n'apparaît pas, envoyez quand même votre
-        demande — nous vous dirons franchement si nous pouvons intervenir.</p>
-        <p class="aide">Zones principales : %s.</p>
-      </div>
-      <div>%s</div>
-    </div>
-  </div>
-</section>
-
-<section class="section section--vertcl">
-  <div class="wrap">
-    <div class="entete-section"><h2>Pourquoi passer par nous</h2></div>
-    %s
   </div>
 </section>
 
 <section class="section section--blanc">
   <div class="wrap">
-    %s
-    %s
-    <p class="mt-3"><a class="btn btn--clair" href="%s">Voir les 13 prestations &rsaquo;</a></p>
-  </div>
-</section>
-
-<section class="section">
-  <div class="wrap">
-    %s
-    %s
-  </div>
-</section>
-
-<section class="section section--blanc">
-  <div class="wrap">
-    %s
-    %s
-  </div>
-</section>
-
-<section class="section section--vert">
-  <div class="wrap">
-    <div class="deux-colonnes">
+    <div class="entete-maq">
       <div>
-        <span class="surtitre">Tri &amp; valorisation</span>
-        <h2>Et si certains objets avaient encore de la valeur ?</h2>
-        <p>Avant d'évacuer, nous identifions ce qui peut être conservé, donné, réemployé ou valorisé.
-        C'est aussi ce qui limite le volume envoyé en déchèterie.</p>
-        <div class="valo">%s</div>
-        <div class="encadre-transparence">%s</div>
+        <h2>%s</h2>
+        <p>%s</p>
       </div>
+      <a class="btn btn--clair" href="%s">%s &rarr;</a>
+    </div>
+    <div class="grille-real">%s</div>
+    <p class="legende legende--centre">Photos avant / après extraites de la maquette — les originaux
+    haute définition seront fournis par l'entreprise.</p>
+  </div>
+</section>
+
+<section class="section section--beige">
+  <div class="wrap">
+    <div class="entete-maq">
       <div>
-        %s
+        <h2>%s</h2>
+        <p class="note-google"><span class="etoiles">%s</span> <strong>%s</strong> %s</p>
       </div>
+      <a class="btn btn--vert" href="%s">%s &rarr;</a>
+    </div>
+    <div class="grille-avis">%s</div>
+  </div>
+</section>
+
+<section class="section section--blanc">
+  <div class="wrap bloc-zones">
+    <div class="bloc-zones__photos">
+      <span class="badge-maq">%s</span>
+      %s
+      <div class="bloc-zones__carte">%s</div>
+    </div>
+    <div>
+      <h2>%s</h2>
+      <p>%s</p>
+      <div class="grille-zones">%s</div>
+      <div class="encart-zones"><strong>%s</strong><a class="lien-fleche" href="%s">%s &rarr;</a></div>
     </div>
   </div>
 </section>
+""" % (
+        # hero
+        esc(HERO["badge"]), HERO["titre_blanc"], esc(HERO["titre_vert"]), esc(HERO["texte"]), args_hero,
+        c.l("contact-devis/"), esc(HERO["cta_principal"]), SITE["telephone_lien"], ic("telephone"),
+        esc(HERO["cta_telephone"]),
+        # carte
+        SITE["email"], ic("doc"), esc(CARTE["badge"]), esc(CARTE["titre"]), esc(CARTE["sous_titre"]),
+        esc(CARTE["champ_type"]), esc(CARTE["type_defaut"]), types,
+        esc(CARTE["champ_cp"]), esc(CARTE["cp_placeholder"]), esc(CARTE["champ_tel"]), esc(CARTE["tel_placeholder"]),
+        esc(CARTE["champ_photos"]), ic("appareil"), esc(CARTE["zone_depot"]), esc(CARTE["bouton"]),
+        ic("bouclier"), esc(CARTE["mention"]), SITE["whatsapp_lien"],
+        # zone
+        esc(ZONE["titre"]), esc(ZONE["aide"]), esc(ZONE["placeholder"]), esc(ZONE["bouton"]), trust_zone,
+        # services
+        esc(SERVICES_MAQUETTE["surtitre"]), esc(SERVICES_MAQUETTE["titre"]), esc(SERVICES_MAQUETTE["texte"]),
+        c.l("services/"), esc(SERVICES_MAQUETTE["cta"]), cartes_services_maq,
+        # situations
+        esc(SITUATIONS_MAQUETTE["surtitre"]), esc(SITUATIONS_MAQUETTE["titre"]), esc(SITUATIONS_MAQUETTE["texte"]),
+        c.l("situations/"), esc(SITUATIONS_MAQUETTE["cta"]), cartes_situations_maq,
+        photo(c, SITUATIONS_MAQUETTE["photo"], "Intervenant Débarras Alsace en intervention",
+              classe="photo photo--haute"),
+        # process
+        esc(PROCESS_MAQUETTE["surtitre"]), esc(PROCESS_MAQUETTE["titre_avant"]),
+        esc(PROCESS_MAQUETTE["titre_chiffre"]), esc(PROCESS_MAQUETTE["titre_apres"]),
+        esc(PROCESS_MAQUETTE["sous_titre"]), c.l("contact-devis/"), esc(PROCESS_MAQUETTE["cta"]), etapes_maq,
+        # valorisation
+        photo(c, VALORISATION_MAQUETTE["photo"], "Jeune pousse : réemploi et valorisation",
+              classe="photo photo--carree"),
+        esc(VALORISATION_MAQUETTE["surtitre"]), esc(VALORISATION_MAQUETTE["titre"]),
+        esc(VALORISATION_MAQUETTE["texte"]), valo_items, ic("euro"), esc(VALORISATION_MAQUETTE["encart"]),
+        # réalisations
+        esc(REALISATIONS_MAQUETTE["titre"]), esc(REALISATIONS_MAQUETTE["sous_titre"]), c.l("realisations/"),
+        esc(REALISATIONS_MAQUETTE["cta"]), cartes_real,
+        # avis
+        esc(AVIS_MAQUETTE["titre"]), ic("etoile") * 5, esc(AVIS_MAQUETTE["note"]), esc(AVIS_MAQUETTE["nb_avis"]),
+        c.l("avis-clients/"), esc(AVIS_MAQUETTE["cta"]), cartes_avis,
+        # zones
+        esc(ZONES_MAQUETTE["badge"]), photo(c, ZONES_MAQUETTE["photo"], "Strasbourg : la cathédrale et l'Ill",
+                                            classe="photo photo--panorama"),
+        photo(c, ZONES_MAQUETTE["carte"], "Carte de la zone d'intervention en Alsace", classe="photo--carte"),
+        esc(ZONES_MAQUETTE["titre"]), esc(ZONES_MAQUETTE["sous_titre"]), colonnes_zones,
+        esc(ZONES_MAQUETTE["encart"]), c.l("villes/"), esc(ZONES_MAQUETTE["cta"]),
+    ) + _cta_final_maquette(c) + _bloc_faq_maquette(c)
 
-<section class="section">
-  <div class="wrap">
-    %s
-    %s
-    <p class="mt-3"><a class="lien-fleche" href="%s">Voir toutes nos réalisations &rsaquo;</a></p>
-  </div>
-</section>
-
-<section class="section section--blanc">
-  <div class="wrap">
-    %s
-    <div class="cartes cartes--3">%s</div>
-  </div>
-</section>
-
-<section class="section section--vertcl">
-  <div class="wrap">
-    %s
-    <div class="avis-vide">%s</div>
-  </div>
-</section>
-
-<section class="section section--blanc">
-  <div class="wrap">
-    %s
-    <div class="villes">%s</div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="wrap">
-    %s
-    %s
-  </div>
-</section>
-
-%s""" % (
-        ic("reconnaissance") if False else '<span aria-hidden="true">📍</span>',
-        esc(SITE["h1_accueil"]), esc(SITE["promesse"]),
-        c.l("contact-devis/"), esc(CTA["devis"]), SITE["telephone_lien"], esc(CTA["appeler"]),
-        "".join("<li>%s<span>%s</span></li>" % (ic("check"), esc(a)) for a in HERO_ARGUMENTS),
-        form_express(c),
-        esc(", ".join(v["nom"] for v in VILLES[:10]) + " et communes voisines"),
-        bloc_zone(c),
-        bloc_reassurance(),
-        bloc_entete("Un service de débarras pour chaque situation", "Nos services",
-                    "Chaque prestation a sa page : ce qui est inclus, comment cela se déroule et ce qui fait varier le prix."),
-        cartes_services(c, SERVICES_ACCUEIL, colonnes=4), c.l("services/"),
-        bloc_entete("Vous êtes dans l'une de ces situations ?", "Situations",
-                    "Succession, déménagement, vente, urgence : la réponse n'est pas la même selon le contexte."),
-        cartes_situations(c),
-        bloc_entete("Votre débarras en 4 étapes", "Fonctionnement"), bloc_process(),
-        "".join('<div class="valo__item">%s<div><strong>%s</strong><span>%s</span></div></div>'
-                % (ic("feuille"), esc(t), esc(x)) for t, x in VALORISATION),
-        esc(VALORISATION_MESSAGE),
-        figure_illus(c, "tri", "Tri, don, recyclage et valorisation des objets",
-                     legende="Illustration de démonstration"),
-        bloc_entete("Nos derniers débarras à Strasbourg et en Alsace", "Réalisations",
-                    "Chaque chantier est décrit par ville, type de bien, volume et durée. Les photos avant/après seront ajoutées dès réception du lot photo de l'entreprise."),
-        _galerie_render(c, limite=6), c.l("realisations/"),
-        bloc_entete("Un débarras sans le stress", "Pourquoi nous choisir"),
-        "".join('<article class="carte"><h3>%s</h3><p>%s</p></article>' % (esc(t), esc(x))
-                for t, x in POURQUOI_NOUS),
-        bloc_entete("Ils nous ont fait confiance", "Avis clients"), esc(AVIS_MESSAGE),
-        bloc_entete("Débarras à Strasbourg et dans toute l'Alsace", "Zones d'intervention", ZONES_PRESENTATION),
-        "".join('<a class="ville-carte" href="%s"><strong>%s</strong><span>%s</span></a>'
-                % (c.l("villes/%s/" % v["slug"]), esc(v["nom"]), esc(v["courte"])) for v in VILLES),
-        bloc_entete("Questions fréquentes", "FAQ"),
-        bloc_faq(FAQ_ACCUEIL),
-        bloc_cta_final(c),
-    )
     return page(ctx, "%s — débarras à Strasbourg et en Alsace | %s" % (SITE["nom"], SITE["baseline"]),
-                "Débarras à Strasbourg et en Alsace : maison, appartement, cave, succession, encombrants, locaux professionnels. Devis gratuit, tri, évacuation et nettoyage.",
+                "Débarras maison, appartement, cave, succession, après décès et locaux professionnels à "
+                "Strasbourg et en Alsace. Devis gratuit, tri, valorisation, évacuation et nettoyage.",
                 corps, jsonld_localbusiness() + jsonld_faq(FAQ_ACCUEIL))
+
+
+def _cta_final_maquette(ctx):
+    return """<section class="cta-final-maq">
+  <div class="wrap">
+    <div class="cta-final-maq__boite">
+      <span class="feuille-gauche">%s</span>
+      <h2>%s</h2>
+      <p>%s</p>
+      <a class="btn btn--accent" href="%s">%s &rarr;</a>
+      <p class="cta-final-maq__tel">%s %s</p>
+      <span class="feuille-droite">%s</span>
+    </div>
+  </div>
+</section>""" % (ic("feuille"), esc(CTA_FINAL_MAQUETTE["titre"]), esc(CTA_FINAL_MAQUETTE["texte"]),
+                 ctx.l("contact-devis/"), esc(CTA_FINAL_MAQUETTE["bouton"]), ic("telephone"),
+                 esc(CTA_FINAL_MAQUETTE["telephone"]), ic("feuille"))
+
+
+def _bloc_faq_maquette(ctx):
+    """La maquette renvoie la FAQ vers la page dédiée : on garde un bloc court et honnête."""
+    return """<section class="section section--beige">
+  <div class="wrap">
+    %s
+    <div class="faq">%s</div>
+    <p class="mt-3"><a class="btn btn--clair" href="%s">Voir toutes les questions &rarr;</a></p>
+  </div>
+</section>""" % (bloc_entete("Questions fréquentes", "FAQ"), bloc_faq(FAQ_ACCUEIL[:4]), ctx.l("faq/"))
 
 
 def _galerie_render(ctx, limite=6):

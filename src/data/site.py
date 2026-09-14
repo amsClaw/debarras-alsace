@@ -7,7 +7,7 @@ Tout ce qui est marqué `A_COMPLETER` doit être fourni par le client avant la m
 
 SITE = {
     "nom": "Débarras Alsace",
-    "baseline": "Strasbourg & Alsace",
+    "baseline": "Strasbourg & environs",
     "promesse": "Vous nous montrez ce qui doit partir. On s'occupe du reste.",
     "sous_promesse": "Tri • Manutention • Évacuation • Valorisation • Nettoyage",
     "h1_accueil": "Débarras à Strasbourg et en Alsace",
@@ -17,12 +17,12 @@ SITE = {
     "raison_sociale": "A_COMPLETER — raison sociale du client",
     "siret": "A_COMPLETER",
     "adresse": "Strasbourg (67000), Bas-Rhin",
-    "telephone": "04 13 24 56 78",          # numéro de la maquette : à remplacer
-    "telephone_lien": "+33413245678",
+    "telephone": "06 12 34 56 78",          # numéro de la maquette : à remplacer
+    "telephone_lien": "+33612345678",
     "mobile": "06 12 34 56 78",             # numéro de la maquette : à remplacer
     "mobile_lien": "+33612345678",
     "whatsapp_lien": "https://wa.me/33612345678",
-    "email": "contact@a-completer.fr",
+    "email": "contact@debarras-alsace.fr",
     "horaires": "Lundi – Samedi, 8h – 19h",
     "zone_texte": "Strasbourg, l'Eurométropole, le Bas-Rhin et l'ensemble de l'Alsace.",
 }
@@ -43,13 +43,12 @@ NAV = [
     ("Nos services", "/services/"),
     ("Situations", "/situations/"),
     ("Zones d'intervention", "/villes/"),
-    ("Tarifs", "/tarifs/"),
     ("Réalisations", "/realisations/"),
     ("Avis clients", "/avis-clients/"),
-    ("À propos", "/a-propos/"),
+    ("A propos", "/a-propos/"),
     ("Blog", "/blog/"),
     ("FAQ", "/faq/"),
-    ("Contact & devis", "/contact-devis/"),
+    ("Contact", "/contact-devis/"),
 ]
 
 CTA = {

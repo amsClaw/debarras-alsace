@@ -27,7 +27,7 @@ import pages  # noqa: E402
 
 DOSSIERS_SORTIE = ["services", "villes", "situations", "blog", "tarifs", "realisations",
                    "avis-clients", "a-propos", "faq", "contact-devis", "mentions-legales",
-                   "politique-confidentialite", "assets"]
+                   "politique-confidentialite", "assets", "photos"]
 FICHIERS_SORTIE = ["index.html", "404.html", "sitemap.xml", "robots.txt"]
 
 FAVICON = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
@@ -70,7 +70,7 @@ def nettoyer():
 
 def empreinte_assets():
     h = hashlib.sha1()
-    for f in ("src/assets/style.css", "src/assets/app.js"):
+    for f in ("src/assets/style.css", "src/assets/maquette.css", "src/assets/app.js"):
         with open(os.path.join(RACINE, f), "rb") as fh:
             h.update(fh.read())
     return h.hexdigest()[:8]
@@ -126,9 +126,19 @@ def construire():
     # assets
     os.makedirs(os.path.join(RACINE, "assets"), exist_ok=True)
     shutil.copy(os.path.join(RACINE, "src/assets/style.css"), os.path.join(RACINE, "assets/style.css"))
+    shutil.copy(os.path.join(RACINE, "src/assets/maquette.css"), os.path.join(RACINE, "assets/maquette.css"))
     shutil.copy(os.path.join(RACINE, "src/assets/app.js"), os.path.join(RACINE, "assets/app.js"))
     ecrire("assets/favicon.svg", FAVICON)
     ecrire("assets/og.svg", OG)
+
+    # photos découpées dans la maquette client (source-client/photos -> assets/photos)
+    dossier_photos = os.path.join(RACINE, "src/assets/photos")
+    if os.path.isdir(dossier_photos):
+        cible = os.path.join(RACINE, "assets/photos")
+        os.makedirs(cible, exist_ok=True)
+        for nom in os.listdir(dossier_photos):
+            if nom.lower().endswith((".png", ".jpg", ".jpeg", ".webp")):
+                shutil.copy(os.path.join(dossier_photos, nom), os.path.join(cible, nom))
 
     # illustrations vectorielles générées (visuels de démonstration, cf. docs/FRONT_SPEC.md)
     for nom, svg in CATALOGUE.items():

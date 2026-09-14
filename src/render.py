@@ -83,6 +83,13 @@ def illus(ctx, nom, alt, classe="illus", priorite=False, large=False):
             % (classe, " illus--large" if large else "", ctx.l("assets/illus/%s.svg" % nom), esc(alt)))
 
 
+def photo(ctx, nom, alt, classe="photo", ratio=None):
+    """Photo découpée dans la maquette client (assets/photos/<nom>.png)."""
+    style = ' style="aspect-ratio:%s"' % ratio if ratio else ""
+    return ('<img class="%s" src="%s" alt="%s" loading="eager" decoding="async"%s>'
+            % (classe, ctx.l("assets/photos/%s.png" % nom), esc(alt), style))
+
+
 def figure_illus(ctx, nom, alt, legende=None, classe="illus-bloc", priorite=False):
     cap = '<figcaption class="legende">%s</figcaption>' % esc(legende) if legende else ""
     return '<figure class="%s">%s%s</figure>' % (classe, illus(ctx, nom, alt, priorite=priorite), cap)
@@ -115,27 +122,30 @@ class Ctx(object):
 
 # ---------------------------------------------------------------- composants
 def _liens_nav(ctx):
-    # Menu d'en-tête volontairement court : entre 1180 px et 1400 px, tout doit tenir
-    # (Avis clients / À propos / FAQ restent accessibles par le pied de page et le menu mobile).
-    principal = ["/", "/services/", "/situations/", "/villes/", "/tarifs/", "/realisations/",
-                 "/blog/", "/contact-devis/"]
-    entrees = [(lib, url) for lib, url in NAV if url in principal]
+    """Menu de la maquette : 10 entrées, trois avec sous-menu (services, situations, zones)."""
     html = ['<ul>']
-    for lib, url in entrees:
-        court = {"Zones d'intervention": "Zones", "Contact & devis": "Contact"}.get(lib, lib)
+    for lib, url in NAV:
+        actif = ' aria-current="page"' if ctx.actif == url else ""
         if lib == "Nos services":
-            html.append('<li class="nav__bloc"><a href="%s">%s</a><div class="nav__sous">' % (ctx.l(url), esc(lib)))
+            html.append('<li class="nav__bloc"><a href="%s"%s>%s<span class="nav__chev">&#9662;</span></a>'
+                        '<div class="nav__sous">' % (ctx.l(url), actif, esc(lib)))
             for s in SERVICES:
                 html.append('<a href="%s">%s</a>' % (ctx.l("services/%s/" % s["slug"]), esc(s["nom"])))
             html.append("</div></li>")
+        elif lib == "Situations":
+            html.append('<li class="nav__bloc"><a href="%s"%s>%s<span class="nav__chev">&#9662;</span></a>'
+                        '<div class="nav__sous">' % (ctx.l(url), actif, esc(lib)))
+            for sit in SITUATIONS:
+                html.append('<a href="%s">%s</a>' % (ctx.l("situations/%s/" % sit["slug"]), esc(sit["nom"])))
+            html.append("</div></li>")
         elif lib == "Zones d'intervention":
-            html.append('<li class="nav__bloc"><a href="%s">%s</a><div class="nav__sous">' % (ctx.l(url), esc(court)))
+            html.append('<li class="nav__bloc"><a href="%s"%s>%s<span class="nav__chev">&#9662;</span></a>'
+                        '<div class="nav__sous">' % (ctx.l(url), actif, esc(lib)))
             for v in VILLES:
                 html.append('<a href="%s">%s</a>' % (ctx.l("villes/%s/" % v["slug"]), esc(v["nom"])))
             html.append("</div></li>")
         else:
-            marque = ' aria-current="page"' if ctx.actif == url else ""
-            html.append('<li><a href="%s"%s>%s</a></li>' % (ctx.l(url), marque, esc(court)))
+            html.append('<li><a href="%s"%s>%s</a></li>' % (ctx.l(url), actif, esc(lib)))
     html.append("</ul>")
     return "".join(html)
 
@@ -143,14 +153,15 @@ def _liens_nav(ctx):
 def entete(ctx):
     liens = "".join('<a href="%s">%s</a>' % (ctx.l(u), esc(l)) for l, u in NAV)
     return """<a class="skip" href="#contenu">Aller au contenu</a>
-<div class="bandeau-info">Devis gratuit et sans engagement — réponse sous 24 h ouvrées&nbsp;&middot;&nbsp;<a href="%s">%s</a><span class="bandeau-info__horaires">&nbsp;&middot;&nbsp;%s</span></div>
 <header class="entete">
   <div class="wrap barre">
     <a class="marque" href="%s" aria-label="%s, accueil">
       <svg class="marque__logo" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-        <rect x="2" y="2" width="44" height="44" rx="12" fill="#14532d"/>
-        <path d="M12 30l8-7 6 5 10-9" stroke="#8fd0a8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M12 36h24" stroke="#e8622a" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M6 22 24 7l18 15" stroke="#14532d" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M11 21v19h26V21" stroke="#14532d" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M24 33c-6 0-9-3.6-9-9 5.4 0 9 3.6 9 9z" fill="#1c6b3f"/>
+        <path d="M24 33c5.4-1.8 8-5.4 8-10.6-5 .2-8 4-8 10.6z" fill="#8fd0a8"/>
+        <path d="M24 34.5V25" stroke="#14532d" stroke-width="2" stroke-linecap="round"/>
       </svg>
       <span class="marque__txt"><span class="marque__nom">%s</span><span class="marque__base">%s</span></span>
     </a>
@@ -169,52 +180,76 @@ def entete(ctx):
   </div>
   <nav aria-label="Navigation mobile">%s</nav>
   <div class="panneau__cta">
-    <a class="btn btn--accent" href="%s">%s</a>
+    <a class="btn btn--accent" href="%s">Obtenir mon estimation</a>
     <a class="btn btn--vert" href="tel:%s">Appeler le %s</a>
     <a class="btn btn--clair" href="%s">WhatsApp</a>
   </div>
 </div>""" % (
-        ctx.l("contact-devis/"), CTA["devis"], esc(SITE["horaires"]),
         ctx.l(""), esc(SITE["nom"]), esc(SITE["nom"]), esc(SITE["baseline"]), _liens_nav(ctx),
         SITE["telephone_lien"], ic("telephone"), esc(SITE["telephone"]),
         ctx.l("contact-devis/"), ic("menu"),
         esc(SITE["nom"]), esc(SITE["baseline"]), liens,
-        ctx.l("contact-devis/"), esc(CTA["devis"]), SITE["telephone_lien"], esc(SITE["telephone"]),
-        SITE["whatsapp_lien"])
+        ctx.l("contact-devis/"), SITE["telephone_lien"], esc(SITE["telephone"]), SITE["whatsapp_lien"])
 
 
 def pied(ctx):
-    def colonne(titre, liens):
-        return "<div><h3>%s</h3><ul>%s</ul></div>" % (titre, "".join(
-            '<li><a href="%s">%s</a></li>' % (ctx.l(u), esc(l)) for l, u in liens))
+    from data.maquette import PIED_MAQUETTE
     services = [(s["nom"], "services/%s/" % s["slug"]) for s in SERVICES]
+    moitie = (len(services) + 1) // 2
     zones = [(v["nom"], "villes/%s/" % v["slug"]) for v in VILLES]
     entreprise = [("À propos", "a-propos/"), ("Réalisations", "realisations/"), ("Avis clients", "avis-clients/"),
-                  ("Tarifs", "tarifs/"), ("FAQ", "faq/"), ("Blog", "blog/"), ("Contact & devis", "contact-devis/")]
+                  ("Tarifs", "tarifs/"), ("FAQ", "faq/"), ("Blog", "blog/"), ("Contact", "contact-devis/")]
+
+    def liens(liste):
+        return "".join('<li><a href="%s">%s</a></li>' % (ctx.l(u), esc(l)) for l, u in liste)
+
+    reseaux = "".join('<a class="pied__social" href="%s" aria-label="%s">%s</a>'
+                      % (ctx.l("contact-devis/"), esc(nom), esc(nom[0])) for nom in PIED_MAQUETTE["reseaux"])
     return """<footer class="pied">
   <div class="wrap">
-    <div class="pied__colonnes">
-      %s
-      %s
-      %s
+    <div class="pied__colonnes pied__colonnes--maq">
+      <div class="pied__marque">
+        <a class="marque marque--pied" href="%s">
+          <svg class="marque__logo" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <path d="M6 22 24 7l18 15" stroke="#ffffff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M11 21v19h26V21" stroke="#ffffff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M24 33c-6 0-9-3.6-9-9 5.4 0 9 3.6 9 9z" fill="#8fd0a8"/>
+            <path d="M24 33c5.4-1.8 8-5.4 8-10.6-5 .2-8 4-8 10.6z" fill="#4fae76"/>
+          </svg>
+          <span class="marque__txt"><span class="marque__nom">%s</span><span class="marque__base">%s</span></span>
+        </a>
+        <p class="pied__accroche">%s</p>
+        <div class="pied__reseaux">%s</div>
+      </div>
       <div>
+        <h3>Nos services</h3>
+        <div class="pied__deux-colonnes">
+          <ul>%s</ul><ul>%s</ul>
+        </div>
+      </div>
+      <div><h3>Nos zones</h3><ul>%s</ul></div>
+      <div><h3>Entreprise</h3><ul>%s</ul></div>
+      <div class="pied__contact">
         <h3>Contact</h3>
         <ul>
-          <li><a href="tel:%s">Téléphone : %s</a></li>
-          <li><a href="tel:%s">Mobile : %s</a></li>
-          <li><a href="%s">WhatsApp</a></li>
+          <li><a href="tel:%s">%s</a></li>
           <li><a href="mailto:%s">%s</a></li>
+          <li>%s</li>
         </ul>
-        <p style="font-size:.88rem">%s</p>
-        <p style="font-size:.88rem">Zone : %s</p>
+        <a class="btn btn--vert btn--sm" href="%s">Demander un devis</a>
       </div>
     </div>
     <div class="pied__bas">
-      <div>&copy; <span data-annee>2026</span> %s — %s. %s</div>
+      <div>%s</div>
       <div class="pied__legal">
         <a href="%s">Mentions légales</a>
         <a href="%s">Politique de confidentialité</a>
-        <a href="%s">Zones d'intervention</a>
+        <a href="%s">Cookies</a>
+        <a href="%s">CGV</a>
+      </div>
+      <div class="pied__badges">
+        <span class="pied__badge">%s 100%% sécurisé</span>
+        <span class="pied__badge">Google 4.9/5</span>
       </div>
     </div>
   </div>
@@ -224,13 +259,14 @@ def pied(ctx):
   <a href="%s">%s<span>WhatsApp</span></a>
   <a href="%s" data-fort="1"%s>%s<span>Devis</span></a>
 </div>""" % (
-        colonne("Services", services), colonne("Zones", zones), colonne("Entreprise", entreprise),
-        SITE["telephone_lien"], esc(SITE["telephone"]),
-        SITE["mobile_lien"], esc(SITE["mobile"]),
-        SITE["whatsapp_lien"], SITE["email"], esc(SITE["email"]),
-        esc(SITE["horaires"]), esc(SITE["zone_texte"]),
-        esc(SITE["nom"]), esc(SITE["baseline"]), esc(SITE["raison_sociale"]),
-        ctx.l("mentions-legales/"), ctx.l("politique-confidentialite/"), ctx.l("villes/"),
+        ctx.l(""), esc(SITE["nom"]), esc(SITE["baseline"]), esc(PIED_MAQUETTE["accroche"]), reseaux,
+        liens(services[:moitie]), liens(services[moitie:]), liens(zones), liens(entreprise),
+        SITE["telephone_lien"], esc(PIED_MAQUETTE["contact"]["telephone"]),
+        SITE["email"], esc(PIED_MAQUETTE["contact"]["email"]), esc(PIED_MAQUETTE["contact"]["lieu"]),
+        ctx.l("contact-devis/"),
+        esc(PIED_MAQUETTE["copyright"]),
+        ctx.l("mentions-legales/"), ctx.l("politique-confidentialite/"), ctx.l("mentions-legales/"),
+        ctx.l("mentions-legales/"), ic("bouclier"),
         SITE["telephone_lien"], ic("telephone"), SITE["whatsapp_lien"], ic("whatsapp"),
         ctx.l("contact-devis/"),
         ' aria-current="page"' if ctx.actif == "/contact-devis/" else "", ic("doc"))
@@ -303,6 +339,7 @@ def page(ctx, titre, meta, corps, jsonld_sup=None, classe=""):
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="%sassets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="%sassets/style.css?v=%s">
+<link rel="stylesheet" href="%sassets/maquette.css?v=%s">
 %s
 </head>
 <body class="%s">
@@ -316,7 +353,7 @@ def page(ctx, titre, meta, corps, jsonld_sup=None, classe=""):
 </body>
 </html>""" % (esc(titre), esc(meta), ctx.abs(ctx.actif), esc(SITE["nom"]), esc(titre), esc(meta),
               ctx.abs(ctx.actif), SITE["url_base"], ctx.l(""), ctx.l(""),
-              VERSION_ASSETS, jsonld_sup or "", classe, entete(ctx), corps, pied(ctx),
+              VERSION_ASSETS, ctx.l(""), VERSION_ASSETS, jsonld_sup or "", classe, entete(ctx), corps, pied(ctx),
  json.dumps(json_localisations()), ctx.l(""), VERSION_ASSETS)
 
 
