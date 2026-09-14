@@ -208,6 +208,13 @@ def controler(pages_ecrites, urls):
     for cible in sorted(liens_internes):
         if not os.path.exists(cible):
             problemes.append("LIEN MORT : %s" % cible.replace(RACINE + "/", ""))
+
+    # garde-fou : un asset vidé ou tronqué casse tout le style du site sans erreur visible
+    for rel in ("assets/style.css", "assets/maquette.css", "assets/app.js",
+                "src/assets/style.css", "src/assets/maquette.css", "src/assets/app.js"):
+        p = os.path.join(RACINE, rel)
+        if os.path.exists(p) and os.path.getsize(p) < 2000:
+            problemes.append("ASSET SUSPECT (tronqué ?) : %s = %d octets" % (rel, os.path.getsize(p)))
     return problemes
 
 
