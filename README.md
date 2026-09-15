@@ -75,3 +75,19 @@ faire que pour déléguer réellement un livrable.
 | Date | Décision |
 |---|---|
 | 2026-09-13 | Création du projet + dossier git + projet Paperclip (issues par phase en backlog) |
+| 2026-09-14 | **V2 épurée** : une page d'atterrissage + pages légales, publiée dans `/v2/` (la V1 reste à la racine pour comparaison). Décision client : un site de 49 pages est trop lourd pour une entreprise qui se lance |
+
+## V2 épurée (en ligne : https://amsclaw.github.io/debarras-alsace/v2/)
+
+Version courte, mobile d'abord, une seule page : héros + 4 prestations + 3 étapes + explication du prix
++ zone d'intervention + demande de devis. Pas de menu à rallonge, pas de blog, pas de pages villes.
+
+- **Source** : `v2_src/style.css` (design), `v2_src/app.js` (apparition douce + formulaire express)
+  et `tools/build_v2.py` (générateur).
+- **Construire** : `python3 tools/build_v2.py` → écrit dans `v2/` (12 fichiers, ~390 Ko dont 6 photos).
+- **Formulaire sans backend** : les 4 champs composent un message, puis ouvrent WhatsApp
+  (`wa.me/…?text=…`) ou l'e-mail prérempli. Rien n'est envoyé depuis le site : le visiteur confirme.
+  Sans JavaScript, le bouton reste un lien `wa.me` standard.
+- **Bascule prévue** : quand la V2 est validée, `v2/` devient la racine et la V1 est supprimée
+  (voir la case « décision » à confirmer).
+- Les pages V2 sont en `noindex` tant que la comparaison est en cours.
