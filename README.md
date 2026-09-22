@@ -32,12 +32,12 @@ faire que pour déléguer réellement un livrable.
 | `source-client/BRIEF_CODEX_SITE_DEBARRAS.md` | Brief client complet (21 sections) — source de vérité du besoin |
 | `source-client/MAQUETTE_DESKTOP.png` | Maquette desktop fournie par le client (770 × 2042) |
 | `docs/QUESTIONS_OUVERTES.md` | Points à trancher avec le client / Ams |
-| `docs/BENCHMARK.md` | (à venir) benchmark FR/US + stratégie SEO local |
-| `docs/PRD.md` | (à venir) spec fonctionnelle consolidée |
-| `docs/FRONT_SPEC.md` | (à venir) design system + gabarits de pages |
-| `docs/ARCHITECTURE.md` | (à venir) stack, arborescence, SEO technique |
-| `docs/BACKLOG.md` | (à venir) epics + stories + critères d'acceptation |
-| `docs/CAHIER_RECETTE.md` | (à venir) recette mobile iPhone + Core Web Vitals |
+| `docs/BENCHMARK.md` | Benchmark FR/US + stratégie SEO local |
+| `docs/PRD.md` | Spec fonctionnelle consolidée |
+| `docs/FRONT_SPEC.md` | Design system + gabarits de pages |
+| `docs/ARCHITECTURE.md` | Stack, arborescence, SEO technique |
+| `docs/BACKLOG.md` | Epics + stories + critères d'acceptation |
+| `docs/RECETTE.md` | Recette mobile iPhone + Core Web Vitals |
 
 ## Ce que dit le brief (résumé)
 
