@@ -269,6 +269,19 @@ main{padding:56px 0}
 .pied a{color:#CFDACB}
 .pied a:hover{color:var(--papier)}
 
+/* Pages d'information : même rythme et mêmes couleurs que la V3. */
+.page-legale{min-height:60vh;padding:72px 0 88px;background:var(--papier)}
+.page-legale-contenu{max-width:780px}
+.page-legale h1{margin-bottom:16px;font-size:clamp(36px,6vw,56px)}
+.page-legale h2{margin:36px 0 10px;font-size:clamp(23px,3vw,30px)}
+.page-legale p{max-width:72ch;color:var(--texte-2);line-height:1.75}
+.page-legale-intro{margin-bottom:36px;font-size:19px}
+.page-legale-retour{margin-top:40px}
+.page-404 .page-legale-contenu{padding-top:40px}
+.page-404-code{font-size:18px;font-weight:700;letter-spacing:.12em}
+.page-404 .bouton{display:inline-flex;margin-top:26px;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:999px;background:var(--brique);color:var(--papier);font-weight:700}
+.page-404 .bouton:hover{text-decoration:none}
+
 /* Barre mobile fixe : Appeler / WhatsApp / Devis photo — n'existe pas au-delà de 768px */
 .barre-mobile{display:none}
 @media (max-width:767.98px){
