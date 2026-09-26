@@ -77,27 +77,49 @@
           <span class="carte-devis-titre">Devis express</span>
           <span class="carte-devis-duree">≈ 30 secondes</span>
         </div>
-        <fieldset class="devis-types">
-          <legend>Que faut-il débarrasser ?</legend>
-          <div class="devis-types-grille">
-            <label class="pastille-radio"><input type="radio" name="type" value="Maison" checked><span>Maison</span></label>
-            <label class="pastille-radio"><input type="radio" name="type" value="Appartement"><span>Appartement</span></label>
-            <label class="pastille-radio"><input type="radio" name="type" value="Cave · grenier"><span>Cave · grenier</span></label>
-            <label class="pastille-radio"><input type="radio" name="type" value="Local pro"><span>Local pro</span></label>
-            <label class="pastille-radio"><input type="radio" name="type" value="Très encombré"><span>Très encombré</span></label>
-            <label class="pastille-radio"><input type="radio" name="type" value="Autre"><span>Autre</span></label>
-          </div>
-        </fieldset>
-        <div class="devis-champs">
+        <div class="devis-progression" hidden><span class="devis-progression-barre"></span></div>
+        <p class="devis-etape-label" hidden>Étape <span class="devis-etape-numero">1</span> / 3</p>
+        <div class="devis-etape" data-etape="1">
+          <fieldset class="devis-types">
+            <legend>Que faut-il débarrasser ?</legend>
+            <div class="devis-types-grille">
+              <label class="pastille-radio"><input type="radio" name="type" value="Maison" checked><span>Maison</span></label>
+              <label class="pastille-radio"><input type="radio" name="type" value="Appartement"><span>Appartement</span></label>
+              <label class="pastille-radio"><input type="radio" name="type" value="Cave · grenier"><span>Cave · grenier</span></label>
+              <label class="pastille-radio"><input type="radio" name="type" value="Local pro"><span>Local pro</span></label>
+              <label class="pastille-radio"><input type="radio" name="type" value="Très encombré"><span>Très encombré</span></label>
+              <label class="pastille-radio"><input type="radio" name="type" value="Autre"><span>Autre</span></label>
+            </div>
+          </fieldset>
           <label for="devis-cp">Code postal
             <input id="devis-cp" name="codePostal" type="text" inputmode="numeric" placeholder="67000">
           </label>
+        </div>
+        <div class="devis-etape" data-etape="2">
+          <fieldset class="devis-acces">
+            <legend>Accès</legend>
+            <div class="devis-acces-grille">
+              <label class="pastille-radio"><input type="radio" name="acces" value="Plain-pied" checked><span>Plain-pied</span></label>
+              <label class="pastille-radio"><input type="radio" name="acces" value="Ascenseur"><span>Ascenseur</span></label>
+              <label class="pastille-radio"><input type="radio" name="acces" value="Étage sans ascenseur"><span>Étage sans ascenseur</span></label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="devis-etape" data-etape="3">
           <label for="devis-tel">Téléphone
             <input id="devis-tel" name="telephone" type="tel" placeholder="06 …">
           </label>
+          <label for="devis-quand">Quand idéalement ? <span class="devis-facultatif">(facultatif)</span>
+            <input id="devis-quand" name="quand" type="text" placeholder="ex. avant fin octobre">
+          </label>
+          <p class="devis-recap" aria-live="polite">Bonjour, je souhaite un devis de débarras.</p>
         </div>
         <p class="devis-mention">Ajoutez 2–3 photos dans WhatsApp après l'envoi</p>
-        <a class="bouton bouton-brique devis-envoyer lien-whatsapp-devis" href="https://wa.me/33000000000?text=Bonjour%2C%20je%20souhaite%20un%20devis%20de%20d%C3%A9barras.">Envoyer sur WhatsApp</a>
+        <div class="devis-navigation">
+          <button type="button" class="bouton bouton-contour devis-retour" hidden>Retour</button>
+          <button type="button" class="bouton bouton-brique devis-continuer" hidden>Continuer</button>
+          <a class="bouton bouton-brique devis-envoyer lien-whatsapp-devis" href="https://wa.me/33000000000?text=Bonjour%2C%20je%20souhaite%20un%20devis%20de%20d%C3%A9barras.">Envoyer sur WhatsApp</a>
+        </div>
         <p class="devis-alternative">Votre messagerie s'ouvre avec le message prêt. <a class="devis-mail" href="mailto:[contact@domaine.fr]">Préférer l'e-mail</a></p>
       </form>
     </div>
@@ -337,6 +359,21 @@
     </div>
   </section>
 </main>
+
+<nav class="barre-mobile" aria-label="Actions rapides">
+  <a class="barre-mobile-lien barre-mobile-appel lien-tel" href="tel:+330****0000">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+    Appeler
+  </a>
+  <a class="barre-mobile-lien barre-mobile-whatsapp lien-whatsapp" href="https://wa.me/33000000000">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"/></svg>
+    WhatsApp
+  </a>
+  <a class="barre-mobile-lien barre-mobile-devis" href="#devis">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+    Devis photo
+  </a>
+</nav>
 
 <footer class="pied">
   <div class="conteneur pied-grille">

@@ -1,0 +1,248 @@
+// Tests de l'histoire 6 : barre mobile fixe et devis en 3 étapes.
+import test from "node:test";
+import assert from "node:assert/strict";
+import path from "node:path";
+import { pathToFileURL } from "node:url";
+import { lire, compter, RACINE } from "./outils.mjs";
+
+const { composerMessage } = await import(pathToFileURL(path.join(RACINE, "v3", "assets", "message.js")));
+const { etatInitial, etapeSuivante, etapePrecedente, NB_ETAPES } = await import(
+  pathToFileURL(path.join(RACINE, "v3", "assets", "etapes.js"))
+);
+
+const page = lire("v3/index.html");
+const css = lire("v3/assets/style.css").replace(/\/\*[\s\S]*?\*\//g, "");
+const js = lire("v3/assets/site.js");
+
+test("barre mobile : nav Actions rapides avec 3 liens (appeler, whatsapp, devis)", () => {
+  const nav = page.match(/<nav class="barre-mobile" aria-label="Actions rapides">[\s\S]*?<\/nav>/)?.[0];
+  assert.ok(nav, "la barre d'actions rapides est attendue");
+  assert.match(nav, /href="tel:[^"]+"/, "lien tel: attendu");
+  assert.match(nav, /class="[^"]*lien-whatsapp[^"]*" href="https:\/\/wa\.me\/[^"]+"/, "lien wa.me attendu");
+  assert.match(nav, /href="#devis"/, "lien vers le devis attendu");
+  assert.equal(compter(nav, /<a /g), 3, "exactement 3 liens dans la barre");
+});
+
+test("barre mobile : fixée en bas sous 768px, absente au-delà, body avec padding-bottom", () => {
+  assert.match(css, /\.barre-mobile\{display:none\}/, "la barre n'existe pas visuellement par défaut (desktop)");
+  assert.match(
+    css,
+    /@media \(max-width:767\.98px\)\{[\s\S]*?\.barre-mobile\{position:fixed;left:0;right:0;bottom:0[\s\S]*?background:var\(--vert\)/,
+    "la barre doit être fixée en bas, fond vert forêt, sous 768px"
+  );
+  assert.match(css, /@media \(max-width:767\.98px\)\{\s*body\{padding-bottom:76px\}/, "le body reçoit un padding-bottom sous 768px");
+});
+
+test("devis en 3 étapes : étape 2 propose Plain-pied / Ascenseur / Étage sans ascenseur", () => {
+  const formulaire = page.match(/<form id="devis"[\s\S]*?<\/form>/)?.[0];
+  assert.ok(formulaire);
+  const etape2 = formulaire.match(/<div class="devis-etape" data-etape="2">[\s\S]*?(?=<div class="devis-etape" data-etape="3">)/)?.[0];
+  assert.ok(etape2, "étape 2 attendue");
+  for (const choix of ["Plain-pied", "Ascenseur", "Étage sans ascenseur"]) {
+    assert.match(etape2, new RegExp(`value="${choix}"`), `choix d'accès attendu : ${choix}`);
+  }
+  assert.equal(compter(etape2, /name="acces"/g), 3, "3 choix exclusifs pour l'accès");
+});
+
+test("devis en 3 étapes : barre de progression, libellé « Étape n / 3 », boutons Continuer / Retour", () => {
+  const formulaire = page.match(/<form id="devis"[\s\S]*?<\/form>/)?.[0];
+  assert.match(formulaire, /class="devis-progression"/, "barre de progression attendue");
+  assert.match(formulaire, /Étape <span class="devis-etape-numero">1<\/span> \/ 3/, "libellé d'étape attendu");
+  assert.match(formulaire, /class="[^"]*devis-continuer[^"]*"[^>]*>Continuer</, "bouton Continuer attendu");
+  assert.match(formulaire, /class="[^"]*devis-retour[^"]*"[^>]*>Retour</, "bouton retour attendu");
+});
+
+test("amélioration progressive : sans JavaScript, toutes les étapes sont visibles d'un bloc", () => {
+  // Sans la classe .mode-etapes (ajoutée par site.js), le CSS ne masque aucune étape :
+  // les règles qui cachent .devis-etape ne s'appliquent qu'au sélecteur .mode-etapes.
+  assert.doesNotMatch(css, /(?<!\.mode-etapes )\.devis-etape\{[^}]*display:none/, "les étapes ne doivent pas être masquées sans la classe mode-etapes");
+  assert.match(css, /\.carte-devis\.mode-etapes \.devis-etape\{display:none\}/, "le masquage par étape est conditionné à .mode-etapes");
+  // L'envoi (lien wa.me) reste un vrai lien fonctionnel dans le HTML, sans JS.
+  const formulaire = page.match(/<form id="devis"[\s\S]*?<\/form>/)?.[0];
+  assert.match(formulaire, /href="https:\/\/wa\.me\/\d+\?text=/, "le lien d'envoi doit fonctionner sans JavaScript");
+});
+
+test("aucune largeur fixe > 360px hors media queries dans style.css", () => {
+  // On retire les blocs @media pour ne garder que les règles de base (mobile-first) :
+  // seules celles-ci doivent respecter la limite de 360px.
+  const sansMedia = css.replace(/@media[^{]*\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/g, "");
+  const motif = /(?:^|[;{])\s*(?:width|min-width)\s*:\s*(\d+)px/g;
+  let correspondance;
+  while ((correspondance = motif.exec(sansMedia))) {
+    const valeur = Number(correspondance[1]);
+    assert.ok(valeur <= 360, `largeur fixe hors media > 360px détectée : ${correspondance[0]}`);
+  }
+});
+
+test("cibles cliquables : barre mobile et pastilles font au moins 44px de haut", () => {
+  assert.match(css, /\.barre-mobile-lien\{[^}]*min-height:44px/, "les liens de la barre mobile doivent faire au moins 44px");
+  assert.match(css, /\.pastille-radio span\{[^}]*min-height:44px/, "les pastilles radio doivent faire au moins 44px");
+  assert.match(css, /\.bouton\{[^}]*height:56px/, "les boutons génériques font au moins 44px (56px)");
+});
+
+test("composerMessage inclut l'accès quand il est fourni (desktop compris)", () => {
+  assert.equal(
+    composerMessage({ type: "Maison", codePostal: "67000", acces: "Étage sans ascenseur", telephone: "0601020304" }),
+    "Bonjour, je souhaite un devis de débarras.\nType : Maison\nCode postal : 67000\nAccès : Étage sans ascenseur\nTéléphone : 0601020304",
+    "l'accès doit apparaître entre le code postal et le téléphone"
+  );
+  assert.equal(
+    composerMessage({ type: "Maison" }),
+    "Bonjour, je souhaite un devis de débarras.\nType : Maison",
+    "sans accès, la ligne est omise (rétro-compatible)"
+  );
+});
+
+test("site.js lit le champ acces du formulaire pour composer le message", () => {
+  assert.match(js, /donnees\.get\("acces"\)/, "site.js doit lire le champ acces du FormData");
+  assert.match(js, /import \{ composerMessage \} from ".\/message.js"/);
+});
+
+test("composerMessage inclut le champ « quand » quand il est fourni", () => {
+  assert.equal(
+    composerMessage({ type: "Maison", quand: "avant fin octobre" }),
+    "Bonjour, je souhaite un devis de débarras.\nType : Maison\nQuand : avant fin octobre",
+    "le champ quand doit apparaître après le téléphone"
+  );
+  assert.match(js, /donnees\.get\("quand"\)/, "site.js doit lire le champ quand du FormData");
+});
+
+test("desktop (≥900px) : le héros reste en grille à deux colonnes", () => {
+  assert.match(
+    css,
+    /@media \(min-width:900px\)\{\s*\.hero\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}/,
+    "à ≥900px, .hero doit repasser en display:grid (et non rester en flex-column)"
+  );
+});
+
+test("[hidden] prime sur .bouton : Retour/Continuer/Envoyer masqués n'apparaissent pas", () => {
+  assert.match(css, /\.bouton\[hidden\]\{display:none\}/, "une règle [hidden] doit primer sur .bouton{display:inline-flex}");
+});
+
+// Environnement DOM minimal, sans dépendance externe (pas de jsdom disponible),
+// suffisant pour exécuter réellement site.js et vérifier le comportement
+// d'interaction : le récapitulatif doit se mettre à jour à la saisie, pas
+// seulement lors des changements d'étape.
+class FausseListeClasses {
+  constructor() {
+    this.ensemble = new Set();
+  }
+  add(c) {
+    this.ensemble.add(c);
+  }
+  remove(c) {
+    this.ensemble.delete(c);
+  }
+  toggle(c, force) {
+    if (force === undefined) {
+      if (this.ensemble.has(c)) this.ensemble.delete(c);
+      else this.ensemble.add(c);
+    } else if (force) this.ensemble.add(c);
+    else this.ensemble.delete(c);
+  }
+}
+
+class FauxElement {
+  constructor(props = {}) {
+    this.dataset = {};
+    this.classList = new FausseListeClasses();
+    this.style = {};
+    this.hidden = false;
+    this._ecouteurs = {};
+    Object.assign(this, props);
+  }
+  addEventListener(type, gestionnaire) {
+    (this._ecouteurs[type] ??= []).push(gestionnaire);
+  }
+  declencher(type) {
+    (this._ecouteurs[type] ?? []).forEach((gestionnaire) => gestionnaire({ target: this }));
+  }
+}
+
+test("interaction : le récapitulatif se met à jour à la saisie, sans changer d'étape", async () => {
+  const champType = new FauxElement({ name: "type", value: "Maison", type: "radio", checked: true });
+  const champCodePostal = new FauxElement({ name: "codePostal", value: "67000", type: "text" });
+  const champAcces = new FauxElement({ name: "acces", value: "Ascenseur", type: "radio", checked: true });
+  const champTelephone = new FauxElement({ name: "telephone", value: "", type: "tel" });
+  const champQuand = new FauxElement({ name: "quand", value: "", type: "text" });
+  const champs = [champType, champCodePostal, champAcces, champTelephone, champQuand];
+
+  class FausseFormData {
+    constructor() {}
+    get(nom) {
+      const champ = champs.find((c) => c.name === nom);
+      return champ ? champ.value : null;
+    }
+  }
+
+  const etapesEl = [
+    new FauxElement({ dataset: { etape: "1" } }),
+    new FauxElement({ dataset: { etape: "2" } }),
+    new FauxElement({ dataset: { etape: "3" } })
+  ];
+  const barreProgression = new FauxElement();
+  const labelEtapeNumero = new FauxElement();
+  const boutonRetour = new FauxElement();
+  const boutonContinuer = new FauxElement();
+  const boutonWhatsapp = new FauxElement();
+  const recap = new FauxElement({ textContent: "" });
+
+  const index = new Map([
+    [".devis-envoyer", boutonWhatsapp],
+    [".devis-mail", null],
+    [".devis-progression-barre", barreProgression],
+    [".devis-etape-numero", labelEtapeNumero],
+    [".devis-retour", boutonRetour],
+    [".devis-continuer", boutonContinuer],
+    [".devis-recap", recap]
+  ]);
+
+  const form = new FauxElement({
+    querySelector: (sel) => index.get(sel) ?? null,
+    querySelectorAll: (sel) => (sel === ".devis-etape" ? etapesEl : [])
+  });
+
+  globalThis.document = {
+    querySelectorAll: () => [],
+    getElementById: (id) => (id === "devis" ? form : null)
+  };
+  globalThis.window = {
+    DEBARRAS: undefined,
+    matchMedia: () => ({ matches: true, addEventListener: () => {} })
+  };
+  globalThis.FormData = FausseFormData;
+
+  await import(pathToFileURL(path.join(RACINE, "v3", "assets", "site.js")).href + "?cachebust=" + Date.now());
+
+  // À l'étape 3, saisir le téléphone puis « quand » doit mettre à jour le
+  // récapitulatif immédiatement, sans passer par etapeSuivante/etapePrecedente.
+  form.declencher("input"); // avant saisie : simule le montage
+  champTelephone.value = "0601020304";
+  form.declencher("input");
+  assert.match(recap.textContent, /Téléphone : 0601020304/, "le récapitulatif doit refléter le téléphone saisi sans changer d'étape");
+
+  champQuand.value = "avant fin octobre";
+  form.declencher("input");
+  assert.match(recap.textContent, /Quand : avant fin octobre/, "le récapitulatif doit refléter « quand » saisi sans changer d'étape");
+  assert.match(recap.textContent, /Téléphone : 0601020304/, "le téléphone doit rester présent après une nouvelle saisie");
+});
+
+test("logique pure des étapes : etapeSuivante/etapePrecedente restent dans [1, 3]", () => {
+  assert.equal(NB_ETAPES, 3);
+  assert.deepEqual(etatInitial(), { etape: 1 });
+
+  let etat = etatInitial();
+  etat = etapeSuivante(etat);
+  assert.equal(etat.etape, 2);
+  etat = etapeSuivante(etat);
+  assert.equal(etat.etape, 3);
+  etat = etapeSuivante(etat);
+  assert.equal(etat.etape, 3, "ne dépasse jamais la dernière étape");
+
+  etat = etapePrecedente(etat);
+  assert.equal(etat.etape, 2);
+  etat = etapePrecedente(etat);
+  assert.equal(etat.etape, 1);
+  etat = etapePrecedente(etat);
+  assert.equal(etat.etape, 1, "ne descend jamais sous la première étape");
+});
