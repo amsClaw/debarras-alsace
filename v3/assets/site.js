@@ -23,19 +23,22 @@ if (config) {
 const form = document.getElementById("devis");
 
 if (form) {
-  form.addEventListener("submit", (evenement) => {
-    evenement.preventDefault();
+  const boutonWhatsapp = form.querySelector(".devis-envoyer");
+  if (boutonWhatsapp) {
+    boutonWhatsapp.addEventListener("click", (evenement) => {
+      evenement.preventDefault();
 
-    const donnees = new FormData(form);
-    const message = composerMessage({
-      type: donnees.get("type") ?? "",
-      codePostal: donnees.get("codePostal") ?? "",
-      telephone: donnees.get("telephone") ?? ""
+      const donnees = new FormData(form);
+      const message = composerMessage({
+        type: donnees.get("type") ?? "",
+        codePostal: donnees.get("codePostal") ?? "",
+        telephone: donnees.get("telephone") ?? ""
+      });
+
+      const whatsapp = window.DEBARRAS?.whatsapp ?? "";
+      window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
     });
-
-    const whatsapp = window.DEBARRAS?.whatsapp ?? "";
-    window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, "_blank", "noopener");
-  });
+  }
 
   const lienMail = form.querySelector(".devis-mail");
   if (lienMail) {

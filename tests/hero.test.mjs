@@ -107,7 +107,10 @@ test("formulaire devis : code postal et telephone avec label, mention photos, bo
   assert.match(formulaire, new RegExp(`<input id="${champTel[1]}"`), "l'input Telephone doit correspondre au label");
 
   assert.match(formulaire, /Ajoutez 2–3 photos dans WhatsApp après l'envoi/, "la mention photos est attendue");
-  assert.match(formulaire, /<button type="submit"[^>]*>Envoyer sur WhatsApp<\/button>/, "le bouton d'envoi est attendu");
+
+  const boutonEnvoyer = formulaire.match(/<a[^>]*class="[^"]*devis-envoyer[^"]*"[^>]*>Envoyer sur WhatsApp<\/a>/);
+  assert.ok(boutonEnvoyer, "le bouton d'envoi doit etre un lien wa.me fonctionnel sans JavaScript");
+  assert.match(boutonEnvoyer[0], new RegExp(`href="https://wa\\.me/${WHATSAPP}`), "le lien de repli doit utiliser le numero WhatsApp de config.js");
 
   const lienMail = formulaire.match(/<a[^>]*class="devis-mail"[^>]*>Préférer l'e-mail<\/a>/);
   assert.ok(lienMail, "le lien e-mail est attendu");
