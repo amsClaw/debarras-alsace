@@ -5,7 +5,9 @@ pour une société de débarras basée à Strasbourg intervenant dans toute l'Al
 
 **Promesse** : « Vous nous montrez ce qui doit partir. On s'occupe du reste. »
 
-**Statut** : 🟢 V1 en ligne (49 pages générées, recette passée) — en attente des données client
+**Statut** : 🏭 **Repris par l'usine le 2026-09-26** (mode supervisé) — V3 une page en préparation dans `v3/`,
+maquette Claude Design, 8 histoires prêtes (`docs/HISTOIRES.md`), en attente de la validation du cadrage par Ams.
+Cadrage : `docs/CADRAGE_V3.md` · Plan terrain (Claude Docs) : https://claude.ai/code/artifact/303c95fb-84ad-40b0-86fb-5761b6dd8a3b
 **Site en ligne** : **https://amsclaw.github.io/debarras-alsace/** (GitHub Pages, dépôt public `amsClaw/debarras-alsace`)
 **Dossier local** : `/Users/amsfox/projets/debarras-alsace` (repo git)
 **Process** : Process AAS V0.3 — mode **complet** (projet commercial, SEO, lead-gen, multi-pages)
@@ -75,6 +77,7 @@ faire que pour déléguer réellement un livrable.
 | Date | Décision |
 |---|---|
 | 2026-09-13 | Création du projet + dossier git + projet Paperclip (issues par phase en backlog) |
+| 2026-09-26 | **Reprise par l'usine** : V3 une page (maquette Claude Design `docs/design/`), construite dans `v3/` par 8 cartes, bascule à la racine en H8 après recette d'Ams (seul checkpoint). Stack : statique sans build, tests `node --test`. Paperclip n'est plus le suivi : c'est le board `factory` de Hermes |
 | 2026-09-14 | **V2 épurée** : une page d'atterrissage + pages légales, publiée dans `/v2/` (la V1 reste à la racine pour comparaison). Décision client : un site de 49 pages est trop lourd pour une entreprise qui se lance |
 
 ## V2 épurée (en ligne : https://amsclaw.github.io/debarras-alsace/v2/)

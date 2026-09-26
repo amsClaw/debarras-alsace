@@ -46,3 +46,4 @@ Statut : à trancher avec le client (et/ou Ams). Une réponse = une ligne de dé
 | Date | Question | Décision |
 |---|---|---|
 | 2026-09-13 | — | En attente des réponses client (voir ci-dessus) |
+| 2026-09-26 | Reprise par l'usine | V3 une page (maquette Claude Design), construite dans `v3/`, bascule après recette d'Ams — voir `docs/CADRAGE_V3.md`. Questions 1 à 6 toujours bloquantes avant la bascule ; 7 (stack) tranchée : statique sans build ; 11-12 (villes, blog) : hors V3. |

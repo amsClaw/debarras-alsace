@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Devis mobile en 3 étapes — Débarras Alsace</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F5F0E6;font-family:"Public Sans",system-ui,sans-serif;color:#1F221E}
+a{color:#1E3A2B}a:hover{color:#B5461B}
+input::placeholder{color:#7A7D74}
+input:focus{outline:2px solid #B5461B;outline-offset:1px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F5F0E6; display: flex; flex-direction: column">
+<header style="height: 64px; box-sizing: border-box; padding: 0 8px 0 4px; display: flex; align-items: center; gap: 4px; border-bottom: 1px solid #E2D9C6">
+<button type="button" onClick="{{ back }}" aria-label="Étape précédente" style="width: 44px; height: 44px; border: 0; background: transparent; color: #1E3A2B; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+<span style="flex-grow: 1; font-family: Fraunces, Georgia, serif; font-size: 19px; font-weight: 600; color: #1E3A2B">Mon devis gratuit</span>
+<span style="font-size: 13px; font-weight: 700; color: #5B5F57; padding-right: 8px">{{ stepLabel }}</span>
+</header>
+<div style="height: 4px; background: #E2D9C6"><div style="height: 4px; background: #B5461B; width: {{ progress }}"></div></div>
+
+<div style="flex-grow: 1; padding: 24px 16px; display: flex; flex-direction: column; gap: 18px; overflow: hidden">
+<sc-if value="{{ s1 }}" hint-placeholder-val="{{ true }}">
+<h1 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 28px; font-weight: 600; line-height: 1.15; color: #1E3A2B">Que faut-il débarrasser ?</h1>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<sc-for list="{{ types }}" as="t" hint-placeholder-count="6">
+<button type="button" onClick="{{ t.pick }}" style="{{ t.style }}">{{ t.label }}</button>
+</sc-for>
+</div>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 15px; font-weight: 700">Code postal
+<input type="text" inputmode="numeric" placeholder="67000" style="height: 52px; box-sizing: border-box; padding: 0 14px; border: 1.5px solid #D6CCB6; border-radius: 12px; font: 500 17px 'Public Sans', sans-serif; background: #FFFFFF"></label>
+</sc-if>
+
+<sc-if value="{{ s2 }}" hint-placeholder-val="{{ false }}">
+<h1 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 28px; font-weight: 600; line-height: 1.15; color: #1E3A2B">Montrez-nous la pièce</h1>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3D413A">Deux ou trois photos suffisent pour un prix juste. Vous pourrez aussi les envoyer plus tard.</p>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<img src="/_blob/644ad4e26515404caf83ef8bc14ed523" alt="Photo ajoutée 1" style="width: 100%; height: 104px; object-fit: cover; border-radius: 12px">
+<img src="/_blob/6f2d1dc5ce1ea9077171f7a09ee5d32e" alt="Photo ajoutée 2" style="width: 100%; height: 104px; object-fit: cover; border-radius: 12px">
+<button type="button" style="height: 104px; border: 1.5px dashed #9FB39F; border-radius: 12px; background: #F1F5EE; color: #1E3A2B; font: 600 13px 'Public Sans', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>Photo</button>
+</div>
+<fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<legend style="font-size: 15px; font-weight: 700; padding: 0; margin-bottom: 10px">Accès</legend>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{ access }}" as="a" hint-placeholder-count="3">
+<button type="button" onClick="{{ a.pick }}" style="{{ a.style }}">{{ a.label }}</button>
+</sc-for>
+</div>
+</fieldset>
+</sc-if>
+
+<sc-if value="{{ s3 }}" hint-placeholder-val="{{ false }}">
+<h1 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 28px; font-weight: 600; line-height: 1.15; color: #1E3A2B">Où vous rappeler ?</h1>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 15px; font-weight: 700">Téléphone
+<input type="tel" placeholder="06 …" style="height: 52px; box-sizing: border-box; padding: 0 14px; border: 1.5px solid #D6CCB6; border-radius: 12px; font: 500 17px 'Public Sans', sans-serif; background: #FFFFFF"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 15px; font-weight: 700">Quand idéalement ? <span style="font-weight: 500; color: #5B5F57">(facultatif)</span>
+<input type="text" placeholder="ex. avant fin octobre" style="height: 52px; box-sizing: border-box; padding: 0 14px; border: 1.5px solid #D6CCB6; border-radius: 12px; font: 500 17px 'Public Sans', sans-serif; background: #FFFFFF"></label>
+<div style="padding: 16px; border-radius: 14px; background: #FFFFFF; font-size: 14px; line-height: 1.55; color: #3D413A; white-space: pre-line">{{ recap }}</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5B5F57">Rien n'est envoyé automatiquement : WhatsApp s'ouvre avec ce message, à vous de confirmer.</p>
+</sc-if>
+</div>
+
+<div style="padding: 12px 16px 20px; display: flex; flex-direction: column; gap: 8px; border-top: 1px solid #E2D9C6">
+<button type="button" onClick="{{ next }}" style="height: 56px; border: 0; border-radius: 14px; background: #B5461B; color: #FFFFFF; font: 700 17px 'Public Sans', sans-serif; cursor: pointer">{{ cta }}</button>
+<a href="tel:+33000000000" style="min-height: 44px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; text-decoration: none">Plus simple : appeler [06 XX XX XX XX]</a>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { step: 1, type: 'Appartement', access: 'Étage sans ascenseur' };
+  }
+  chip(on) {
+    return 'min-height: 52px; padding: 8px 10px; border-radius: 12px; font: 600 15px "Public Sans", sans-serif; cursor: pointer; '
+      + (on ? 'border: 1.5px solid #1E3A2B; background: #1E3A2B; color: #F5F0E6'
+            : 'border: 1.5px solid #D6CCB6; background: #FFFFFF; color: #1F221E');
+  }
+  renderVals() {
+    const s = this.state;
+    const types = ['Maison', 'Appartement', 'Cave · grenier', 'Garage', 'Local pro', 'Très encombré']
+      .map((label) => ({ label, style: this.chip(s.type === label), pick: () => this.setState({ type: label }) }));
+    const access = ['Plain-pied', 'Ascenseur', 'Étage sans ascenseur']
+      .map((label) => ({ label, style: this.chip(s.access === label), pick: () => this.setState({ access: label }) }));
+    return {
+      s1: s.step === 1, s2: s.step === 2, s3: s.step === 3,
+      stepLabel: 'Étape ' + s.step + ' / 3',
+      progress: Math.round((s.step / 3) * 100) + '%',
+      types, access,
+      cta: s.step === 3 ? 'Envoyer sur WhatsApp' : 'Continuer',
+      recap: 'Bonjour, je souhaite un devis de débarras.\nType : ' + s.type + '\nAccès : ' + s.access + '\nPhotos : 2 jointes',
+      next: () => this.setState({ step: s.step < 3 ? s.step + 1 : 1 }),
+      back: () => this.setState({ step: s.step > 1 ? s.step - 1 : 1 })
+    };
+  }
+}
+</script>
+</body>
+</html>
