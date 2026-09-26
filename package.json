@@ -1,0 +1,10 @@
+{
+  "name": "debarras-alsace",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Débarras Alsace — site V3 : une page, HTML/CSS/JS statiques, sans étape de build ni dépendance.",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs"
+  }
+}
