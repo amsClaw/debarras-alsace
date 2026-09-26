@@ -151,6 +151,33 @@ main{padding:56px 0}
   .deroule-garantie{border-radius:16px;text-align:center}
 }
 
+/* Le prix, en clair + estimateur de volume */
+.prix{margin:0 auto 40px;padding:72px;border-radius:32px;background:var(--vert);color:var(--papier);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:64px}
+.prix-argumentaire{display:flex;flex-direction:column;gap:24px}
+.sur-titre-clair{color:#F3C9AE}
+.prix h2{color:var(--papier);font-size:44px}
+.prix-argumentaire>p{margin:0;font-size:17px;line-height:1.6;color:#CFDACB}
+.prix-cas{display:flex;flex-direction:column;gap:12px}
+.prix-cas-carte{padding:18px 20px;border-radius:16px;background:#2A4A37;display:flex;gap:16px;align-items:baseline}
+.prix-cas-carte strong{width:110px;flex-shrink:0;font-size:16px;color:#F3C9AE}
+.prix-cas-carte span{font-size:15px;line-height:1.5;color:#E4ECDF}
+.carte-estimateur{padding:36px;border-radius:24px;background:var(--papier);color:var(--encre);display:flex;flex-direction:column;gap:22px}
+.carte-estimateur-entete{display:flex;flex-direction:column;gap:6px}
+.carte-estimateur-titre{font-family:var(--titres);font-size:28px;font-weight:600;color:var(--vert)}
+.carte-estimateur-sous-titre{font-size:15px;color:var(--discret)}
+.estimateur-choix{border:0;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.estimateur-choix .pastille-radio span{justify-content:center;width:100%}
+.estimateur-tuiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.estimateur-tuile{padding:18px;border-radius:16px;background:#FFFFFF;display:flex;flex-direction:column;gap:6px}
+.estimateur-tuile span{font-size:13px;font-weight:600;color:var(--discret)}
+.estimateur-tuile strong{font-family:var(--titres);font-size:26px;font-weight:600;color:var(--vert)}
+.estimateur-note{margin:0;padding:16px 18px;border-radius:14px;border:1.5px dashed var(--trait);font-size:15px;line-height:1.5;color:var(--texte-2)}
+.estimateur-cta{width:100%;height:54px;border:0}
+@media (max-width:899.98px){
+  .prix{grid-template-columns:1fr;margin:0 16px 24px;padding:40px 24px;border-radius:24px}
+  .prix h2{font-size:34px}
+}
+
 /* Pied de page */
 .pied{background:var(--vert);color:#CFDACB;font-size:15px;line-height:1.7}
 .pied-grille{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:40px;padding-top:48px;padding-bottom:48px}

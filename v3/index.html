@@ -193,6 +193,41 @@
     </ol>
     <p class="deroule-garantie">Aucune avance à verser : vous payez quand la pièce est vide et propre.</p>
   </section>
+
+  <section id="prix" class="prix conteneur" aria-labelledby="prix-titre">
+    <div class="prix-argumentaire">
+      <span class="sur-titre sur-titre-clair">Le prix, en clair</span>
+      <h2 id="prix-titre">Un débarras n'est pas toujours payant.</h2>
+      <p>Le prix dépend du volume, de l'accès (étage, stationnement) et de ce qui peut être revendu ou donné. Vous recevez un montant ferme avant l'intervention.</p>
+      <div class="prix-cas">
+        <div class="prix-cas-carte"><strong>Indemnisé</strong><span>Les objets valent plus que le travail : on vous reverse la différence.</span></div>
+        <div class="prix-cas-carte"><strong>Gratuit</strong><span>La valeur des objets couvre exactement la prestation.</span></div>
+        <div class="prix-cas-carte"><strong>Payant</strong><span>Rien à valoriser : prix selon volume, accès et frais de déchetterie.</span></div>
+      </div>
+    </div>
+    <div class="carte-estimateur">
+      <div class="carte-estimateur-entete">
+        <span class="carte-estimateur-titre">Estimez votre volume</span>
+        <span class="carte-estimateur-sous-titre">Un ordre de grandeur pour vous situer. Le prix ferme vient après vos photos.</span>
+      </div>
+      <fieldset class="estimateur-choix">
+        <legend class="visuellement-cache">Type de logement à débarrasser</legend>
+        <label class="pastille-radio"><input type="radio" name="volume" value="cave" id="volume-cave"><span>Cave / garage</span></label>
+        <label class="pastille-radio"><input type="radio" name="volume" value="studio" id="volume-studio"><span>Studio</span></label>
+        <label class="pastille-radio"><input type="radio" name="volume" value="t2" id="volume-t2" checked><span>T2 – T3</span></label>
+        <label class="pastille-radio"><input type="radio" name="volume" value="t4" id="volume-t4"><span>T4 et +</span></label>
+        <label class="pastille-radio"><input type="radio" name="volume" value="maison" id="volume-maison"><span>Maison</span></label>
+        <label class="pastille-radio"><input type="radio" name="volume" value="pro" id="volume-pro"><span>Local pro</span></label>
+      </fieldset>
+      <div class="estimateur-tuiles">
+        <div class="estimateur-tuile"><span>Volume</span><strong id="estimateur-m3">15–30 m³</strong></div>
+        <div class="estimateur-tuile"><span>Camion 20 m³</span><strong id="estimateur-camions">1–2</strong></div>
+        <div class="estimateur-tuile"><span>Durée</span><strong id="estimateur-duree">1 journée</strong></div>
+      </div>
+      <p class="estimateur-note">Fourchette de prix pour ce volume : <strong>[fourchette validée par l'entreprise]</strong></p>
+      <a class="bouton bouton-brique estimateur-cta" href="#devis">Recevoir mon prix ferme</a>
+    </div>
+  </section>
 </main>
 
 <footer class="pied">
