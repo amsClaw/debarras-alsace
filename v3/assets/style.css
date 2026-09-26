@@ -34,17 +34,73 @@ a:hover{color:var(--brique)}
 
 /* En-tête */
 .entete{border-bottom:1px solid var(--trait)}
-.entete-barre{display:flex;align-items:center;min-height:88px}
+.entete-barre{display:flex;align-items:center;gap:40px;min-height:88px}
 .marque{display:flex;align-items:center;gap:12px;color:var(--vert)}
 .marque-logo{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:var(--vert);color:var(--papier)}
 .marque-texte{display:flex;flex-direction:column;gap:2px}
 .marque-nom{font-family:var(--titres);font-size:22px;font-weight:600;letter-spacing:-0.01em}
 .marque-zone{font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--discret)}
 
-/* Contenu — le socle ne pose qu'un titre provisoire */
+.entete-nav{display:flex;gap:28px;flex-grow:1;justify-content:center;font-size:15px;font-weight:500}
+.entete-nav a{color:var(--encre)}
+.entete-tel{display:flex;align-items:center;gap:8px;color:var(--vert);font-weight:700;font-size:16px}
+
+/* Bouton générique — la brique reste la seule couleur d'action */
+.bouton{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 28px;border-radius:14px;font-weight:700;font-size:17px}
+.bouton-brique{background:var(--brique);color:#FFFFFF}
+.bouton-brique:hover{color:#FFFFFF;opacity:0.92}
+.bouton-contour{border:1.5px solid var(--vert);color:var(--vert)}
+.entete-devis{height:48px;padding:0 22px;font-size:15px}
+
+@media (max-width:899.98px){
+  .entete-nav,.entete-tel{display:none}
+}
+
+/* Héros */
 main{padding:56px 0}
-.titre-socle{font-size:40px;max-width:760px}
-@media (max-width:767.98px){.titre-socle{font-size:30px}}
+.hero{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:64px;align-items:center;padding:64px 0 72px}
+.hero-texte{display:flex;flex-direction:column;gap:28px}
+.pastille{align-self:flex-start;padding:8px 14px;border-radius:999px;background:#E4ECDF;color:var(--vert);font-size:13px;font-weight:700;letter-spacing:0.04em}
+.hero-titre{font-family:var(--titres);font-weight:600;font-size:68px;line-height:1.02;letter-spacing:-0.025em;color:var(--vert)}
+.hero-titre em{font-style:italic;font-weight:500;color:var(--brique)}
+.hero-paragraphe{margin:0;font-size:20px;line-height:1.55;color:var(--texte-2);max-width:540px}
+.hero-boutons{display:flex;gap:12px;flex-wrap:wrap}
+.reassurances{list-style:none;margin:0;padding:8px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.reassurances li{display:flex;gap:10px;align-items:flex-start;color:var(--vert-2)}
+.reassurances li span{font-size:15px;line-height:1.4;color:var(--encre)}
+
+.hero-visuel{position:relative;min-height:640px}
+.hero-photo{position:absolute;top:0;right:0;width:460px;height:600px;max-width:100%;object-fit:cover;border-radius:28px}
+
+.carte-devis{position:absolute;left:0;bottom:0;width:400px;max-width:100%;box-sizing:border-box;padding:28px;border-radius:22px;background:#FFFFFF;box-shadow:0 30px 60px -20px rgba(30,58,43,0.35);display:flex;flex-direction:column;gap:16px}
+.carte-devis-entete{display:flex;justify-content:space-between;align-items:baseline}
+.carte-devis-titre{font-family:var(--titres);font-size:24px;font-weight:600;color:var(--vert)}
+.carte-devis-duree{font-size:13px;font-weight:600;color:var(--discret)}
+
+.devis-types{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.devis-types legend{font-size:14px;font-weight:700;padding:0;margin-bottom:10px}
+.devis-types-grille{display:flex;flex-wrap:wrap;gap:8px}
+.pastille-radio{position:relative}
+.pastille-radio input{position:absolute;opacity:0;width:1px;height:1px}
+.pastille-radio span{display:flex;align-items:center;min-height:44px;padding:0 14px;border-radius:999px;border:1.5px solid var(--trait);background:#FFFFFF;color:var(--encre);font-size:14px;font-weight:600;cursor:pointer}
+.pastille-radio input:checked + span{border-color:var(--vert);background:var(--vert);color:var(--papier)}
+.pastille-radio input:focus-visible + span{outline:2px solid var(--brique);outline-offset:2px}
+
+.devis-champs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.devis-champs label{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:700}
+.devis-champs input{height:46px;box-sizing:border-box;padding:0 12px;border:1.5px solid var(--trait);border-radius:10px;font:500 16px var(--texte);background:#FBF8F2}
+
+.devis-mention{margin:0;font-size:13px;line-height:1.4;color:var(--discret)}
+.devis-envoyer{width:100%;height:54px;border:0}
+.devis-alternative{margin:0;font-size:13px;line-height:1.45;color:var(--discret);text-align:center}
+
+@media (max-width:899.98px){
+  .hero{grid-template-columns:1fr}
+  .hero-titre{font-size:38px}
+  .hero-visuel{min-height:auto;padding-top:24px}
+  .hero-photo{position:static;width:100%;height:auto;aspect-ratio:1/1}
+  .carte-devis{position:static;width:100%;margin-top:-40px}
+}
 
 /* Pied de page */
 .pied{background:var(--vert);color:#CFDACB;font-size:15px;line-height:1.7}
