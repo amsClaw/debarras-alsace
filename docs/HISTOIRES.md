@@ -181,7 +181,7 @@ Règles communes à toutes les histoires :
 6. Tests : aucun fichier HTML hors `index.html`, `mentions-legales.html`, `confidentialite.html`, `404.html` et `docs/design/` ; aucun lien interne cassé.
 7. `npm test` vert.
 
-**Ne touche pas :** `docs/`, `source-client/`, `.factory.json`.
+**Ne touche pas :** `docs/` (sauf l'ajout de `docs/CAHIER_DE_RECETTE.md`), `source-client/`, `.factory.json`.
 
 **Résultat visible :** https://amsclaw.github.io/debarras-alsace/ affiche la V3. **Checkpoint : cette fusion attend l'accord d'Ams (recette).**
 
