@@ -1,0 +1,56 @@
+/* Débarras Alsace — V3
+   Feuille de style unique du site. Les valeurs viennent du tableau « Système visuel »
+   de docs/CADRAGE_V3.md et de la maquette (docs/design/Main.dc.html) : on ne pose
+   aucune couleur en dur, tout passe par les jetons ci-dessous. */
+
+:root{
+  --vert:#1E3A2B;      /* titres, bandeaux sombres, pied de page */
+  --vert-2:#2F5A40;    /* icônes, cartes sur fond sombre — #2A4A37 pour la variante dense */
+  --papier:#F5F0E6;    /* fond de page */
+  --papier-2:#EDE5D5;  /* cartes */
+  --encre:#1F221E;     /* texte principal */
+  --texte-2:#3D413A;   /* texte secondaire */
+  --discret:#5B5F57;   /* mentions, libellés de champ */
+  --brique:#B5461B;    /* la seule couleur d'action (boutons devis, accents) */
+  --trait:#D6CCB6;     /* bordures de champs, séparateurs — #E2D9C6 pour les traits clairs */
+  --titres:Fraunces, Georgia, serif;
+  --texte:"Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* Remise à zéro minimale */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--papier);color:var(--encre);font-family:var(--texte);font-size:16px;line-height:1.6}
+img,svg{display:block;max-width:100%}
+h1,h2,h3{margin:0;color:var(--vert);font-family:var(--titres);font-weight:600;line-height:1.08;letter-spacing:-0.02em}
+a{color:var(--vert);text-decoration:none}
+a:hover{color:var(--brique)}
+:focus-visible{outline:2px solid var(--brique);outline-offset:2px}
+
+/* Conteneur : 1200 px au plus, 16 px de marge sur mobile, 120 px sur grand écran */
+.conteneur{width:100%;max-width:1200px;margin:0 auto;padding:0 32px}
+@media (max-width:767.98px){.conteneur{padding:0 16px}}
+@media (min-width:1441px){.conteneur{padding:0 120px}}
+
+/* En-tête */
+.entete{border-bottom:1px solid var(--trait)}
+.entete-barre{display:flex;align-items:center;min-height:88px}
+.marque{display:flex;align-items:center;gap:12px;color:var(--vert)}
+.marque-logo{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:var(--vert);color:var(--papier)}
+.marque-texte{display:flex;flex-direction:column;gap:2px}
+.marque-nom{font-family:var(--titres);font-size:22px;font-weight:600;letter-spacing:-0.01em}
+.marque-zone{font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--discret)}
+
+/* Contenu — le socle ne pose qu'un titre provisoire */
+main{padding:56px 0}
+.titre-socle{font-size:40px;max-width:760px}
+@media (max-width:767.98px){.titre-socle{font-size:30px}}
+
+/* Pied de page */
+.pied{background:var(--vert);color:#CFDACB;font-size:15px;line-height:1.7}
+.pied-grille{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:40px;padding-top:48px;padding-bottom:48px}
+.pied-bloc{display:flex;flex-direction:column;gap:6px}
+.pied-marque{font-family:var(--titres);font-size:22px;font-weight:600;color:var(--papier)}
+.pied-titre{color:var(--papier);font-weight:700}
+.pied a{color:#CFDACB}
+.pied a:hover{color:var(--papier)}
