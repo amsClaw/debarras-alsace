@@ -183,3 +183,28 @@ Règles communes à toutes les histoires :
 **Ne touche pas :** `docs/`, `source-client/`, `.factory.json`.
 
 **Résultat visible :** https://amsclaw.github.io/debarras-alsace/ affiche la V3. **Checkpoint : cette fusion attend l'accord d'Ams (recette).**
+
+---
+
+## Histoire 9 — Syndrome de Diogène : carte, section dédiée et question de FAQ
+
+**Titre :** Dire clairement sur la page V3 que l'entreprise intervient en cas de syndrome de Diogène : carte de prestation renommée, section dédiée sous les prestations, 7ᵉ question de FAQ.
+
+**Complexité :** simple
+
+Demande d'Ams du 2026-09-26. Référence visuelle et textes exacts : section `<!-- Syndrome de Diogène -->` de `docs/design/Main.dc.html` (fond `#E4ECDF`, rayon 32 px, deux colonnes). Cette histoire passe **avant** la bascule (H8) : elle modifie les fichiers de `v3/`.
+
+**Critères d'acceptation :**
+1. Dans `#prestations`, la 4ᵉ carte devient : titre « Diogène & logement très encombré », texte « Accumulation importante : intervention discrète, sans jugement, à votre rythme. », mention « Notre approche, ci-dessous » sous forme de lien vers `#diogene`. `alt` de la photo : « Pièce très encombrée avant intervention ».
+2. Nouvelle `<section id="diogene" aria-labelledby="diogene-titre">` placée **entre** `#prestations` et `#deroule`, fidèle à la maquette :
+   - colonne gauche : `assets/photos/service-diogene.jpg` (`loading="lazy"`, `width`/`height`) puis l'encadré blanc « Vous êtes un proche ? » et son texte ;
+   - colonne droite : sur-titre « Syndrome de Diogène », `<h2 id="diogene-titre">` « Un logement devenu impossible à vivre ? *On vous aide, sans jugement.* » (seconde phrase en italique), le paragraphe, les 4 engagements (Sans jugement, En toute discrétion, On garde ce qui compte, Logement remis en état) en grille 2 × 2 avec leurs textes, puis deux boutons : « En parler en toute discrétion » (lien `tel:` depuis la même valeur que le reste de la page) et « Envoyer des photos » (lien `wa.me`).
+   - Sous 900 px : une seule colonne, grille des engagements en 1 colonne sous 600 px, marges latérales 16 px, aucun défilement horizontal à 360 px.
+3. FAQ : une 7ᵉ entrée `<details>` insérée avant « Et si je veux garder certaines choses ? » : « Intervenez-vous en cas de syndrome de Diogène ? » → « Oui, avec discrétion et sans jugement, en accord avec la personne concernée ou sa famille, et à son rythme. Un premier échange par téléphone permet de préparer l'intervention. »
+4. Aucune affirmation invérifiable : pas de certification (ex. Certibiocide), pas de nombre de familles accompagnées, pas de « équipe formée », pas de désinfection promise.
+5. Tests (`tests/diogene.test.mjs`, et mise à jour du compte de FAQ à 7 dans `tests/sections-finales.test.mjs`) : section `#diogene` présente entre `#prestations` et `#deroule` ; 4 engagements ; liens `tel:` et `wa.me` identiques à ceux de l'en-tête ; lien de la carte vers `#diogene` ; 7 `<details>` ; aucun des mots « Certibiocide », « certifié », « désinfection » dans `v3/index.html`.
+6. `npm test` vert.
+
+**Ne touche pas :** la racine du site (V1), `v2/`, les autres sections (sauf la carte et la FAQ citées).
+
+**Résultat visible :** la page V3 montre une section Diogène claire et bienveillante ; la carte « Diogène & logement très encombré » y mène.
