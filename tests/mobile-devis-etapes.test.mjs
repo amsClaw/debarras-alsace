@@ -98,6 +98,27 @@ test("site.js lit le champ acces du formulaire pour composer le message", () => 
   assert.match(js, /import \{ composerMessage \} from ".\/message.js"/);
 });
 
+test("composerMessage inclut le champ « quand » quand il est fourni", () => {
+  assert.equal(
+    composerMessage({ type: "Maison", quand: "avant fin octobre" }),
+    "Bonjour, je souhaite un devis de débarras.\nType : Maison\nQuand : avant fin octobre",
+    "le champ quand doit apparaître après le téléphone"
+  );
+  assert.match(js, /donnees\.get\("quand"\)/, "site.js doit lire le champ quand du FormData");
+});
+
+test("desktop (≥900px) : le héros reste en grille à deux colonnes", () => {
+  assert.match(
+    css,
+    /@media \(min-width:900px\)\{\s*\.hero\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}/,
+    "à ≥900px, .hero doit repasser en display:grid (et non rester en flex-column)"
+  );
+});
+
+test("[hidden] prime sur .bouton : Retour/Continuer/Envoyer masqués n'apparaissent pas", () => {
+  assert.match(css, /\.bouton\[hidden\]\{display:none\}/, "une règle [hidden] doit primer sur .bouton{display:inline-flex}");
+});
+
 test("logique pure des étapes : etapeSuivante/etapePrecedente restent dans [1, 3]", () => {
   assert.equal(NB_ETAPES, 3);
   assert.deepEqual(etatInitial(), { etape: 1 });

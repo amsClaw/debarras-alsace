@@ -47,6 +47,7 @@ a:hover{color:var(--brique)}
 
 /* Bouton générique — la brique reste la seule couleur d'action */
 .bouton{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 28px;border-radius:14px;font-weight:700;font-size:17px}
+.bouton[hidden]{display:none}
 .bouton-brique{background:var(--brique);color:#FFFFFF}
 .bouton-brique:hover{color:#FFFFFF;opacity:0.92}
 .bouton-contour{border:1.5px solid var(--vert);color:var(--vert)}
@@ -109,7 +110,7 @@ main{padding:56px 0}
 .devis-alternative{margin:0;font-size:13px;line-height:1.45;color:var(--discret);text-align:center}
 
 @media (min-width:900px){
-  .hero{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   .hero-titre{font-size:68px}
   .hero-visuel{min-height:640px;padding-top:0}
   .hero-photo{position:absolute;top:0;right:0;width:460px;height:600px;max-width:100%;aspect-ratio:auto}

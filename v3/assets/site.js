@@ -59,7 +59,8 @@ function champsDevis(donnees) {
     type: donnees.get("type") ?? "",
     codePostal: donnees.get("codePostal") ?? "",
     acces: donnees.get("acces") ?? "",
-    telephone: donnees.get("telephone") ?? ""
+    telephone: donnees.get("telephone") ?? "",
+    quand: donnees.get("quand") ?? ""
   };
 }
 
