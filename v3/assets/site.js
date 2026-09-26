@@ -7,6 +7,7 @@
 
 import { composerMessage } from "./message.js";
 import { verifierZone } from "./zone.js";
+import { estimer } from "./volume.js";
 
 // Les liens tel: et wa.me ont déjà un lien fonctionnel dans le HTML (mêmes
 // valeurs que config.js) : cette mise à jour ne fait que refléter une éventuelle
@@ -29,6 +30,24 @@ if (champZone && reponseZone) {
   champZone.addEventListener("input", () => {
     champZone.value = champZone.value.replace(/\D/g, "").slice(0, 5);
     reponseZone.textContent = verifierZone(champZone.value);
+  });
+}
+
+const radiosVolume = document.querySelectorAll('input[name="volume"]');
+const tuileM3 = document.getElementById("estimateur-m3");
+const tuileCamions = document.getElementById("estimateur-camions");
+const tuileDuree = document.getElementById("estimateur-duree");
+if (radiosVolume.length && tuileM3 && tuileCamions && tuileDuree) {
+  const mettreAJour = (choix) => {
+    const valeurs = estimer(choix);
+    tuileM3.textContent = valeurs.m3;
+    tuileCamions.textContent = valeurs.camions;
+    tuileDuree.textContent = valeurs.duree;
+  };
+  radiosVolume.forEach((radio) => {
+    radio.addEventListener("change", () => {
+      if (radio.checked) mettreAJour(radio.value);
+    });
   });
 }
 
