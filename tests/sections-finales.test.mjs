@@ -53,11 +53,11 @@ test("zone : douze communes en liste et invitation à appeler", () => {
   assert.equal(compter(page, /id="zone"/g), 1, "la vérification du code postal ne partage pas l'ancre #zone");
 });
 
-test("FAQ : six accordéons natifs, première question ouverte et signes CSS", () => {
+test("FAQ : sept accordéons natifs, première question ouverte et signes CSS", () => {
   const faq = section("faq");
   assert.ok(faq);
-  assert.equal(compter(faq, /<details(?:\s|>)/g), 6);
-  assert.equal(compter(faq, /<summary>/g), 6);
+  assert.equal(compter(faq, /<details(?:\s|>)/g), 7);
+  assert.equal(compter(faq, /<summary>/g), 7);
   assert.match(faq, /<details open>\s*<summary>Combien coûte un débarras \?/);
   assert.match(css, /\.faq-liste summary::after\{content:"\+"/);
   assert.match(css, /\.faq-liste details\[open\] summary::after\{content:"−"/);

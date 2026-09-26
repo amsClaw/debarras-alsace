@@ -34,7 +34,7 @@ test("prestations : quatre cartes article avec leurs contenus et photos paresseu
   assert.match(section, /Ce que nous débarrassons/);
   assert.match(section, /<h2[^>]*>Du studio au local professionnel/);
   assert.equal(compter(section, /<article\b/g), 4);
-  for (const titre of ["Maison &amp; appartement", "Cave, grenier &amp; garage", "Bureaux &amp; locaux", "Logement très encombré"]) {
+  for (const titre of ["Maison &amp; appartement", "Cave, grenier &amp; garage", "Bureaux &amp; locaux", "Diogène &amp; logement très encombré"]) {
     assert.ok(section.includes(titre), `titre attendu : ${titre}`);
   }
   assert.equal(compter(section, /loading="lazy"/g), 4);

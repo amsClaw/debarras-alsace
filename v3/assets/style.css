@@ -138,6 +138,7 @@ main{padding:56px 0}
 .prestation-contenu h3{font-size:22px}
 .prestation-contenu p{margin:0;color:var(--texte-2);font-size:15px;line-height:1.5}
 .prestation-contenu>span{margin-top:auto;color:var(--vert-2);font-size:14px;font-weight:600}
+.prestation-approche{color:var(--vert-2);text-decoration:underline;text-underline-offset:3px}
 .prestations-aussi{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:24px}
 .prestations-aussi span{padding:10px 16px;border:1px solid var(--trait);border-radius:999px;font-size:15px}
 .prestations-aussi span:first-child{padding-left:0;border:0;color:var(--discret);font-weight:600}
@@ -164,6 +165,36 @@ main{padding:56px 0}
   .prestation-carte img{height:220px}
   .deroule{gap:28px}
   .deroule-garantie{border-radius:16px;text-align:center}
+}
+
+/* Diogène : section dédiée sous les prestations (maquette, fond #E4ECDF, rayon 32 px) */
+.diogene{margin:0 auto 40px;padding:64px;border-radius:32px;background:#E4ECDF;display:grid;grid-template-columns:420px minmax(0,1fr);gap:64px;align-items:start}
+.diogene-media{display:flex;flex-direction:column;gap:20px}
+.diogene-media img{width:100%;height:420px;object-fit:cover;border-radius:24px}
+.diogene-proche{padding:22px 24px;border-radius:18px;background:#FFFFFF;display:flex;flex-direction:column;gap:8px}
+.diogene-proche strong{font-family:var(--titres);font-size:20px;font-weight:600;color:var(--vert)}
+.diogene-proche span{font-size:15px;line-height:1.55;color:var(--texte-2)}
+.diogene-texte{display:flex;flex-direction:column;gap:22px}
+.diogene-texte h2{font-size:44px}
+.diogene-texte h2 em{font-style:italic;font-weight:500}
+.diogene-paragraphe{margin:0;font-size:17px;line-height:1.6;color:var(--texte-2)}
+.diogene-engagements{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.diogene-engagement{padding:20px;border-radius:16px;background:#FFFFFF;display:flex;flex-direction:column;gap:8px}
+.diogene-engagement strong{font-size:17px;color:var(--vert)}
+.diogene-engagement span{font-size:15px;line-height:1.5;color:var(--texte-2)}
+.diogene-actions{display:flex;flex-wrap:wrap;gap:12px;padding-top:4px}
+.bouton-vert{background:var(--vert);color:var(--papier)}
+.bouton-vert:hover{color:var(--papier);opacity:.92}
+@media (max-width:899.98px){
+  .diogene{width:auto;grid-template-columns:1fr;gap:32px;margin:0 16px 24px;padding:40px 24px;border-radius:24px}
+  .diogene-texte h2{font-size:34px}
+  .diogene-media img{height:320px}
+}
+@media (max-width:599.98px){
+  .diogene{grid-template-columns:1fr;padding:28px 16px;border-radius:20px}
+  .diogene-engagements{grid-template-columns:1fr}
+  .diogene-media img{height:240px}
+  .diogene-actions .bouton{width:100%;height:auto;min-height:56px;padding:14px 16px;text-align:center}
 }
 
 /* Le prix, en clair + estimateur de volume */
