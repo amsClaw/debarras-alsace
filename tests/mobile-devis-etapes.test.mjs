@@ -119,6 +119,114 @@ test("[hidden] prime sur .bouton : Retour/Continuer/Envoyer masqués n'apparaiss
   assert.match(css, /\.bouton\[hidden\]\{display:none\}/, "une règle [hidden] doit primer sur .bouton{display:inline-flex}");
 });
 
+// Environnement DOM minimal, sans dépendance externe (pas de jsdom disponible),
+// suffisant pour exécuter réellement site.js et vérifier le comportement
+// d'interaction : le récapitulatif doit se mettre à jour à la saisie, pas
+// seulement lors des changements d'étape.
+class FausseListeClasses {
+  constructor() {
+    this.ensemble = new Set();
+  }
+  add(c) {
+    this.ensemble.add(c);
+  }
+  remove(c) {
+    this.ensemble.delete(c);
+  }
+  toggle(c, force) {
+    if (force === undefined) {
+      if (this.ensemble.has(c)) this.ensemble.delete(c);
+      else this.ensemble.add(c);
+    } else if (force) this.ensemble.add(c);
+    else this.ensemble.delete(c);
+  }
+}
+
+class FauxElement {
+  constructor(props = {}) {
+    this.dataset = {};
+    this.classList = new FausseListeClasses();
+    this.style = {};
+    this.hidden = false;
+    this._ecouteurs = {};
+    Object.assign(this, props);
+  }
+  addEventListener(type, gestionnaire) {
+    (this._ecouteurs[type] ??= []).push(gestionnaire);
+  }
+  declencher(type) {
+    (this._ecouteurs[type] ?? []).forEach((gestionnaire) => gestionnaire({ target: this }));
+  }
+}
+
+test("interaction : le récapitulatif se met à jour à la saisie, sans changer d'étape", async () => {
+  const champType = new FauxElement({ name: "type", value: "Maison", type: "radio", checked: true });
+  const champCodePostal = new FauxElement({ name: "codePostal", value: "67000", type: "text" });
+  const champAcces = new FauxElement({ name: "acces", value: "Ascenseur", type: "radio", checked: true });
+  const champTelephone = new FauxElement({ name: "telephone", value: "", type: "tel" });
+  const champQuand = new FauxElement({ name: "quand", value: "", type: "text" });
+  const champs = [champType, champCodePostal, champAcces, champTelephone, champQuand];
+
+  class FausseFormData {
+    constructor() {}
+    get(nom) {
+      const champ = champs.find((c) => c.name === nom);
+      return champ ? champ.value : null;
+    }
+  }
+
+  const etapesEl = [
+    new FauxElement({ dataset: { etape: "1" } }),
+    new FauxElement({ dataset: { etape: "2" } }),
+    new FauxElement({ dataset: { etape: "3" } })
+  ];
+  const barreProgression = new FauxElement();
+  const labelEtapeNumero = new FauxElement();
+  const boutonRetour = new FauxElement();
+  const boutonContinuer = new FauxElement();
+  const boutonWhatsapp = new FauxElement();
+  const recap = new FauxElement({ textContent: "" });
+
+  const index = new Map([
+    [".devis-envoyer", boutonWhatsapp],
+    [".devis-mail", null],
+    [".devis-progression-barre", barreProgression],
+    [".devis-etape-numero", labelEtapeNumero],
+    [".devis-retour", boutonRetour],
+    [".devis-continuer", boutonContinuer],
+    [".devis-recap", recap]
+  ]);
+
+  const form = new FauxElement({
+    querySelector: (sel) => index.get(sel) ?? null,
+    querySelectorAll: (sel) => (sel === ".devis-etape" ? etapesEl : [])
+  });
+
+  globalThis.document = {
+    querySelectorAll: () => [],
+    getElementById: (id) => (id === "devis" ? form : null)
+  };
+  globalThis.window = {
+    DEBARRAS: undefined,
+    matchMedia: () => ({ matches: true, addEventListener: () => {} })
+  };
+  globalThis.FormData = FausseFormData;
+
+  await import(pathToFileURL(path.join(RACINE, "v3", "assets", "site.js")).href + "?cachebust=" + Date.now());
+
+  // À l'étape 3, saisir le téléphone puis « quand » doit mettre à jour le
+  // récapitulatif immédiatement, sans passer par etapeSuivante/etapePrecedente.
+  form.declencher("input"); // avant saisie : simule le montage
+  champTelephone.value = "0601020304";
+  form.declencher("input");
+  assert.match(recap.textContent, /Téléphone : 0601020304/, "le récapitulatif doit refléter le téléphone saisi sans changer d'étape");
+
+  champQuand.value = "avant fin octobre";
+  form.declencher("input");
+  assert.match(recap.textContent, /Quand : avant fin octobre/, "le récapitulatif doit refléter « quand » saisi sans changer d'étape");
+  assert.match(recap.textContent, /Téléphone : 0601020304/, "le téléphone doit rester présent après une nouvelle saisie");
+});
+
 test("logique pure des étapes : etapeSuivante/etapePrecedente restent dans [1, 3]", () => {
   assert.equal(NB_ETAPES, 3);
   assert.deepEqual(etatInitial(), { etape: 1 });

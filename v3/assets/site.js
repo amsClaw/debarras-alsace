@@ -102,6 +102,13 @@ if (form) {
   const recap = form.querySelector(".devis-recap");
   let etat = etatInitial();
 
+  // Le récapitulatif reflète le message qui sera réellement envoyé : il doit donc
+  // se mettre à jour à chaque saisie (téléphone, « quand »…), pas seulement lors
+  // des changements d'étape.
+  function mettreAJourRecap() {
+    if (recap) recap.textContent = composerMessage(champsDevis(new FormData(form)));
+  }
+
   function rendreEtape() {
     etapesEl.forEach((el) => {
       el.classList.toggle("devis-etape-active", Number(el.dataset.etape) === etat.etape);
@@ -112,7 +119,7 @@ if (form) {
     const derniereEtape = etat.etape === NB_ETAPES;
     if (boutonContinuer) boutonContinuer.hidden = derniereEtape;
     if (boutonWhatsapp) boutonWhatsapp.hidden = !derniereEtape;
-    if (recap) recap.textContent = composerMessage(champsDevis(new FormData(form)));
+    mettreAJourRecap();
   }
 
   function activerModeEtapes() {
@@ -148,4 +155,9 @@ if (form) {
 
   configurerEtapes();
   requeteMobile.addEventListener("change", configurerEtapes);
+
+  // Toute saisie (téléphone, « quand », accès, type…) met à jour le récapitulatif
+  // immédiatement, sans attendre un changement d'étape.
+  form.addEventListener("input", mettreAJourRecap);
+  form.addEventListener("change", mettreAJourRecap);
 }
