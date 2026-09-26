@@ -102,6 +102,55 @@ main{padding:56px 0}
   .carte-devis{position:static;width:100%;margin-top:-40px}
 }
 
+/* Vérification de zone, prestations et déroulé */
+.zone-verification{display:grid;grid-template-columns:minmax(0,1fr) 180px minmax(260px,360px);align-items:center;gap:28px;margin:0 auto 40px;padding:28px 36px;border-radius:22px;background:var(--vert);color:var(--papier)}
+.zone-introduction{display:flex;align-items:center;gap:14px}
+.zone-icone{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:#2A4A37;color:#F3C9AE;font-size:28px}
+.zone-verification h2{color:var(--papier);font-size:24px}
+.zone-verification p{margin:4px 0 0;color:#CFDACB}
+.zone-champ input{width:100%;height:52px;padding:0 16px;border:0;border-radius:12px;background:var(--papier);color:var(--encre);font:600 17px var(--texte)}
+.zone-reponse{font-size:16px;font-weight:600;line-height:1.4}
+.visuellement-cache{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.prestations,.deroule{padding-top:88px;padding-bottom:40px}
+.prestations-entete{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-bottom:36px}
+.sur-titre{display:block;margin-bottom:14px;color:var(--brique);font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.prestations-entete h2,.deroule-entete h2{max-width:640px;font-size:48px}
+.prestations-entete>p{max-width:380px;margin:0;color:var(--texte-2);font-size:17px;line-height:1.55}
+.prestations-grille{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.prestation-carte{overflow:hidden;display:flex;flex-direction:column;border-radius:20px;background:#fff}
+.prestation-carte img{width:100%;height:200px;object-fit:cover}
+.prestation-contenu{display:flex;flex:1;flex-direction:column;align-items:flex-start;gap:10px;padding:22px 22px 26px}
+.prestation-contenu h3{font-size:22px}
+.prestation-contenu p{margin:0;color:var(--texte-2);font-size:15px;line-height:1.5}
+.prestation-contenu>span{margin-top:auto;color:var(--vert-2);font-size:14px;font-weight:600}
+.prestations-aussi{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:24px}
+.prestations-aussi span{padding:10px 16px;border:1px solid var(--trait);border-radius:999px;font-size:15px}
+.prestations-aussi span:first-child{padding-left:0;border:0;color:var(--discret);font-weight:600}
+.deroule{display:flex;flex-direction:column;gap:40px;padding-top:72px;padding-bottom:72px}
+.deroule-entete{text-align:center}
+.deroule-etapes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin:0;padding:0;list-style:none}
+.deroule-etapes li{display:flex;flex-direction:column;gap:14px;padding:32px;border-radius:22px;background:var(--papier-2)}
+.deroule-numero{color:var(--brique);font-family:var(--titres);font-size:56px;font-style:italic;font-weight:500;line-height:1}
+.deroule-etapes h3{font-size:26px}
+.deroule-etapes p{margin:0;color:var(--texte-2);font-size:16px;line-height:1.55}
+.deroule-garantie{align-self:center;margin:0;padding:14px 22px;border-radius:999px;background:#E4ECDF;color:var(--vert);font-size:16px;font-weight:600}
+@media (max-width:1099.98px){
+  .prestations-grille{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .zone-verification{grid-template-columns:minmax(0,1fr) 180px}
+  .zone-reponse{grid-column:1/-1}
+}
+@media (max-width:599.98px){
+  .zone-verification{grid-template-columns:1fr;gap:16px;margin:0 16px 24px;padding:22px}
+  .zone-reponse{grid-column:auto}
+  .prestations,.deroule{padding-top:56px;padding-bottom:32px}
+  .prestations-entete{align-items:flex-start;flex-direction:column;gap:16px}
+  .prestations-entete h2,.deroule-entete h2{font-size:34px}
+  .prestations-grille,.deroule-etapes{grid-template-columns:1fr}
+  .prestation-carte img{height:220px}
+  .deroule{gap:28px}
+  .deroule-garantie{border-radius:16px;text-align:center}
+}
+
 /* Pied de page */
 .pied{background:var(--vert);color:#CFDACB;font-size:15px;line-height:1.7}
 .pied-grille{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:40px;padding-top:48px;padding-bottom:48px}
