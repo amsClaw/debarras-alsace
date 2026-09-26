@@ -5,14 +5,14 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { lire, compter, RACINE } from "./outils.mjs";
 
-const { composerMessage } = await import(pathToFileURL(path.join(RACINE, "v3", "assets", "message.js")));
+const { composerMessage } = await import(pathToFileURL(path.join(RACINE, "assets", "message.js")));
 const { etatInitial, etapeSuivante, etapePrecedente, NB_ETAPES } = await import(
-  pathToFileURL(path.join(RACINE, "v3", "assets", "etapes.js"))
+  pathToFileURL(path.join(RACINE, "assets", "etapes.js"))
 );
 
-const page = lire("v3/index.html");
-const css = lire("v3/assets/style.css").replace(/\/\*[\s\S]*?\*\//g, "");
-const js = lire("v3/assets/site.js");
+const page = lire("index.html");
+const css = lire("assets/style.css").replace(/\/\*[\s\S]*?\*\//g, "");
+const js = lire("assets/site.js");
 
 test("barre mobile : nav Actions rapides avec 3 liens (appeler, whatsapp, devis)", () => {
   const nav = page.match(/<nav class="barre-mobile" aria-label="Actions rapides">[\s\S]*?<\/nav>/)?.[0];
@@ -212,7 +212,7 @@ test("interaction : le récapitulatif se met à jour à la saisie, sans changer 
   };
   globalThis.FormData = FausseFormData;
 
-  await import(pathToFileURL(path.join(RACINE, "v3", "assets", "site.js")).href + "?cachebust=" + Date.now());
+  await import(pathToFileURL(path.join(RACINE, "assets", "site.js")).href + "?cachebust=" + Date.now());
 
   // À l'étape 3, saisir le téléphone puis « quand » doit mettre à jour le
   // récapitulatif immédiatement, sans passer par etapeSuivante/etapePrecedente.

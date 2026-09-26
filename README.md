@@ -1,96 +1,67 @@
 # Débarras Alsace — Site web (Strasbourg & Alsace)
 
-**Projet** : site vitrine + générateur de leads, très orienté conversion et SEO local,
-pour une société de débarras basée à Strasbourg intervenant dans toute l'Alsace.
+**Projet** : site vitrine + générateur de leads pour une société de débarras basée à
+Strasbourg, intervenant dans toute l'Alsace (Bas-Rhin / Haut-Rhin).
 
 **Promesse** : « Vous nous montrez ce qui doit partir. On s'occupe du reste. »
 
-**Statut** : 🏭 **Repris par l'usine le 2026-09-26** (mode supervisé) — V3 une page en préparation dans `v3/`,
-maquette Claude Design, 8 histoires prêtes (`docs/HISTOIRES.md`), en attente de la validation du cadrage par Ams.
-Cadrage : `docs/CADRAGE_V3.md` · Plan terrain (Claude Docs) : https://claude.ai/code/artifact/303c95fb-84ad-40b0-86fb-5761b6dd8a3b
-**Site en ligne** : **https://amsclaw.github.io/debarras-alsace/** (GitHub Pages, dépôt public `amsClaw/debarras-alsace`)
-**Dossier local** : `/Users/amsfox/projets/debarras-alsace` (repo git)
-**Process** : Process AAS V0.3 — mode **complet** (projet commercial, SEO, lead-gen, multi-pages)
-**Génération du site** : `python3 tools/build.py` (site statique, stdlib uniquement) puis
-`python3 tools/smoke.py <base>` pour le test de toutes les URLs. Le contenu se modifie dans `src/data/*.py`
-(site, services, villes, situations, articles) — jamais dans les pages HTML générées.
-**Suivi** : projet Paperclip « Débarras Alsace — Site web » + une issue par phase/livrable
+**Statut** : 🏭 Site V3 en ligne — une seule page, statique, sans dépendance ni étape de
+build.
+**Site en ligne** : **https://amsclaw.github.io/debarras-alsace/** (GitHub Pages, dépôt
+public `amsClaw/debarras-alsace`)
 
-| Élément | Valeur |
-|---|---|
-| Paperclip — projet | `Débarras Alsace — Site web` (id `60575f2c-3117-4465-a926-6aa85abd49a9`, statut backlog) |
-| Paperclip — issues | 14 issues `DEB — …` (une par phase/livrable), toutes en **backlog** (parked, non assignées) |
-| Paperclip — workspace | `debarras-alsace local` (id `4cf7dce6-a01e-47e4-a225-d6c74e89b80e`), `effectiveLocalFolder` = ce dossier |
-| UI | http://127.0.0.1:3100 (mode local_trusted, pas de login) |
+## Ce qu'est le site
 
-⚠️ Les issues sont volontairement **non assignées** : le dev se fait en conversation (Ams valide ici).
-Assigner une issue à un agent passe son statut en `todo` et réveille un run autonome Paperclip — à ne
-faire que pour déléguer réellement un livrable.
+Une page d'accueil (`index.html`) : héros avec devis express (code postal + estimation
+de volume), zone d'intervention 67/68/75, présentation des prestations (maison,
+appartement, cave/grenier, professionnel, syndrome de Diogène), 3 étapes du processus,
+FAQ, barre d'appel/WhatsApp collante en mobile. Deux pages légales (`mentions-legales.html`,
+`confidentialite.html`) et une page d'erreur (`404.html`).
 
-## Documents
+Le formulaire de devis ne passe par aucun serveur : les réponses composent un message
+et ouvrent WhatsApp (`wa.me/…`) ou l'e-mail du visiteur, qui reste libre de l'envoyer.
 
-| Fichier | Contenu |
-|---|---|
-| `source-client/BRIEF_CODEX_SITE_DEBARRAS.md` | Brief client complet (21 sections) — source de vérité du besoin |
-| `source-client/MAQUETTE_DESKTOP.png` | Maquette desktop fournie par le client (770 × 2042) |
-| `docs/QUESTIONS_OUVERTES.md` | Points à trancher avec le client / Ams |
-| `docs/BENCHMARK.md` | Benchmark FR/US + stratégie SEO local |
-| `docs/PRD.md` | Spec fonctionnelle consolidée |
-| `docs/FRONT_SPEC.md` | Design system + gabarits de pages |
-| `docs/ARCHITECTURE.md` | Stack, arborescence, SEO technique |
-| `docs/BACKLOG.md` | Epics + stories + critères d'acceptation |
-| `docs/RECETTE.md` | Recette mobile iPhone + Core Web Vitals |
+## Où est la maquette
 
-## Ce que dit le brief (résumé)
+La maquette source (Claude Design) est conservée dans `docs/design/` :
+`Main.dc.html`, `Mobile.dc.html`, `Devis.dc.html`. Le cadrage complet est dans
+`docs/CADRAGE_V3.md`, la spec fonctionnelle dans `docs/FRONT_SPEC.md` et l'historique des
+histoires livrées dans `docs/HISTOIRES.md`.
 
-- **Positionnement** : débarras clé en main — tri, manutention, évacuation, valorisation, nettoyage.
-- **Zones** : Strasbourg, Eurométropole, Bas-Rhin, Alsace (Strasbourg, Illkirch, Ostwald,
-  Lingolsheim, Schiltigheim, Bischheim, Hœnheim, Geispolsheim, Haguenau, Molsheim, Obernai, Sélestat).
-- **Arborescence** : accueil, 13 pages services, 7 pages situations, ~12 pages villes,
-  tarifs, réalisations, avis, à propos, FAQ, blog, contact-devis.
-- **Conversion** : hero avec devis express + code postal, formulaire multi-étapes (7 étapes) avec
-  photos, simulateur de volume, barre sticky mobile (Appeler / WhatsApp / Devis), CTA permanents.
-- **SEO** : pages villes réellement uniques (pas de duplication), Schema.org LocalBusiness,
-  sitemap, robots, meta uniques, Open Graph, breadcrumbs, Core Web Vitals.
-- **Design** : vert profond + anthracite + blanc + beige clair + accent chaud (CTA orange),
-  photos réelles (équipe, camion, chantiers, avant/après), pas de banque d'images générique.
-- **Éditorial** : simple, rassurant, direct, humain, phrases courtes. Jamais de promesse de
-  « débarras gratuit », jamais de note Google inventée.
-- **Stack** : à trancher — Next.js/TS/Tailwind (option moderne) ou WordPress (autonomie client).
+## Comment modifier les coordonnées
 
-## Écarts / points de vigilance identifiés dès la lecture du brief
+Un seul fichier à toucher : `assets/config.js`. Il centralise le téléphone, le numéro
+WhatsApp et l'e-mail de contact ; le reste du site les lit via `window.DEBARRAS`. Les
+valeurs entre crochets (`[06 XX XX XX XX]`, `[contact@domaine.fr]`) sont des emplacements
+à remplacer par les vraies coordonnées de l'entreprise — jamais des données inventées.
 
-1. **Note Google** : la maquette affiche « 4,0/5 sur Google (150+ avis) » — la section 10 du brief
-   interdit d'inventer une note. À remplacer par la note réelle du client (ou masquer en attendant).
-2. **Téléphone de la maquette** : 04 13 24 56 78 / 06 12 34 56 78 = numéros fictifs.
-   Les vrais numéros (téléphone + WhatsApp) sont nécessaires avant mise en ligne.
-3. **Photos** : **20 visuels générés en local** (SDXL photoréaliste, `tools/generer_photos.py`) —
-   aucun banque d'images, aucun droit tiers. Ils sont explicitement présentés comme
-   « visuels d'illustration » sous les réalisations ; les photos réelles des chantiers doivent
-   les remplacer (dépôt dans `source-client/photos-hd/` + `bash tools/photos.sh`).
-4. **Volume de contenu** : ~13 services + 7 situations + 12 villes + 12 articles = ~45 pages de
-   contenu unique. C'est le vrai coût du projet (rédaction + SEO), pas le code.
-5. **Simulateur de volume** : intégré au socle dès la conception, mais sans prix ferme.
+Le domaine officiel (balise `<link rel="canonical">` de `index.html`) et les raisons
+sociale/adresse des pages légales (`mentions-legales.html`, `confidentialite.html`, entre
+crochets eux aussi) sont à compléter de la même façon une fois l'entreprise identifiée.
 
-## Décisions
+## Comment lancer les tests
+
+```
+npm test
+```
+
+Lance `node --test tests/*.test.mjs` : aucune dépendance à installer, seule la
+bibliothèque standard de Node est utilisée. Les tests vérifient le contenu des pages,
+le CSS, le JS du devis (composition du message, estimation de volume, zone
+d'intervention), le SEO (meta, Open Graph, JSON-LD, sitemap) et l'absence de liens
+internes cassés ou d'avis/notes inventés.
+
+## Ce qui attend l'entreprise
+
+La liste complète des décisions encore ouvertes (raison sociale, numéros réels, avis
+Google, photos, zone d'intervention exacte, mentions légales…) est dans
+`docs/QUESTIONS_OUVERTES.md`. Tant que ces réponses ne sont pas fournies, le site reste
+en ligne avec des emplacements `[...]` explicites à la place des données réelles — aucune
+donnée n'est inventée (nom, téléphone, avis, prix).
+
+## Historique
 
 | Date | Décision |
 |---|---|
-| 2026-09-13 | Création du projet + dossier git + projet Paperclip (issues par phase en backlog) |
-| 2026-09-26 | **Reprise par l'usine** : V3 une page (maquette Claude Design `docs/design/`), construite dans `v3/` par 8 cartes, bascule à la racine en H8 après recette d'Ams (seul checkpoint). Stack : statique sans build, tests `node --test`. Paperclip n'est plus le suivi : c'est le board `factory` de Hermes |
-| 2026-09-14 | **V2 épurée** : une page d'atterrissage + pages légales, publiée dans `/v2/` (la V1 reste à la racine pour comparaison). Décision client : un site de 49 pages est trop lourd pour une entreprise qui se lance |
-
-## V2 épurée (en ligne : https://amsclaw.github.io/debarras-alsace/v2/)
-
-Version courte, mobile d'abord, une seule page : héros + 4 prestations + 3 étapes + explication du prix
-+ zone d'intervention + demande de devis. Pas de menu à rallonge, pas de blog, pas de pages villes.
-
-- **Source** : `v2_src/style.css` (design), `v2_src/app.js` (apparition douce + formulaire express)
-  et `tools/build_v2.py` (générateur).
-- **Construire** : `python3 tools/build_v2.py` → écrit dans `v2/` (12 fichiers, ~390 Ko dont 6 photos).
-- **Formulaire sans backend** : les 4 champs composent un message, puis ouvrent WhatsApp
-  (`wa.me/…?text=…`) ou l'e-mail prérempli. Rien n'est envoyé depuis le site : le visiteur confirme.
-  Sans JavaScript, le bouton reste un lien `wa.me` standard.
-- **Bascule prévue** : quand la V2 est validée, `v2/` devient la racine et la V1 est supprimée
-  (voir la case « décision » à confirmer).
-- Les pages V2 sont en `noindex` tant que la comparaison est en cours.
+| 2026-09-13 | Création du projet |
+| 2026-09-26 | **Reprise par l'usine** : conception d'une V3 une page (maquette Claude Design), construite dans `v3/` par 8 histoires, puis bascule à la racine (H8) après recette d'Ams — V1 (multi-pages) et V2 (page intermédiaire) retirées. Stack : statique sans build, tests `node --test` |

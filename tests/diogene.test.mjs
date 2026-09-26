@@ -6,8 +6,8 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { lire, compter, RACINE } from "./outils.mjs";
 
-const page = lire("v3/index.html");
-const css = lire("v3/assets/style.css").replace(/\/\*[\s\S]*?\*\//g, "");
+const page = lire("index.html");
+const css = lire("assets/style.css").replace(/\/\*[\s\S]*?\*\//g, "");
 
 /** Extrait une section complète par son identifiant. */
 function section(id) {
@@ -55,7 +55,7 @@ test("colonne gauche : photo paresseuse dimensionnée et encadré « Vous êtes 
   assert.match(image, /loading="lazy"/);
   assert.match(image, /\bwidth="\d+"/, "largeur explicite attendue");
   assert.match(image, /\bheight="\d+"/, "hauteur explicite attendue");
-  assert.ok(existsSync(path.join(RACINE, "v3/assets/photos/service-diogene.jpg")), "photo présente dans le dépôt");
+  assert.ok(existsSync(path.join(RACINE, "assets/photos/service-diogene.jpg")), "photo présente dans le dépôt");
 
   assert.match(diogene, /<strong>Vous êtes un proche \?<\/strong>/);
   assert.match(diogene, /Évitez la confrontation : proposez votre aide plutôt que de l'imposer\./);
@@ -133,7 +133,7 @@ test("FAQ : sept questions, celle sur le syndrome de Diogène juste avant « Et 
 
 test("aucune affirmation invérifiable : ni certification, ni désinfection, ni chiffre inventé", () => {
   for (const motif of ["Certibiocide", "certifié", "désinfection", "équipe formée"]) {
-    assert.equal(compter(page, motif), 0, `v3/index.html ne doit pas contenir « ${motif} »`);
+    assert.equal(compter(page, motif), 0, `index.html ne doit pas contenir « ${motif} »`);
   }
 });
 

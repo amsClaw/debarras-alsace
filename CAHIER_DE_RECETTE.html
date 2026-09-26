@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cahier de recette — Débarras Alsace (bascule V3)</title>
+<style>
+  :root { color-scheme: light; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 24px 20px 80px;
+    line-height: 1.55;
+    color: #1b2a1f;
+    background: #fdfbf6;
+  }
+  h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  h2 { font-size: 1.2rem; margin-top: 2.2em; border-top: 2px solid #cfe0d0; padding-top: 0.8em; }
+  .chapeau { color: #4b5a4f; margin-top: 0; }
+  .encadre {
+    background: #eef4ea;
+    border: 1px solid #cfe0d0;
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 16px 0;
+  }
+  .encadre code { background: #fff; padding: 1px 5px; border-radius: 4px; }
+  ol.cas { padding-left: 0; list-style: none; counter-reset: cas; }
+  ol.cas li {
+    counter-increment: cas;
+    background: #fff;
+    border: 1px solid #e2e2d8;
+    border-radius: 10px;
+    padding: 14px 16px 14px 44px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  ol.cas li::before {
+    content: counter(cas);
+    position: absolute;
+    left: 12px;
+    top: 14px;
+    background: #3f6b45;
+    color: #fff;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cas b { display: block; margin-bottom: 4px; }
+  .cas .attendu { color: #3f6b45; }
+  .case-a-cocher { display: inline-flex; gap: 6px; align-items: center; margin-top: 6px; font-size: 0.95rem; color: #555; }
+  .case-a-cocher input { width: 16px; height: 16px; }
+  .validation {
+    background: #fff6e0;
+    border: 1px solid #e8d79a;
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-top: 12px;
+  }
+  .validation code {
+    display: block;
+    background: #1b2a1f;
+    color: #fff;
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-top: 8px;
+    font-size: 0.95rem;
+  }
+  ul.absent li { margin-bottom: 6px; }
+  footer { margin-top: 40px; font-size: 0.85rem; color: #777; }
+</style>
+</head>
+<body>
+
+<h1>Cahier de recette — Débarras Alsace</h1>
+<p class="chapeau">Bascule : le nouveau site (V3, une page) remplace l'ancien site en ligne.</p>
+
+<h2>1. Comment ouvrir le site</h2>
+<div class="encadre">
+  <p><b>Après fusion de cette carte</b>, le site est visible directement à cette adresse,
+  sans rien installer :</p>
+  <p style="font-size:1.05rem;"><a href="https://amsclaw.github.io/debarras-alsace/">https://amsclaw.github.io/debarras-alsace/</a></p>
+  <p>Ça marche sur téléphone comme sur ordinateur, dans n'importe quel navigateur
+  (Safari, Chrome…). Il n'y a pas de compte à créer ni d'identifiant à saisir : c'est un
+  site public.</p>
+  <p><b>Avant la fusion</b>, si tu veux regarder les fichiers en avance sur ton ordinateur :
+  ouvre le dossier du projet, double-clique sur le fichier <code>index.html</code> — il
+  s'ouvre dans ton navigateur habituel. (L'affichage est identique à la version en ligne ;
+  seule l'adresse dans la barre du navigateur change.)</p>
+</div>
+
+<h2>2. Ce qu'il y a à tester (12 cas)</h2>
+<ol class="cas">
+
+<li>
+<b>Ouvrir la page d'accueil</b>
+Va sur <code>https://amsclaw.github.io/debarras-alsace/</code>.
+<span class="attendu">Résultat attendu : la page se charge, tu vois en haut « Débarras Alsace »,
+un gros bouton de devis avec un champ pour le code postal, et une photo.</span>
+<div class="case-a-cocher"><input type="checkbox"> vu et conforme</div>
+</li>
+
+<li>
+<b>Demander un devis express (accueil)</b>
+Dans le bloc d'en-tête, saisis un code postal alsacien (ex. <code>67000</code>), choisis un
+type de bien, puis clique sur le bouton d'envoi du devis express.
+<span class="attendu">Résultat attendu : WhatsApp s'ouvre (ou une page de contact WhatsApp)
+avec un message pré-rempli reprenant tes informations. Rien n'est envoyé automatiquement :
+c'est toi qui dois appuyer sur « Envoyer » dans WhatsApp.</span>
+<div class="case-a-cocher"><input type="checkbox"> vu et conforme</div>
+</li>
+
+<li>
+<b>Tester une zone hors secteur</b>
+Saisis un code postal qui n'est ni du Bas-Rhin (67), ni du Haut-Rhin (68), ni de Paris (75)
+— par exemple <code>13000</code> (Marseille).
+<span class="attendu">Résultat attendu : un message indique que la zone n'est pas couverte,
+sans bloquer le reste de la page.</span>
+<div class="case-a-cocher"><input type="checkbox"> vu et conforme</div>
+</li>
+
+<li>
+<b>Utiliser l'estimateur de volume (prestation « Maison »)</b>
+Descends jusqu'à la section des prestations, ouvre l'estimateur de volume pour un débarras
+de type maison (nombre de pièces, niveau d'encombrement).
+<span class="attendu">Résultat attendu : une estimation de volume (en m³ ou équivalent)
+s'affiche selon tes réponses, sans prix ferme inventé.</span>
+<div class="case-a-cocher"><input type="checkbox"> vu et conforme</div>
+</li>
+
+<li>
+<b>Lire la section « Syndrome de Diogène »</b>
+Cherche, sous les prestations, la carte « Diogène &amp; logement très encombré », puis clique
+sur son lien « Notre approche, ci-dessous ».
+<span class="attendu">Résultat attendu : tu arrives sur une section dédiée qui explique
+l'intervention (discrétion, absence de jugement, accompagnement au rythme du client).</span>
+<div class="case-a-cocher"><input type="checkbox"> vu et conforme</div>
+</li>
+
+<li>
+<b>Parcourir la FAQ (7 questions)</b>
+Descends jusqu'à la section Questions fréquentes.
+<span class="attendu">Résultat attendu : 7 questions/réponses sont affichées, dont une sur
+le syndrome de Diogène.</span>
+<div class="case-a-cocher"><input type="checkbox"> vu et conforme</div>
+</li>
+
+<li>
+<b>Vérifier la barre du bas sur téléphone</b>
+Ouvre le site sur un téléphone (ou réduis la largeur de la fenêtre du navigateur sur
+ordinateur).
+<span class="attendu">Résultat attendu : une barre reste collée en bas de l'écran avec des
+boutons Appeler / WhatsApp / Devis, toujours visible en faisant défiler la page.</span>
+<div class="case-a-cocher"><input type="checkbox"> vu et conforme</div>
+</li>
+
+<li>
+<b>Faire un devis complet en 3 étapes (mobile)</b>
+Toujours en affichage mobile, clique sur « Devis » dans la barre du bas et remplis les
+3 étapes proposées (type de bien, situation, coordonnées).
+<span class="attendu">Résultat attendu : les 3 étapes s'enchaînent sans bug, et à la fin un
+message pré-rempli s'ouvre vers WhatsApp ou l'e-mail, comme au cas n°2.</span>
+<div class="case-a-cocher"><input type="checkbox"> vu et conforme</div>
+</li>
+
+<li>
+<b>Ouvrir les pages légales</b>
+En bas de page (pied de page), clique sur « Mentions légales » puis reviens en arrière et
+clique sur « Politique de confidentialité ».
+<span class="attendu">Résultat attendu : les deux pages s'ouvrent, avec le même habillage
+que l'accueil ; certains champs (raison sociale, adresse, e-mail) apparaissent entre
+crochets <code>[...]</code> — c'est normal, voir section 3 ci-dessous.</span>
+<div class="case-a-cocher"><input type="checkbox"> vu et conforme</div>
+</li>
+
+<li>
+<b>Chercher un avis client ou un prix affiché</b>
+Relis l'ensemble de la page d'accueil à la recherche d'une note (ex. « 4,5/5 »), d'un
+nombre d'avis, ou d'un tarif chiffré.
+<span class="attendu">Résultat attendu : tu n'en trouves aucun — le site n'invente ni avis
+ni prix tant que l'entreprise ne les a pas fournis.</span>
+<div class="case-a-cocher"><input type="checkbox"> vu et conforme</div>
+</li>
+
+<li>
+<b>Repérer les emplacements à remplacer</b>
+Cherche un numéro de téléphone ou une adresse e-mail affichés sur le site (en-tête, bouton
+d'appel, pied de page).
+<span class="attendu">Résultat attendu : ils apparaissent sous forme d'emplacement entre
+crochets, par exemple <code>[06 XX XX XX XX]</code> ou <code>[contact@domaine.fr]</code> —
+ce sont des réservations de place, pas de vrais contacts, tant que l'entreprise n'a pas
+donné les siens.</span>
+<div class="case-a-cocher"><input type="checkbox"> vu et conforme</div>
+</li>
+
+<li>
+<b>Vérifier qu'une page introuvable est bien gérée</b>
+Va sur une adresse qui n'existe pas, par exemple
+<code>https://amsclaw.github.io/debarras-alsace/n-importe-quoi</code>.
+<span class="attendu">Résultat attendu : une page « Cette page n'existe pas. » s'affiche,
+avec un bouton pour revenir à l'accueil.</span>
+<div class="case-a-cocher"><input type="checkbox"> vu et conforme</div>
+</li>
+
+</ol>
+
+<h2>3. Ce qui est volontairement absent (ce n'est pas un défaut)</h2>
+<ul class="absent">
+  <li><b>Pas de vrai numéro de téléphone ni e-mail</b> : l'entreprise n'a pas encore fourni
+  ses coordonnées réelles. Le site affiche des emplacements <code>[...]</code> à la place,
+  jamais un numéro inventé.</li>
+  <li><b>Pas d'avis client ni de note affichée</b> : sans avis réels fournis par
+  l'entreprise, mieux vaut ne rien afficher que d'inventer une note ou un nombre d'avis.</li>
+  <li><b>Pas de prix chiffré</b> : seul un estimateur de volume indicatif est proposé, sans
+  tarif ferme (voir <code>docs/QUESTIONS_OUVERTES.md</code> pour la tarification à
+  trancher).</li>
+  <li><b>Pas de pages « villes » ni de blog</b> : la V3 est volontairement une seule page,
+  plus légère et plus simple à maintenir que l'ancien site à 49 pages. C'est un choix
+  assumé, pas un oubli.</li>
+  <li><b>Raison sociale et adresse des mentions légales entre crochets</b> : en attente de
+  l'identité juridique exacte de l'entreprise.</li>
+</ul>
+
+<h2>4. Comment répondre</h2>
+<div class="validation">
+  <p>Si tous les cas ci-dessus sont conformes, réponds avec la phrase exacte :</p>
+  <code>je valide H8 du projet debarras-alsace</code>
+  <p style="margin-top:14px;">Si un cas pose problème, indique simplement son numéro et ce
+  que tu as constaté, par exemple : « le cas 2 ne marche pas, WhatsApp ne s'ouvre pas ».</p>
+</div>
+
+<footer>Cahier de recette généré pour la carte H8 (bascule V3). Document autonome, sans
+ressource externe : il peut être ouvert hors ligne.</footer>
+
+</body>
+</html>

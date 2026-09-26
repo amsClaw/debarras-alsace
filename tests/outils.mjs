@@ -10,7 +10,7 @@ export const RACINE = path.resolve(path.dirname(fileURLToPath(import.meta.url)),
 
 /**
  * Renvoie le texte d'un fichier, désigné par son chemin relatif à la racine du dépôt.
- * @param {string} chemin ex. "v3/index.html"
+ * @param {string} chemin ex. "index.html"
  * @returns {string}
  */
 export function lire(chemin) {
