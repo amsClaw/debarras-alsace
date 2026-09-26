@@ -5,9 +5,9 @@ import { readdirSync, statSync } from "node:fs";
 import path from "node:path";
 import { lire, RACINE } from "./outils.mjs";
 
-const page = lire("v3/index.html");
-const config = lire("v3/assets/config.js");
-const htmlPages = readdirSync(path.join(RACINE, "v3")).filter((nom) => nom.endsWith(".html"));
+const page = lire("index.html");
+const config = lire("assets/config.js");
+const htmlPages = readdirSync(RACINE).filter((nom) => nom.endsWith(".html"));
 
 function meta(propriete) {
   return page.match(new RegExp(`<meta\\s+property="${propriete}"\\s+content="([^"]+)"`))?.[1];
@@ -64,15 +64,15 @@ test("images : chargement différé, dimensions explicites et héros prioritaire
 });
 
 test("poids cumulé des photos V3 inférieur ou égal à 1,5 Mo", () => {
-  const dossier = path.join(RACINE, "v3/assets/photos");
+  const dossier = path.join(RACINE, "assets/photos");
   const taille = readdirSync(dossier).reduce((total, nom) => total + statSync(path.join(dossier, nom)).size, 0);
   assert.ok(taille <= 1_500_000, `poids constaté : ${taille} octets`);
 });
 
 test("pages légales adaptées au style V3 et page 404 avec retour accueil", () => {
-  const mentions = lire("v3/mentions-legales.html");
-  const confidentialite = lire("v3/confidentialite.html");
-  const erreur = lire("v3/404.html");
+  const mentions = lire("mentions-legales.html");
+  const confidentialite = lire("confidentialite.html");
+  const erreur = lire("404.html");
   for (const legal of [mentions, confidentialite]) {
     assert.match(legal, /class="entete"/);
     assert.match(legal, /class="pied"/);
@@ -87,8 +87,8 @@ test("pages légales adaptées au style V3 et page 404 avec retour accueil", () 
 
 test("tous les liens internes des pages HTML V3 pointent vers un fichier ou une ancre existante", () => {
   for (const nom of htmlPages) {
-    const html = lire(`v3/${nom}`);
-    const source = path.join(RACINE, "v3", nom);
+    const html = lire(`${nom}`);
+    const source = path.join(RACINE, nom);
     const ids = new Set([...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]));
     const ancres = new Set([...html.matchAll(/<a\b[^>]*name="([^"]+)"/g)].map((match) => match[1]));
     for (const [, href] of html.matchAll(/<a\b[^>]*href="([^"]*)"/g)) {
@@ -109,4 +109,25 @@ test("tous les liens internes des pages HTML V3 pointent vers un fichier ou une 
       }
     }
   }
+});
+
+test("aucun fichier HTML hors des quatre pages du site et de docs/design/", () => {
+  const attendues = new Set(["index.html", "mentions-legales.html", "confidentialite.html", "404.html"]);
+  const trouvees = [];
+  (function parcourir(dossier, relatif) {
+    for (const entree of readdirSync(dossier, { withFileTypes: true })) {
+      if (relatif === "" && [".git", "node_modules"].includes(entree.name)) continue;
+      const chemin = path.join(dossier, entree.name);
+      const cheminRelatif = relatif ? `${relatif}/${entree.name}` : entree.name;
+      if (entree.isDirectory()) {
+        if (cheminRelatif === "docs/design") continue;
+        parcourir(chemin, cheminRelatif);
+      } else if (entree.name.endsWith(".html")) {
+        trouvees.push(cheminRelatif);
+      }
+    }
+  })(RACINE, "");
+
+  const inattendues = trouvees.filter((chemin) => !attendues.has(chemin));
+  assert.deepEqual(inattendues, [], `fichiers HTML inattendus : ${inattendues.join(", ")}`);
 });

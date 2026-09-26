@@ -23,7 +23,7 @@ function texte(chemin) {
 
 /** Feuille de style sans ses commentaires (pour ne pas tester du texte commenté). */
 function cssUtile() {
-  return texte("v3/assets/style.css").replace(/\/\*[\s\S]*?\*\//g, "");
+  return texte("assets/style.css").replace(/\/\*[\s\S]*?\*\//g, "");
 }
 
 test("package.json : privé, module ES, script de test, aucune dépendance", () => {
@@ -48,7 +48,7 @@ test("tests/outils.mjs : lire() lit depuis la racine du dépôt, compter() compt
   assert.equal(typeof outils.lire, "function", "lire() doit être exporté");
   assert.equal(typeof outils.compter, "function", "compter() doit être exporté");
 
-  assert.match(outils.lire("v3/index.html"), /<html lang="fr">/);
+  assert.match(outils.lire("index.html"), /<html lang="fr">/);
   assert.match(outils.lire("package.json"), /"private": true/);
 
   assert.equal(outils.compter("ababab", "ab"), 3, "chaîne répétée");
@@ -58,8 +58,8 @@ test("tests/outils.mjs : lire() lit depuis la racine du dépôt, compter() compt
   assert.equal(outils.compter("x1y2z3", /\d/g), 3, "motif avec drapeau /g");
 });
 
-test("v3/index.html : en-tête de document complet et polices de la maquette", () => {
-  const page = texte("v3/index.html");
+test("index.html : en-tête de document complet et polices de la maquette", () => {
+  const page = texte("index.html");
 
   assert.match(page, /^<!doctype html>/i, "la page commence par un doctype");
   assert.match(page, /<html lang="fr">/, "la page est déclarée en français");
@@ -92,8 +92,8 @@ test("v3/index.html : en-tête de document complet et polices de la maquette", (
   );
 });
 
-test("v3/index.html : feuille de style puis config.js (defer) puis site.js (module)", () => {
-  const page = texte("v3/index.html");
+test("index.html : feuille de style puis config.js (defer) puis site.js (module)", () => {
+  const page = texte("index.html");
 
   assert.match(page, /<link rel="stylesheet" href="assets\/style\.css">/, "la feuille de style est liée");
 
@@ -120,7 +120,7 @@ test("v3/index.html : feuille de style puis config.js (defer) puis site.js (modu
   );
 });
 
-test("v3/assets/style.css : les jetons du « Système visuel » sont sur :root", () => {
+test("assets/style.css : les jetons du « Système visuel » sont sur :root", () => {
   const racine = cssUtile().match(/:root\{([\s\S]*?)\}/);
   assert.ok(racine, "un bloc :root est attendu");
 
@@ -155,7 +155,7 @@ test("v3/assets/style.css : les jetons du « Système visuel » sont sur :root",
   }
 });
 
-test("v3/assets/style.css : page en Public Sans sur fond papier, conteneur 1200 px responsive", () => {
+test("assets/style.css : page en Public Sans sur fond papier, conteneur 1200 px responsive", () => {
   const feuille = cssUtile();
 
   const corps = feuille.match(/body\{[^}]*\}/);
@@ -179,8 +179,8 @@ test("v3/assets/style.css : page en Public Sans sur fond papier, conteneur 1200 
   );
 });
 
-test("v3/assets/config.js : les coordonnées sont centralisées dans window.DEBARRAS", () => {
-  const source = texte("v3/assets/config.js");
+test("assets/config.js : les coordonnées sont centralisées dans window.DEBARRAS", () => {
+  const source = texte("assets/config.js");
 
   assert.match(source, /window\.DEBARRAS\s*=/, "window.DEBARRAS doit être défini");
   assert.match(source, /seul endroit/i, "un commentaire doit dire que c'est le seul endroit à modifier");
@@ -195,8 +195,8 @@ test("v3/assets/config.js : les coordonnées sont centralisées dans window.DEBA
   });
 });
 
-test("v3/index.html : en-tête, un seul h1 dans <main>, pied de page complet", () => {
-  const page = texte("v3/index.html");
+test("index.html : en-tête, un seul h1 dans <main>, pied de page complet", () => {
+  const page = texte("index.html");
 
   const entete = page.match(/<header[\s\S]*?<\/header>/);
   assert.ok(entete, "un <header> est attendu");
@@ -222,26 +222,29 @@ test("v3/index.html : en-tête, un seul h1 dans <main>, pied de page complet", (
   );
 });
 
-test("v3/ : aucune fausse preuve sociale (note, nombre d'avis, étoiles)", () => {
+test("site : aucune fausse preuve sociale (note, nombre d'avis, étoiles)", () => {
   // Les motifs sont assemblés à l'exécution : les mots recherchés n'apparaissent
-  // donc nulle part dans le dépôt, et un grep de contrôle — sur v3/ ou sur tout le
-  // dépôt — reste exploitable au lieu de tomber sur ce fichier de test.
+  // donc nulle part dans le dépôt, et un grep de contrôle — sur le site ou sur
+  // tout le dépôt — reste exploitable au lieu de tomber sur ce fichier de test.
   const motifsInterdits = [
     ...["4,0", "4,9"].map((note) => note + "/5"),
     "150" + "+ avis",
     "étoi" + "les"
   ];
 
+  const dossiersExclus = new Set([".git", "docs", "source-client", "tests", "node_modules", "tools"]);
+  const fichiersExclus = new Set(["README.md"]);
   const fichiers = [];
   (function parcourir(dossier) {
     for (const entree of readdirSync(dossier, { withFileTypes: true })) {
+      if (dossier === RACINE && (dossiersExclus.has(entree.name) || fichiersExclus.has(entree.name))) continue;
       const chemin = path.join(dossier, entree.name);
       if (entree.isDirectory()) parcourir(chemin);
       else if (/\.(html|css|js|mjs|json|svg|txt|md)$/.test(entree.name)) fichiers.push(chemin);
     }
-  })(path.join(RACINE, "v3"));
+  })(RACINE);
 
-  assert.ok(fichiers.length > 0, "v3/ doit contenir au moins un fichier texte à contrôler");
+  assert.ok(fichiers.length > 0, "le site doit contenir au moins un fichier texte à contrôler");
 
   for (const fichier of fichiers) {
     const contenu = readFileSync(fichier, "utf8");

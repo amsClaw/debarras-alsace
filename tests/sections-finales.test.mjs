@@ -5,8 +5,8 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { lire, compter, RACINE } from "./outils.mjs";
 
-const page = lire("v3/index.html");
-const css = lire("v3/assets/style.css").replace(/\/\*[\s\S]*?\*\//g, "");
+const page = lire("index.html");
+const css = lire("assets/style.css").replace(/\/\*[\s\S]*?\*\//g, "");
 
 function section(id) {
   return page.match(new RegExp(`<section\\b(?=[^>]*\\bid="${id}")[^>]*>[\\s\\S]*?<\\/section>`))?.[0];
@@ -23,7 +23,7 @@ test("réalisations : trois paires avant/après avec les six photos locales", ()
     "real-appart-apres.jpg", "real-cave-avant.jpg", "real-cave-apres.jpg"
   ]) {
     assert.ok(realisations.includes(`assets/photos/${image}`), `photo attendue : ${image}`);
-    assert.ok(existsSync(path.join(RACINE, "v3/assets/photos", image)), `fichier présent : ${image}`);
+    assert.ok(existsSync(path.join(RACINE, "assets/photos", image)), `fichier présent : ${image}`);
   }
   for (const titre of ["Maison familiale", "Appartement", "Cave"]) assert.ok(realisations.includes(titre));
   assert.equal(compter(realisations, /\[commune\] · \[volume\]/g), 3);
