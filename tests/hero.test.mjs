@@ -87,7 +87,7 @@ test("heros : photo avec attributs et carte devis qui la chevauche", () => {
 test("formulaire devis : 6 choix exclusifs avec labels", () => {
   const formulaire = page.match(/<form id="devis"[\s\S]*?<\/form>/)[0];
 
-  assert.equal(compter(formulaire, /type="radio"/), 6, "6 choix de type");
+  assert.equal(compter(formulaire, /name="type"[^>]*type="radio"|type="radio" name="type"/), 6, "6 choix de type");
   assert.equal(compter(formulaire, /name="type"/), 6, "tous partagent le meme name (exclusifs)");
 
   for (const choix of ["Maison", "Appartement", "Cave · grenier", "Local pro", "Très encombré", "Autre"]) {

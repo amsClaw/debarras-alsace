@@ -5,14 +5,15 @@
 // wa.me ou mailto. Les champs vides ne sont pas insérés dans le message.
 
 /**
- * @param {{type?: string, codePostal?: string, telephone?: string}} champs
+ * @param {{type?: string, codePostal?: string, acces?: string, telephone?: string}} champs
  * @returns {string}
  */
-export function composerMessage({ type = "", codePostal = "", telephone = "" } = {}) {
+export function composerMessage({ type = "", codePostal = "", acces = "", telephone = "" } = {}) {
   const lignes = ["Bonjour, je souhaite un devis de débarras."];
 
   if (type.trim()) lignes.push(`Type : ${type.trim()}`);
   if (codePostal.trim()) lignes.push(`Code postal : ${codePostal.trim()}`);
+  if (acces.trim()) lignes.push(`Accès : ${acces.trim()}`);
   if (telephone.trim()) lignes.push(`Téléphone : ${telephone.trim()}`);
 
   return lignes.join("\n");
