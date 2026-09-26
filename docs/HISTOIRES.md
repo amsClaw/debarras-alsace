@@ -177,8 +177,9 @@ Règles communes à toutes les histoires :
 2. Supprimés : toutes les pages générées de la V1 (`a-propos/`, `avis-clients/`, `blog/`, `contact-devis/`, `faq/`, `mentions-legales/`, `politique-confidentialite/`, `realisations/`, `services/`, `situations/`, `tarifs/`, `villes/`, l'ancien `assets/`), `src/`, `v2/`, `v2_src/`, `tools/build.py`, `tools/build_v2.py`, `tools/smoke.py`. **Conservés** : `docs/`, `source-client/`, `tools/generer_photos.py`, `tools/photos.sh`.
 3. `sitemap.xml` ne liste que l'accueil et les deux pages légales ; `robots.txt` le référence ; plus aucune balise `noindex` sur l'accueil.
 4. `README.md` réécrit : ce qu'est le site, où est la maquette (`docs/design/`, lien du canevas), comment modifier les coordonnées (`assets/config.js`), comment lancer les tests, la liste de ce qui attend l'entreprise (`docs/QUESTIONS_OUVERTES.md`).
-5. Tests : aucun fichier HTML hors `index.html`, `mentions-legales.html`, `confidentialite.html`, `404.html` et `docs/design/` ; aucun lien interne cassé.
-6. `npm test` vert.
+5. `docs/CAHIER_DE_RECETTE.md` (exigé par le verrou de fusion pour un checkpoint) : écrit pour Ams, non technique — comment ouvrir le site, 10 cas à tester (action → résultat attendu), ce qui est volontairement absent, phrase de validation.
+6. Tests : aucun fichier HTML hors `index.html`, `mentions-legales.html`, `confidentialite.html`, `404.html` et `docs/design/` ; aucun lien interne cassé.
+7. `npm test` vert.
 
 **Ne touche pas :** `docs/`, `source-client/`, `.factory.json`.
 
