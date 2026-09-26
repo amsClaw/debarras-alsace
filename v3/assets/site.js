@@ -6,6 +6,7 @@
 // vers WhatsApp par défaut, avec un lien e-mail alternatif.
 
 import { composerMessage } from "./message.js";
+import { verifierZone } from "./zone.js";
 
 // Les liens tel: et wa.me ont déjà un lien fonctionnel dans le HTML (mêmes
 // valeurs que config.js) : cette mise à jour ne fait que refléter une éventuelle
@@ -21,6 +22,15 @@ if (config) {
 }
 
 const form = document.getElementById("devis");
+
+const champZone = document.getElementById("zone-code-postal");
+const reponseZone = document.getElementById("zone-reponse");
+if (champZone && reponseZone) {
+  champZone.addEventListener("input", () => {
+    champZone.value = champZone.value.replace(/\D/g, "").slice(0, 5);
+    reponseZone.textContent = verifierZone(champZone.value);
+  });
+}
 
 if (form) {
   const boutonWhatsapp = form.querySelector(".devis-envoyer");

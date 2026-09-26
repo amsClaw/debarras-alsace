@@ -102,6 +102,97 @@
       </form>
     </div>
   </div>
+  <section id="zone" class="zone-verification conteneur" aria-labelledby="zone-titre">
+    <div class="zone-introduction">
+      <span class="zone-icone" aria-hidden="true">⌖</span>
+      <div>
+        <h2 id="zone-titre">On vient chez vous ?</h2>
+        <p>Tapez votre code postal, la réponse est immédiate.</p>
+      </div>
+    </div>
+    <label class="zone-champ" for="zone-code-postal">
+      <span class="visuellement-cache">Votre code postal</span>
+      <input id="zone-code-postal" aria-label="Votre code postal" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="ex. 67400">
+    </label>
+    <p id="zone-reponse" class="zone-reponse" aria-live="polite">Bas-Rhin (67) et Haut-Rhin (68) : oui, nous intervenons.</p>
+  </section>
+
+  <section id="prestations" class="prestations conteneur" aria-labelledby="prestations-titre">
+    <div class="prestations-entete">
+      <div>
+        <span class="sur-titre">Ce que nous débarrassons</span>
+        <h2 id="prestations-titre">Du studio au local professionnel, avec ou sans ascenseur.</h2>
+      </div>
+      <p>Une seule équipe pour vider, trier, évacuer et nettoyer. Vous n'avez rien à porter ni à transporter.</p>
+    </div>
+    <div class="prestations-grille">
+      <article class="prestation-carte">
+        <img src="assets/photos/service-maison.jpg" loading="lazy" alt="Pièce de maison meublée avant son débarras">
+        <div class="prestation-contenu">
+          <h3>Maison &amp; appartement</h3>
+          <p>Logement complet ou quelques pièces : meubles, vaisselle, textiles, électroménager.</p>
+          <span>Succession, vente, déménagement</span>
+        </div>
+      </article>
+      <article class="prestation-carte">
+        <img src="assets/photos/service-cave.jpg" loading="lazy" alt="Cave encombrée de cartons et d'objets à évacuer">
+        <div class="prestation-contenu">
+          <h3>Cave, grenier &amp; garage</h3>
+          <p>Encombrants, ferraille, cartons et objets accumulés depuis des années.</p>
+          <span>Accès difficiles : on gère</span>
+        </div>
+      </article>
+      <article class="prestation-carte">
+        <img src="assets/photos/service-pro.jpg" loading="lazy" alt="Mobilier et équipements d'un bureau professionnel">
+        <div class="prestation-contenu">
+          <h3>Bureaux &amp; locaux</h3>
+          <p>Mobilier, archives, informatique : fin de bail ou remise à neuf.</p>
+          <span>Hors horaires d’ouverture</span>
+        </div>
+      </article>
+      <article class="prestation-carte">
+        <img src="assets/photos/service-diogene.jpg" loading="lazy" alt="Logement très encombré nécessitant un débarras discret">
+        <div class="prestation-contenu">
+          <h3>Logement très encombré</h3>
+          <p>Accumulation importante : intervention discrète, sans jugement.</p>
+          <span>Coordination avec les proches</span>
+        </div>
+      </article>
+    </div>
+    <div class="prestations-aussi" aria-label="Autres prestations">
+      <span>Aussi :</span>
+      <span>Succession &amp; après décès</span>
+      <span>Vente immobilière</span>
+      <span>Déménagement</span>
+      <span>Nettoyage après débarras</span>
+      <span>Encombrants</span>
+    </div>
+  </section>
+
+  <section id="deroule" class="deroule conteneur" aria-labelledby="deroule-titre">
+    <div class="deroule-entete">
+      <span class="sur-titre">Comment ça se passe</span>
+      <h2 id="deroule-titre">Trois étapes, aucune surprise.</h2>
+    </div>
+    <ol class="deroule-etapes">
+      <li>
+        <span class="deroule-numero">01</span>
+        <h3>Vous nous décrivez</h3>
+        <p>Un appel, ou deux-trois photos par WhatsApp. Deux minutes suffisent pour se faire une idée juste.</p>
+      </li>
+      <li>
+        <span class="deroule-numero">02</span>
+        <h3>Prix ferme sous 24 h</h3>
+        <p>Gratuit et sans engagement. Le montant annoncé ne bouge pas le jour de l’intervention.</p>
+      </li>
+      <li>
+        <span class="deroule-numero">03</span>
+        <h3>On s’occupe de tout</h3>
+        <p>Évacuation, tri, valorisation des objets et nettoyage. Vous n’avez rien à porter.</p>
+      </li>
+    </ol>
+    <p class="deroule-garantie">Aucune avance à verser : vous payez quand la pièce est vide et propre.</p>
+  </section>
 </main>
 
 <footer class="pied">
