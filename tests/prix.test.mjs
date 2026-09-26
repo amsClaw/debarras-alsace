@@ -5,8 +5,8 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { lire, compter, RACINE } from "./outils.mjs";
 
-const { estimer, VOLUMES } = await import(pathToFileURL(path.join(RACINE, "v3", "assets", "volume.js")));
-const page = lire("v3/index.html");
+const { estimer, VOLUMES } = await import(pathToFileURL(path.join(RACINE, "assets", "volume.js")));
+const page = lire("index.html");
 
 test("estimer : les six choix renvoient les valeurs de la maquette", () => {
   assert.deepEqual(estimer("cave"), { label: "Cave / garage", m3: "3–8 m³", camions: "1", duree: "2–3 h" });
@@ -30,7 +30,7 @@ test("prix : section en deux colonnes sur fond vert forêt avec les trois cas", 
   for (const cas of ["Indemnisé", "Gratuit", "Payant"]) {
     assert.ok(section.includes(`<strong>${cas}</strong>`), `cas attendu : ${cas}`);
   }
-  const css = lire("v3/assets/style.css").replace(/\/\*[\s\S]*?\*\//g, "");
+  const css = lire("assets/style.css").replace(/\/\*[\s\S]*?\*\//g, "");
   assert.match(css, /\.prix\{[^}]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
   assert.match(css, /\.prix\{[^}]*border-radius:32px/);
   assert.match(css, /\.prix\{[^}]*background:var\(--vert\)/);
@@ -68,7 +68,7 @@ test("estimateur : fourchette de prix en emplacement, bouton vers #devis, aucun 
 });
 
 test("estimateur : site.js met à jour les tuiles au choix, sans dupliquer les données", () => {
-  const js = lire("v3/assets/site.js");
+  const js = lire("assets/site.js");
   assert.match(js, /import \{ estimer \} from ".\/volume.js"/);
   assert.match(js, /estimer\(choix\)/);
 });

@@ -9,10 +9,10 @@ import { lire, compter, RACINE } from "./outils.mjs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
-const { composerMessage } = await import(pathToFileURL(path.join(RACINE, "v3", "assets", "message.js")));
+const { composerMessage } = await import(pathToFileURL(path.join(RACINE, "assets", "message.js")));
 
-const page = lire("v3/index.html");
-const config = lire("v3/assets/config.js");
+const page = lire("index.html");
+const config = lire("assets/config.js");
 
 function extraire(motif) {
   const correspondance = config.match(motif);
@@ -36,7 +36,7 @@ test("en-tete : logo, navigation par ancres, telephone, bouton devis", () => {
 });
 
 test("en-tete : navigation et telephone masques sous 900 px (pas de menu burger)", () => {
-  const feuille = lire("v3/assets/style.css").replace(/\/\*[\s\S]*?\*\//g, "");
+  const feuille = lire("assets/style.css").replace(/\/\*[\s\S]*?\*\//g, "");
 
   assert.match(
     feuille,
@@ -117,7 +117,7 @@ test("formulaire devis : code postal et telephone avec label, mention photos, bo
   assert.match(lienMail[0], /href="mailto:/, "le lien e-mail doit rester fonctionnel sans JavaScript");
 });
 
-test("v3/assets/message.js : composerMessage() est une fonction pure exportee", () => {
+test("assets/message.js : composerMessage() est une fonction pure exportee", () => {
   assert.equal(typeof composerMessage, "function", "composerMessage doit etre exporte");
 
   assert.equal(
@@ -135,7 +135,7 @@ test("v3/assets/message.js : composerMessage() est une fonction pure exportee", 
   assert.equal(composerMessage({}), "Bonjour, je souhaite un devis de débarras.", "aucun champ ne fait planter la fonction");
 });
 
-test("v3/assets/message.js : les caracteres speciaux sont encodes une fois passes en URL", () => {
+test("assets/message.js : les caracteres speciaux sont encodes une fois passes en URL", () => {
   const message = composerMessage({ type: "Cave & grenier", codePostal: "67000" });
   const encode = encodeURIComponent(message);
 
@@ -144,8 +144,8 @@ test("v3/assets/message.js : les caracteres speciaux sont encodes une fois passe
   assert.match(encode, /%0A/, "le retour a la ligne doit etre encode en %0A");
 });
 
-test("v3/assets/site.js : compose le message et ouvre wa.me / mailto avec les coordonnees de config.js", () => {
-  const source = lire("v3/assets/site.js");
+test("assets/site.js : compose le message et ouvre wa.me / mailto avec les coordonnees de config.js", () => {
+  const source = lire("assets/site.js");
 
   assert.match(source, /import\s*\{\s*composerMessage\s*\}\s*from\s*"\.\/message\.js"/, "site.js doit importer composerMessage depuis message.js");
   assert.match(source, /window\.DEBARRAS/, "les coordonnees doivent venir de window.DEBARRAS");
