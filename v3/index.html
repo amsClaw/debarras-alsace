@@ -23,13 +23,84 @@
         <span class="marque-zone">Strasbourg &amp; toute l'Alsace</span>
       </span>
     </a>
+    <nav class="entete-nav" aria-label="Sections de la page">
+      <a href="#prestations">Prestations</a>
+      <a href="#deroule">Comment ça marche</a>
+      <a href="#prix">Prix</a>
+      <a href="#realisations">Réalisations</a>
+      <a href="#zone">Zone</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="entete-tel lien-tel" href="tel:+33000000000">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+      [06 XX XX XX XX]
+    </a>
+    <a class="bouton bouton-brique entete-devis" href="#devis">Devis gratuit</a>
   </div>
 </header>
 
 <main id="contenu">
-  <div class="conteneur">
-    <!-- Titre provisoire du socle : le héros de la maquette arrive avec l'histoire 2. -->
-    <h1 class="titre-socle">Débarras complet à Strasbourg et dans toute l'Alsace</h1>
+  <div class="conteneur hero">
+    <div class="hero-texte">
+      <span class="pastille">Entreprise locale · Strasbourg, Eurométropole, Bas-Rhin</span>
+      <h1 class="hero-titre">Vous montrez ce qui doit partir. <em>On s'occupe du reste.</em></h1>
+      <p class="hero-paragraphe">Maison, appartement, cave, succession ou local professionnel : on vide, on trie, on valorise ce qui peut l'être et on laisse la pièce propre. Prix ferme annoncé avant l'intervention.</p>
+      <div class="hero-boutons">
+        <a class="bouton bouton-brique" href="#devis">
+          Obtenir mon devis gratuit
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a class="bouton bouton-contour lien-whatsapp" href="https://wa.me/33000000000">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"/></svg>
+          Photos par WhatsApp
+        </a>
+      </div>
+      <ul class="reassurances">
+        <li>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span><strong>Devis sous 24 h</strong><br>gratuit, sans engagement</span>
+        </li>
+        <li>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span><strong>Prix ferme</strong><br>il ne bouge pas sur place</span>
+        </li>
+        <li>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6"/></svg>
+          <span><strong>Tri &amp; réemploi</strong><br>un maximum sauvé de la benne</span>
+        </li>
+      </ul>
+    </div>
+    <div class="hero-visuel">
+      <img class="hero-photo" src="assets/photos/hero.jpg" width="900" height="900" alt="Deux déménageurs en tenue verte portent des cartons vers un camion de débarras">
+      <form id="devis" class="carte-devis">
+        <div class="carte-devis-entete">
+          <span class="carte-devis-titre">Devis express</span>
+          <span class="carte-devis-duree">≈ 30 secondes</span>
+        </div>
+        <fieldset class="devis-types">
+          <legend>Que faut-il débarrasser ?</legend>
+          <div class="devis-types-grille">
+            <label class="pastille-radio"><input type="radio" name="type" value="Maison" checked><span>Maison</span></label>
+            <label class="pastille-radio"><input type="radio" name="type" value="Appartement"><span>Appartement</span></label>
+            <label class="pastille-radio"><input type="radio" name="type" value="Cave · grenier"><span>Cave · grenier</span></label>
+            <label class="pastille-radio"><input type="radio" name="type" value="Local pro"><span>Local pro</span></label>
+            <label class="pastille-radio"><input type="radio" name="type" value="Très encombré"><span>Très encombré</span></label>
+            <label class="pastille-radio"><input type="radio" name="type" value="Autre"><span>Autre</span></label>
+          </div>
+        </fieldset>
+        <div class="devis-champs">
+          <label for="devis-cp">Code postal
+            <input id="devis-cp" name="codePostal" type="text" inputmode="numeric" placeholder="67000">
+          </label>
+          <label for="devis-tel">Téléphone
+            <input id="devis-tel" name="telephone" type="tel" placeholder="06 …">
+          </label>
+        </div>
+        <p class="devis-mention">Ajoutez 2–3 photos dans WhatsApp après l'envoi</p>
+        <a class="bouton bouton-brique devis-envoyer lien-whatsapp-devis" href="https://wa.me/33000000000?text=Bonjour%2C%20je%20souhaite%20un%20devis%20de%20d%C3%A9barras.">Envoyer sur WhatsApp</a>
+        <p class="devis-alternative">Votre messagerie s'ouvre avec le message prêt. <a class="devis-mail" href="mailto:[contact@domaine.fr]">Préférer l'e-mail</a></p>
+      </form>
+    </div>
   </div>
 </main>
 
