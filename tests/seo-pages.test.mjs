@@ -18,6 +18,29 @@ test("racine : aucun fichier HTML hors de la liste autorisée", () => {
   assert.deepEqual([...htmlPages].sort(), [...autorises].sort());
 });
 
+test("dépôt : aucun HTML public hors des quatre pages racine et de docs/design/", () => {
+  const autorisesRacine = new Set(["index.html", "mentions-legales.html", "confidentialite.html", "404.html"]);
+  function listerHtml(dossier) {
+    let resultat = [];
+    for (const entree of readdirSync(dossier, { withFileTypes: true })) {
+      if (entree.name === "node_modules" || entree.name === ".git") continue;
+      const chemin = path.join(dossier, entree.name);
+      if (entree.isDirectory()) {
+        resultat = resultat.concat(listerHtml(chemin));
+      } else if (entree.name.endsWith(".html")) {
+        resultat.push(path.relative(RACINE, chemin));
+      }
+    }
+    return resultat;
+  }
+  const tousLesHtml = listerHtml(RACINE);
+  for (const relatif of tousLesHtml) {
+    const estRacineAutorisee = autorisesRacine.has(relatif);
+    const estMaquette = relatif.startsWith(`docs${path.sep}design${path.sep}`);
+    assert.ok(estRacineAutorisee || estMaquette, `HTML public inattendu : ${relatif}`);
+  }
+});
+
 test("SEO et Open Graph : titre, description, image, langue et canonical commenté", () => {
   const titre = page.match(/<title>([^<]+)<\/title>/)?.[1];
   const description = page.match(/<meta name="description" content="([^"]+)"/)?.[1];

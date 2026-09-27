@@ -24,9 +24,10 @@ et ouvrent WhatsApp (`wa.me/…`) ou l'e-mail du visiteur, qui reste libre de l'
 ## Où est la maquette
 
 La maquette source (Claude Design) est conservée dans `docs/design/` :
-`Main.dc.html`, `Mobile.dc.html`, `Devis.dc.html`. Le cadrage complet est dans
-`docs/CADRAGE_V3.md`, la spec fonctionnelle dans `docs/FRONT_SPEC.md` et l'historique des
-histoires livrées dans `docs/HISTOIRES.md`.
+`Main.dc.html`, `Mobile.dc.html`, `Devis.dc.html`. Canevas d'origine (privé, compte
+d'Ams) : https://claude.ai/artifact/K7AAund19S5PhwGvKqthMk. Le cadrage complet est
+dans `docs/CADRAGE_V3.md`, la spec fonctionnelle dans `docs/FRONT_SPEC.md` et
+l'historique des histoires livrées dans `docs/HISTOIRES.md`.
 
 ## Comment modifier les coordonnées
 
