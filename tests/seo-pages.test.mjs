@@ -13,6 +13,11 @@ function meta(propriete) {
   return page.match(new RegExp(`<meta\\s+property="${propriete}"\\s+content="([^"]+)"`))?.[1];
 }
 
+test("racine : aucun fichier HTML hors de la liste autorisée", () => {
+  const autorises = ["index.html", "mentions-legales.html", "confidentialite.html", "404.html"];
+  assert.deepEqual([...htmlPages].sort(), [...autorises].sort());
+});
+
 test("SEO et Open Graph : titre, description, image, langue et canonical commenté", () => {
   const titre = page.match(/<title>([^<]+)<\/title>/)?.[1];
   const description = page.match(/<meta name="description" content="([^"]+)"/)?.[1];

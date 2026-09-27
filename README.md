@@ -5,10 +5,10 @@ Strasbourg, intervenant dans toute l'Alsace (Bas-Rhin / Haut-Rhin).
 
 **Promesse** : « Vous nous montrez ce qui doit partir. On s'occupe du reste. »
 
-**Statut** : 🏭 Site V3 en ligne — une seule page, statique, sans dépendance ni étape de
-build.
-**Site en ligne** : **https://amsclaw.github.io/debarras-alsace/** (GitHub Pages, dépôt
-public `amsClaw/debarras-alsace`)
+**Statut** : 🏭 Site V3 — une seule page, statique, sans dépendance ni étape de build.
+Après fusion et validation de la recette (Ams), le site est en ligne à cette adresse :
+**https://amsclaw.github.io/debarras-alsace/** (GitHub Pages, dépôt public
+`amsClaw/debarras-alsace`)
 
 ## Ce qu'est le site
 
