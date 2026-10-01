@@ -26,7 +26,7 @@ test("prix : section en deux colonnes sur fond vert forêt avec les trois cas", 
   const section = page.match(/<section id="prix"[\s\S]*?<\/section>/)?.[0];
   assert.ok(section, "section prix attendue");
   assert.match(section, /<span class="sur-titre sur-titre-clair">Le prix, en clair<\/span>/);
-  assert.match(section, /<h2[^>]*>Un débarras n'est pas toujours payant\.<\/h2>/);
+  assert.match(section, /<h2[^>]*>Un débarras n’est pas toujours payant\.<\/h2>/);
   for (const cas of ["Indemnisé", "Gratuit", "Payant"]) {
     assert.ok(section.includes(`<strong>${cas}</strong>`), `cas attendu : ${cas}`);
   }
@@ -61,9 +61,9 @@ test("estimateur : les tuiles affichent les valeurs T2 – T3 sans JavaScript", 
   assert.match(section, /id="estimateur-duree">1&nbsp;journée</);
 });
 
-test("estimateur : fourchette de prix en emplacement, bouton vers #devis, aucun prix inventé", () => {
+test("estimateur : fourchette de prix masquée tant que l'entreprise ne l'a pas validée, bouton vers #devis, aucun prix inventé", () => {
   const section = page.match(/<section id="prix"[\s\S]*?<\/section>/)?.[0];
-  assert.match(section, /Fourchette de prix pour ce volume : <strong>\[fourchette validée par l'entreprise\]<\/strong>/);
+  assert.match(section, /<p class="estimateur-note" hidden>Fourchette de prix pour ce volume&nbsp;: <strong id="estimateur-prix"><\/strong><\/p>/);
   assert.match(section, /<a class="bouton bouton-brique estimateur-cta" href="#devis">Recevoir mon prix ferme<\/a>/);
   assert.doesNotMatch(page, /\d+ ?€/);
 });

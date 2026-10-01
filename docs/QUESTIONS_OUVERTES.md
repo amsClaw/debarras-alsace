@@ -47,3 +47,14 @@ Statut : à trancher avec le client (et/ou Ams). Une réponse = une ligne de dé
 |---|---|---|
 | 2026-09-13 | — | En attente des réponses client (voir ci-dessus) |
 | 2026-09-26 | Reprise par l'usine | V3 une page (maquette Claude Design), construite dans `v3/`, bascule après recette d'Ams — voir `docs/CADRAGE_V3.md`. Questions 1 à 6 toujours bloquantes avant la bascule ; 7 (stack) tranchée : statique sans build ; 11-12 (villes, blog) : hors V3. |
+| 2026-10-01 | 2. Numéros réels · 6. Mentions légales | Coordonnées fournies par Ams : téléphone et WhatsApp **06 99 54 49 26**, e-mail **moisenelson17@gmail.com** (dans `v3/assets/config.js`). Hébergeur renseigné : GitHub Pages (GitHub, Inc.). Avis, note Google, commune · volume des chantiers et fourchette de prix : **masqués** tant que l'entreprise ne les fournit pas (réglages dans `config.js`). |
+
+### Encore attendu de l'entreprise pour les mentions légales (H11)
+
+Signalés entre crochets sur la page Mentions légales, à fournir avant un vrai lancement :
+
+- [ ] Raison sociale
+- [ ] Forme juridique (EI, SARL, SAS…)
+- [ ] Adresse du siège (rue, code postal, commune)
+- [ ] Numéro SIRET
+- [ ] Directeur de la publication (nom du représentant légal)

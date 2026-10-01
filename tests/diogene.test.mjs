@@ -57,15 +57,15 @@ test("colonne gauche : photo paresseuse dimensionnée et encadré « Vous êtes 
   assert.match(image, /\bheight="\d+"/, "hauteur explicite attendue");
   assert.ok(existsSync(path.join(RACINE, "v3/assets/photos/service-diogene.jpg")), "photo présente dans le dépôt");
 
-  assert.match(diogene, /<strong>Vous êtes un proche \?<\/strong>/);
-  assert.match(diogene, /Évitez la confrontation : proposez votre aide plutôt que de l'imposer\./);
+  assert.match(diogene, /<strong>Vous êtes un proche&nbsp;\?<\/strong>/);
+  assert.match(diogene, /Évitez la confrontation&nbsp;: proposez votre aide plutôt que de l’imposer\./);
   assert.match(diogene, /avant même de parler de devis\./);
 });
 
 test("colonne droite : sur-titre, titre en deux phrases (seconde en italique) et paragraphe", () => {
   const diogene = section("diogene");
   assert.match(diogene, /<span class="sur-titre">Syndrome de Diogène<\/span>/);
-  assert.match(diogene, /<h2 id="diogene-titre">Un logement devenu impossible à vivre \? <em>On vous aide, sans jugement\.<\/em><\/h2>/);
+  assert.match(diogene, /<h2 id="diogene-titre">Un logement devenu impossible à vivre&nbsp;\? <em>On vous aide, sans jugement\.<\/em><\/h2>/);
   assert.match(diogene, /Le syndrome de Diogène est une souffrance, pas un choix\./);
   assert.match(diogene, /nous intervenons avec tact, en accord avec la personne et à son rythme\./);
 });
@@ -109,7 +109,7 @@ test("carte de prestation : titre Diogène, texte et lien vers #diogene", () => 
   assert.equal(cartes.length - 1, 4, "quatre cartes de prestation attendues");
   const carte = cartes[4];
   assert.match(carte, /<h3>Diogène &amp; logement très encombré<\/h3>/);
-  assert.match(carte, /Accumulation importante : intervention discrète, sans jugement, à votre rythme\./);
+  assert.match(carte, /Accumulation importante&nbsp;: intervention discrète, sans jugement, à votre rythme\./);
   assert.match(carte, /<a class="prestation-approche" href="#diogene">Notre approche, ci-dessous<\/a>/);
   assert.match(carte, /alt="Pièce très encombrée avant intervention"/);
   assert.equal(prestations.includes("Coordination avec les proches"), false, "l'ancienne accroche est remplacée par le lien");
@@ -122,10 +122,10 @@ test("FAQ : sept questions, celle sur le syndrome de Diogène juste avant « Et 
   assert.equal(compter(faq, /<summary>/g), 7, "sept questions dans la FAQ");
   assert.match(
     faq,
-    /<summary>Intervenez-vous en cas de syndrome de Diogène \?<\/summary>\s*<p>Oui, avec discrétion et sans jugement, en accord avec la personne concernée ou sa famille, et à son rythme\. Un premier échange par téléphone permet de préparer l'intervention\.<\/p>/
+    /<summary>Intervenez-vous en cas de syndrome de Diogène&nbsp;\?<\/summary>\s*<p>Oui, avec discrétion et sans jugement, en accord avec la personne concernée ou sa famille, et à son rythme\. Un premier échange par téléphone permet de préparer l’intervention\.<\/p>/
   );
   assert.ok(
-    faq.indexOf("Intervenez-vous en cas de syndrome de Diogène ?") < faq.indexOf("Et si je veux garder certaines choses ?"),
+    faq.indexOf("Intervenez-vous en cas de syndrome de Diogène&nbsp;?") < faq.indexOf("Et si je veux garder certaines choses&nbsp;?"),
     "la question Diogène précède la dernière question"
   );
   assert.equal(compter(page, /<details(?:\s|>)/g), 7);

@@ -3,6 +3,12 @@
    de docs/CADRAGE_V3.md et de la maquette (docs/design/Main.dc.html) : on ne pose
    aucune couleur en dur, tout passe par les jetons ci-dessous. */
 
+/* Polices hébergées sur le site (RGPD : aucune requête vers Google Fonts).
+   Fichiers variables, sous-ensemble latin : un fichier couvre plusieurs graisses. */
+@font-face{font-family:Fraunces;font-style:normal;font-weight:500 600;font-display:swap;src:url("polices/fraunces.woff2") format("woff2")}
+@font-face{font-family:Fraunces;font-style:italic;font-weight:500;font-display:swap;src:url("polices/fraunces-italique.woff2") format("woff2")}
+@font-face{font-family:"Public Sans";font-style:normal;font-weight:400 700;font-display:swap;src:url("polices/public-sans.woff2") format("woff2")}
+
 :root{
   --vert:#1E3A2B;      /* titres, bandeaux sombres, pied de page */
   --vert-2:#2F5A40;    /* icônes, cartes sur fond sombre — #2A4A37 pour la variante dense */
@@ -54,6 +60,9 @@ a:hover{color:var(--brique)}
 .bouton{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 28px;border-radius:14px;font-weight:700;font-size:17px;white-space:nowrap}
 .bouton svg{flex-shrink:0}
 .bouton[hidden]{display:none}
+.texte-tel{white-space:nowrap}
+/* Blocs qui attendent une information de l'entreprise (avis, chantiers, prix, identité) */
+.realisation-meta p[hidden],.estimateur-note[hidden],.pied-identite[hidden]{display:none}
 .bouton-brique{background:var(--brique);color:#FFFFFF}
 .bouton-brique:hover{color:#FFFFFF;opacity:0.92}
 .bouton-contour{border:1.5px solid var(--vert);color:var(--vert)}

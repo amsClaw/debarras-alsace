@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, follow">
 <title>Page introuvable — Débarras Alsace</title>
+<!-- GitHub Pages sert cette page à n'importe quelle profondeur d'adresse (/debarras-alsace/a/b/c) :
+     la base fait pointer feuille de style, liens et images vers la racine du site. Hors de
+     /debarras-alsace/ (aperçu local, dossier v3/), on revient au dossier de la page. -->
+<base href="/debarras-alsace/">
+<script>if (!location.pathname.startsWith("/debarras-alsace/")) document.querySelector("base").href = "./";</script>
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -12,21 +17,21 @@
   <div class="conteneur entete-barre">
     <a class="marque" href="index.html" aria-label="Débarras Alsace, accueil">
       <span class="marque-logo" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21v-4c0-2.5 1.6-4.5 5.5-4.5 0 3-1.9 5-5.5 5"/></svg></span>
-      <span class="marque-texte"><span class="marque-nom">Débarras Alsace</span><span class="marque-zone">Strasbourg &amp; toute l'Alsace</span></span>
+      <span class="marque-texte"><span class="marque-nom">Débarras Alsace</span><span class="marque-zone">Strasbourg &amp; toute l’Alsace</span></span>
     </a>
   </div>
 </header>
 <main class="page-legale page-404">
   <div class="conteneur page-legale-contenu">
     <p class="page-404-code">404</p>
-    <h1>Cette page n'existe pas.</h1>
-    <p class="page-legale-intro">L'adresse a peut-être changé ou la page a été déplacée.</p>
-    <a class="bouton bouton-brique" href="index.html">Retour à l'accueil</a>
+    <h1>Cette page n’existe pas.</h1>
+    <p class="page-legale-intro">L’adresse a peut-être changé ou la page a été déplacée.</p>
+    <a class="bouton bouton-brique" href="index.html">Retour à l’accueil</a>
   </div>
 </main>
 <footer class="pied">
   <div class="conteneur pied-grille">
-    <div class="pied-bloc"><span class="pied-marque">Débarras Alsace</span><span>Strasbourg, l'Eurométropole, le Bas-Rhin et le Haut-Rhin.</span></div>
+    <div class="pied-bloc"><span class="pied-marque">Débarras Alsace</span><span>Strasbourg, l’Eurométropole, le Bas-Rhin et le Haut-Rhin.</span></div>
     <div class="pied-bloc"><a href="mentions-legales.html">Mentions légales</a><a href="confidentialite.html">Confidentialité</a></div>
   </div>
 </footer>

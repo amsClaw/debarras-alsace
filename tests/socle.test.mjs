@@ -78,18 +78,13 @@ test("v3/index.html : en-tête de document complet et polices de la maquette", (
   assert.ok(description, "une <meta name=\"description\"> est attendue");
   assert.ok(description[1].trim().length > 0, "la description ne doit pas être vide");
 
-  const polices = page.match(/https:\/\/fonts\.googleapis\.com\/css2\?[^"]+/);
-  assert.ok(polices, "le lien Google Fonts est attendu");
-  assert.match(
-    polices[0],
-    /family=Fraunces:ital,opsz,wght@0,9\.\.144,500;0,9\.\.144,600;1,9\.\.144,500/,
-    "Fraunces 500/600 + italique 500, comme la maquette"
-  );
-  assert.match(
-    polices[0],
-    /family=Public\+Sans:wght@400;500;600;700/,
-    "Public Sans 400 à 700, comme la maquette"
-  );
+  // H11 : polices hébergées sur le site (RGPD) — mêmes graisses que la maquette.
+  const css = texte("v3/assets/style.css");
+  const faces = [...css.matchAll(/@font-face\{([^}]*)\}/g)].map(([, regle]) => regle);
+  const face = (famille, style) => faces.find((r) => r.includes(`font-family:${famille}`) && r.includes(`font-style:${style}`));
+  assert.match(face("Fraunces", "normal") ?? "", /font-weight:500 600/, "Fraunces 500/600, comme la maquette");
+  assert.match(face("Fraunces", "italic") ?? "", /font-weight:500/, "Fraunces italique 500, comme la maquette");
+  assert.match(face('"Public Sans"', "normal") ?? "", /font-weight:400 700/, "Public Sans 400 à 700, comme la maquette");
 });
 
 test("v3/index.html : feuille de style puis config.js (defer) puis site.js (module)", () => {
@@ -191,10 +186,17 @@ test("v3/assets/config.js : les coordonnées sont centralisées dans window.DEBA
   const fenetre = {};
   new Function("window", source)(fenetre);
   assert.deepEqual(fenetre.DEBARRAS, {
-    tel: "[06 XX XX XX XX]",
-    telInternational: "33000000000",
-    whatsapp: "33000000000",
-    mail: "[contact@domaine.fr]"
+    tel: "06 99 54 49 26",
+    telInternational: "33699544926",
+    whatsapp: "33699544926",
+    mail: "moisenelson17@gmail.com",
+    avis: [],
+    noteGoogle: null,
+    lienAvisGoogle: "",
+    chantiers: [],
+    fourchettes: {},
+    raisonSociale: "",
+    siret: ""
   });
 });
 
@@ -205,7 +207,7 @@ test("v3/index.html : en-tête, un seul h1 dans <main>, pied de page complet", (
   assert.ok(entete, "un <header> est attendu");
   assert.match(entete[0], /<svg/, "le logo maison (SVG) est attendu dans l'en-tête");
   assert.match(entete[0], /Débarras Alsace/, "le nom de l'entreprise est attendu dans l'en-tête");
-  assert.match(entete[0], /Strasbourg &amp; toute l'Alsace/, "la zone couverte est attendue dans l'en-tête");
+  assert.match(entete[0], /Strasbourg &amp; toute l’Alsace/, "la zone couverte est attendue dans l'en-tête");
 
   assert.equal(compter(page, /<h1[\s>]/), 1, "la page ne doit contenir qu'un seul <h1>");
 
@@ -216,8 +218,7 @@ test("v3/index.html : en-tête, un seul h1 dans <main>, pied de page complet", (
 
   const pied = page.match(/<footer[\s\S]*?<\/footer>/);
   assert.ok(pied, "un <footer> est attendu");
-  assert.match(pied[0], /\[Raison sociale\]/, "l'emplacement [Raison sociale] est attendu");
-  assert.match(pied[0], /\[SIRET\]/, "l'emplacement [SIRET] est attendu");
+  assert.match(pied[0], /<span class="pied-identite" hidden><\/span>/, "raison sociale et SIRET masqués tant qu'ils ne sont pas fournis");
 
   assert.ok(
     page.indexOf("<header") < page.indexOf("<main") && page.indexOf("<main") < page.indexOf("<footer"),
