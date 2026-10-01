@@ -49,26 +49,47 @@ export function identiteEntreprise(config = {}) {
   return morceaux.join(" · ");
 }
 
-// Les liens tel: et wa.me ont déjà un lien fonctionnel dans le HTML (mêmes
-// valeurs que config.js) : cette mise à jour ne fait que refléter une éventuelle
-// modification de window.DEBARRAS sans avoir à toucher le HTML.
-const config = window.DEBARRAS;
-if (config) {
-  document.querySelectorAll(".lien-tel").forEach((lien) => {
+/**
+ * Texte affiché sur le site : espace insécable avant « : », « ; », « ? », « ! »
+ * (typographie française). Le message envoyé dans WhatsApp / l'e-mail n'est pas
+ * modifié ; seul ce qui s'affiche dans la page passe par ici.
+ */
+export function typographier(texteBrut = "") {
+  return String(texteBrut).replace(/ +([:;?!])/g, "\u00a0$1");
+}
+
+/** Récapitulatif affiché à l'étape 3 du devis : le message, en typographie française. */
+export function texteRecap(champs = {}) {
+  return typographier(composerMessage(champs));
+}
+
+/**
+ * Coordonnées de config.js appliquées à une page (accueil, mentions légales,
+ * confidentialité) : liens tel:, wa.me, mailto: et textes affichés. Le HTML porte
+ * déjà les mêmes valeurs en secours, pour que les liens marchent sans JavaScript.
+ */
+export function appliquerCoordonnees(doc, config) {
+  if (!doc || !config) return;
+  doc.querySelectorAll(".lien-tel").forEach((lien) => {
     lien.href = `tel:+${config.telInternational}`;
   });
-  document.querySelectorAll(".lien-whatsapp").forEach((lien) => {
+  doc.querySelectorAll(".lien-whatsapp").forEach((lien) => {
     lien.href = `https://wa.me/${config.whatsapp}`;
   });
-  document.querySelectorAll(".lien-mail").forEach((lien) => {
+  doc.querySelectorAll(".lien-mail").forEach((lien) => {
     lien.href = `mailto:${config.mail}`;
   });
-  document.querySelectorAll(".texte-tel").forEach((el) => {
+  doc.querySelectorAll(".texte-tel").forEach((el) => {
     el.textContent = config.tel;
   });
-  document.querySelectorAll(".texte-mail").forEach((el) => {
+  doc.querySelectorAll(".texte-mail").forEach((el) => {
     el.textContent = config.mail;
   });
+}
+
+const config = window.DEBARRAS;
+if (config) {
+  appliquerCoordonnees(document, config);
   afficherContenusEntreprise(config);
 }
 
@@ -204,7 +225,7 @@ if (form) {
   // se mettre à jour à chaque saisie (téléphone, « quand »…), pas seulement lors
   // des changements d'étape.
   function mettreAJourRecap() {
-    if (recap) recap.textContent = composerMessage(champsDevis(new FormData(form)));
+    if (recap) recap.textContent = texteRecap(champsDevis(new FormData(form)));
   }
 
   function rendreEtape() {

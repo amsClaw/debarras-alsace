@@ -219,12 +219,12 @@ test("interaction : le récapitulatif se met à jour à la saisie, sans changer 
   form.declencher("input"); // avant saisie : simule le montage
   champTelephone.value = "0601020304";
   form.declencher("input");
-  assert.match(recap.textContent, /Téléphone : 0601020304/, "le récapitulatif doit refléter le téléphone saisi sans changer d'étape");
+  assert.match(recap.textContent, /Téléphone\u00a0: 0601020304/, "le récapitulatif doit refléter le téléphone saisi sans changer d'étape");
 
   champQuand.value = "avant fin octobre";
   form.declencher("input");
-  assert.match(recap.textContent, /Quand : avant fin octobre/, "le récapitulatif doit refléter « quand » saisi sans changer d'étape");
-  assert.match(recap.textContent, /Téléphone : 0601020304/, "le téléphone doit rester présent après une nouvelle saisie");
+  assert.match(recap.textContent, /Quand\u00a0: avant fin octobre/, "le récapitulatif doit refléter « quand » saisi sans changer d'étape");
+  assert.match(recap.textContent, /Téléphone\u00a0: 0601020304/, "le téléphone doit rester présent après une nouvelle saisie");
 });
 
 test("logique pure des étapes : etapeSuivante/etapePrecedente restent dans [1, 3]", () => {

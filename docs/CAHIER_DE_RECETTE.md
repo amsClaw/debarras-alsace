@@ -116,7 +116,9 @@ largeur d’un téléphone (la barre « Appeler · WhatsApp · Devis » apparaî
 
 17. - [ ] **Espace sous l’en-tête**
     Sur téléphone, en haut de page.
-    Attendu : un petit espace normal entre l’en-tête et le premier bloc (plus de grand vide).
+    Attendu : un petit espace normal entre l’en-tête et le premier bloc (plus de grand vide) ;
+    le bandeau « Entreprise locale » ne coupe aucun mot, les deux boutons du haut ont la même
+    largeur, et la carte « Devis express » commence sous la photo (rien à cheval dessus).
 
 18. - [ ] **Estimateur lisible**
     Sur téléphone, section « Estimez votre volume ».
@@ -130,7 +132,8 @@ largeur d’un téléphone (la barre « Appeler · WhatsApp · Devis » apparaî
 20. - [ ] **Barre du bas avec libellés**
     Sur téléphone, descends tout en bas de la page.
     Attendu : les mots « Appeler », « WhatsApp », « Devis » sous les icônes ; le pied de page reste
-    entièrement lisible au-dessus de la barre.
+    entièrement lisible au-dessus de la barre ; pas de bande vide entre le bloc orange d’appel et
+    le pied de page ; les liens du pied se touchent facilement du doigt, sans viser.
 
 21. - [ ] **Vrai numéro pour appeler**
     Sur téléphone, appuie sur « Appeler » (barre du bas), puis sur « En parler en toute
@@ -160,9 +163,61 @@ largeur d’un téléphone (la barre « Appeler · WhatsApp · Devis » apparaî
     envoyée à Google Fonts. Les titres gardent leur police à empattements (comme la maquette).
 
 26. - [ ] **Hébergeur et contact dans les mentions légales**
-    Ouvre « Mentions légales ».
+    Ouvre « Mentions légales », puis « Confidentialité ».
     Attendu : hébergeur « GitHub Pages — GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco,
-    CA 94107, États-Unis » ; contact moisenelson17@gmail.com · 06 99 54 49 26.
+    CA 94107, États-Unis » ; contact moisenelson17@gmail.com · 06 99 54 49 26 sur les deux pages ;
+    un clic sur le numéro propose d’appeler, un clic sur l’adresse ouvre ta messagerie.
+
+27. - [ ] **Apostrophes et ponctuation à la française**
+    Relis quelques phrases de l’accueil (« On s’occupe du reste. », la FAQ, la section Diogène),
+    puis termine un devis express jusqu’à l’étape 3 et regarde le cadre récapitulatif.
+    Attendu : des apostrophes courbes (’) et non droites (') ; « ? », « ! », « : » et « ; » ne se
+    retrouvent jamais seuls en début de ligne (« Vous êtes un proche ? », « Type : Maison »,
+    « Accès : Plain-pied »). La réponse du bandeau « On vient chez vous ? » suit la même règle.
+
+28. - [ ] **Prêt pour Google et pour le partage**
+    Rien à faire de ton côté : contrôle technique fait par l’usine.
+    Vérifié par l’usine : dans l’en-tête invisible de la page, l’adresse officielle (« canonical »),
+    l’adresse et l’image de partage (« og:url », « og:image ») sont des adresses complètes en
+    **https://amsclaw.github.io/debarras-alsace/** (la même base que le plan du site) ; la fiche
+    d’entreprise pour Google (« LocalBusiness ») porte le téléphone **+33699544926** et l’e-mail
+    **moisenelson17@gmail.com** ; aucun texte entre crochets dans cet en-tête.
+    Ce que tu peux constater : en partageant le lien dans WhatsApp, l’aperçu montre le titre
+    « Débarras à Strasbourg — Débarras Alsace » et la grande photo d’accueil (une fois H8 fusionnée).
+
+29. - [ ] **Preuves automatiques**
+    Rien à faire de ton côté : l’usine fait tourner les tests à chaque modification.
+    Vérifié par l’usine (87 tests, tous verts) : coordonnées réelles partout (plus aucun faux
+    numéro), aucun crochet visible sur l’accueil, insécables entre un nombre et son unité et avant
+    « ? ! : ; », adresses absolues pour Google, page introuvable correcte à n’importe quelle
+    profondeur, aucune requête vers Google Fonts, coordonnées des pages légales reliées au réglage
+    unique. Le juge les relance avant la fusion ; un seul test rouge bloque la fusion.
+
+## Correspondance des demandes avec les cas
+
+| Demande | Cas |
+|---|---|
+| Remarque d’Ams : devis superposé sur ordinateur (H10, critère 4) | 13 |
+| Remarque d’Ams : « 24 h » coupé (H11, critère 3 ; H10, critère 7) | 15, 18 |
+| Remarque d’Ams : alignement mobile (H10, critère 1) | 16 |
+| Remarque d’Ams : grand espace sous l’en-tête (H10, critère 3) | 17 |
+| H10, critère 2 — en-tête sur une ligne, aussi sur les pages légales | 14, 9 |
+| H10, critère 5 — héros mobile, devis sous la photo | 17 |
+| H10, critère 6 — Diogène dans le bon ordre | 19 |
+| H10, critère 7 — estimateur lisible | 18 |
+| H10, critère 8 — barre du bas avec libellés | 20 |
+| H10, critère 9 — plus de bande vide avant le pied | 20 |
+| H10, critère 10 — boutons assez grands au doigt | 20 |
+| H10, critères 11 et 12 — mesures et captures (usine) | 29 |
+| H11, critère 1 — vraies coordonnées partout | 21, 22, 23, 26 |
+| H11, critère 2 — plus aucune case vide | 10, 11 |
+| H11, critère 3 — textes : photos d’illustration, apostrophes, insécables | 24, 27, 15 |
+| H11, critère 4 — référencement | 28 |
+| H11, critère 5 — page introuvable | 12 |
+| H11, critère 6 — polices sans Google | 25 |
+| H11, critère 7 — mentions légales | 26, 9 |
+| H11, critère 8 — ce cahier | tout le document |
+| H11, critère 9 — tests automatiques | 29 |
 
 ## 4. Ce qui est volontairement absent (ce n’est pas un défaut)
 

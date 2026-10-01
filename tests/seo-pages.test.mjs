@@ -122,7 +122,8 @@ const { VOLUMES } = await module("volume.js");
 // n'exercer que ses fonctions pures exportées.
 globalThis.window ??= {};
 globalThis.document ??= { querySelector: () => null, querySelectorAll: () => [], getElementById: () => null };
-const { avisAffiches, ligneChantier, fourchettePrix, identiteEntreprise } = await module("site.js");
+const { avisAffiches, ligneChantier, fourchettePrix, identiteEntreprise, appliquerCoordonnees, texteRecap } = await module("site.js");
+const { composerMessage } = await module("message.js");
 
 function configuration() {
   const fenetre = {};
@@ -344,4 +345,53 @@ test("mentions légales : hébergeur et contact remplis, champs de l'entreprise 
   for (const champ of ["raison sociale", "forme juridique", "adresse", "SIRET", "directeur de la publication"]) {
     assert.ok(questions.toLowerCase().includes(champ.toLowerCase()), `QUESTIONS_OUVERTES liste : ${champ}`);
   }
+});
+
+/** Document minimal : chaque <a class="…"> du HTML devient un élément modifiable (href, textContent). */
+function documentDe(html) {
+  const liens = [...html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/g)].map(([, attributs, contenu]) => ({
+    classes: (attributs.match(/class="([^"]*)"/)?.[1] ?? "").split(/\s+/),
+    href: attributs.match(/href="([^"]*)"/)?.[1] ?? "",
+    textContent: contenu
+  }));
+  return { liens, querySelectorAll: (selecteur) => liens.filter((lien) => lien.classes.includes(selecteur.replace(/^\./, ""))) };
+}
+
+test("pages légales : les coordonnées suivent config.js (liens et textes), secours identiques sans JS", () => {
+  const essai = { tel: "01 23 45 67 89", telInternational: "33123456789", whatsapp: "33123456789", mail: "test@example.invalid" };
+  for (const nom of ["mentions-legales.html", "confidentialite.html", "index.html"]) {
+    const html = lire(`v3/${nom}`);
+    assert.match(html, /<script src="assets\/config\.js" defer><\/script>\s*<script type="module" src="assets\/site\.js"><\/script>/, `${nom} : config.js puis site.js chargés`);
+    const doc = documentDe(html);
+    // Les deux liens du devis (envoi WhatsApp, « Préférer l’e-mail ») sont reconstruits au clic par site.js.
+    const contacts = doc.liens.filter((lien) => /^(tel:|mailto:|https:\/\/wa\.me\/)/.test(lien.href) && !lien.classes.some((c) => c === "devis-envoyer" || c === "devis-mail"));
+    assert.ok(contacts.length >= 2, `${nom} : liens de contact présents`);
+    for (const lien of contacts) {
+      assert.ok(lien.classes.some((c) => ["lien-tel", "lien-mail", "lien-whatsapp"].includes(c)), `${nom} : ${lien.href} doit être relié à config.js`);
+    }
+    appliquerCoordonnees(doc, essai);
+    for (const lien of contacts) {
+      assert.ok([`tel:+${essai.telInternational}`, `mailto:${essai.mail}`, `https://wa.me/${essai.whatsapp}`].includes(lien.href), `${nom} : ${lien.href} suit la configuration`);
+    }
+    for (const lien of doc.querySelectorAll(".texte-tel")) assert.equal(lien.textContent, essai.tel);
+    for (const lien of doc.querySelectorAll(".texte-mail")) assert.equal(lien.textContent, essai.mail);
+  }
+  for (const nom of ["mentions-legales.html", "confidentialite.html"]) {
+    const doc = documentDe(lire(`v3/${nom}`));
+    assert.equal(doc.querySelectorAll(".texte-tel").length, 1, `${nom} : numéro affiché relié`);
+    assert.equal(doc.querySelectorAll(".texte-mail").length, 1, `${nom} : e-mail affiché relié`);
+  }
+});
+
+test("récapitulatif du devis (étape 3) : insécable avant « : », message envoyé inchangé", () => {
+  const champs = { type: "Maison", codePostal: "67000", acces: "Plain-pied", telephone: "06 12 34 56 78", quand: "Cette semaine ?" };
+  const recap = texteRecap(champs);
+  assert.match(recap, /Type\u00a0: Maison/);
+  assert.match(recap, /Accès\u00a0: Plain-pied/);
+  assert.match(recap, /Code postal\u00a0: 67000/);
+  assert.match(recap, /semaine\u00a0\?/);
+  assert.doesNotMatch(recap, / [:;?!]/, "aucune espace ordinaire avant : ; ? !");
+  assert.equal(recap.replace(/\u00a0/g, " "), composerMessage(champs), "même contenu que le message envoyé");
+  assert.match(composerMessage(champs), /Type : Maison/, "le message WhatsApp / e-mail reste en texte brut");
+  assert.match(lire("v3/assets/site.js"), /recap\.textContent = texteRecap\(/, "le récapitulatif affiché passe par texteRecap");
 });
