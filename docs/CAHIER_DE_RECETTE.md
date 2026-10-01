@@ -9,16 +9,20 @@ Il n’y a **aucun compte ni mot de passe** : c’est un site public, sans espac
 
 ## 1. Comment ouvrir le site
 
-**Avant la fusion de H8 (maintenant)** — rien à installer, aucune commande :
+**Avant la fusion de H8 (maintenant)** — rien à installer, aucune commande : la bascule
+attend ton accord, l’adresse principale montre donc encore l’ancien site. Le nouveau site,
+identique à ce que la bascule mettra en ligne, est à l’adresse
+**https://amsclaw.github.io/debarras-alsace/v3/** (elle disparaîtra avec la fusion).
+
+**Après la fusion de H8** — rien à installer, aucune commande :
 
 1. Sur ton téléphone ou ton ordinateur, ouvre cette adresse dans le navigateur (Safari, Chrome…) :
-   **https://amsclaw.github.io/debarras-alsace/v3/**
+   **https://amsclaw.github.io/debarras-alsace/**
 2. Attends 2 à 3 secondes : la page d’accueil s’affiche, avec « Débarras Alsace » en haut à gauche.
 3. Si tu vois encore l’ancienne version (crochets, faux numéro), tire la page vers le bas sur
    téléphone ou appuie sur Ctrl+Maj+R (Cmd+Maj+R sur Mac) : le navigateur gardait l’ancienne copie.
 
-**Après la fusion de H8**, le même site est à l’adresse principale :
-**https://amsclaw.github.io/debarras-alsace/** — le lien n’est pas diffusé, il sert à la validation.
+Le lien n’est pas diffusé, il sert à la validation.
 
 Pour l’affichage téléphone sur un ordinateur : rétrécis la fenêtre du navigateur jusqu’à la
 largeur d’un téléphone (la barre « Appeler · WhatsApp · Devis » apparaît en bas).
@@ -187,7 +191,7 @@ largeur d’un téléphone (la barre « Appeler · WhatsApp · Devis » apparaî
 
 29. - [ ] **Preuves automatiques**
     Rien à faire de ton côté : l’usine fait tourner les tests à chaque modification.
-    Vérifié par l’usine (87 tests, tous verts) : coordonnées réelles partout (plus aucun faux
+    Vérifié par l’usine (92 tests, tous verts) : coordonnées réelles partout (plus aucun faux
     numéro), aucun crochet visible sur l’accueil, insécables entre un nombre et son unité et avant
     « ? ! : ; », adresses absolues pour Google, page introuvable correcte à n’importe quelle
     profondeur, aucune requête vers Google Fonts, coordonnées des pages légales reliées au réglage
@@ -222,7 +226,7 @@ largeur d’un téléphone (la barre « Appeler · WhatsApp · Devis » apparaî
 ## 4. Ce qui est volontairement absent (ce n’est pas un défaut)
 
 - **Avis clients et note Google** : masqués tant que l’entreprise n’a pas fourni de vrais avis
-  (rien n’est inventé). Ils réapparaissent dès qu’on les renseigne dans `v3/assets/config.js`.
+  (rien n’est inventé). Ils réapparaissent dès qu’on les renseigne dans `assets/config.js`.
 - **Commune et volume sous les photos avant/après, fourchette de prix de l’estimateur** : masqués
   pour la même raison ; même réglage.
 - **Raison sociale, forme juridique, adresse, SIRET, directeur de la publication** : encore entre

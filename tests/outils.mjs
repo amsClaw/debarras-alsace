@@ -1,16 +1,36 @@
-// Outils partagés par les tests du site (V3).
+// Outils partagés par les tests du site.
 // Aucune dépendance : uniquement la bibliothèque standard de Node.
 
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
 // Racine du dépôt : le dossier qui contient `tests/`.
 export const RACINE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
+/** Les seules pages HTML publiées du site, toutes à la racine du dépôt. */
+export const PAGES_SITE = ["index.html", "mentions-legales.html", "confidentialite.html", "404.html"];
+
+/**
+ * Chemins absolus des fichiers publiés du site : les pages racine et tout `assets/`.
+ * @param {RegExp} [motif] filtre sur le nom de fichier
+ * @returns {string[]}
+ */
+export function fichiersDuSite(motif = /./) {
+  const fichiers = PAGES_SITE.filter((nom) => motif.test(nom)).map((nom) => path.join(RACINE, nom));
+  (function parcourir(dossier) {
+    for (const entree of readdirSync(dossier, { withFileTypes: true })) {
+      const chemin = path.join(dossier, entree.name);
+      if (entree.isDirectory()) parcourir(chemin);
+      else if (motif.test(entree.name)) fichiers.push(chemin);
+    }
+  })(path.join(RACINE, "assets"));
+  return fichiers;
+}
+
 /**
  * Renvoie le texte d'un fichier, désigné par son chemin relatif à la racine du dépôt.
- * @param {string} chemin ex. "v3/index.html"
+ * @param {string} chemin ex. "index.html"
  * @returns {string}
  */
 export function lire(chemin) {

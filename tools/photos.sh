@@ -6,13 +6,13 @@
 # 2) Sinon, on retombe sur la découpe de la maquette (source-client/photos/), agrandie proprement
 #    (Lanczos + accentuation) : utilisable pour valider, mais basse résolution.
 #
-# Sortie : src/assets/photos/<nom>.jpg  (JPEG qualité 84 — ~10x plus léger que le PNG à taille égale)
+# Sortie : assets/photos/<nom>.jpg  (JPEG qualité 84 — ~10x plus léger que le PNG à taille égale)
 # Usage  : bash tools/photos.sh && python3 tools/build.py
 set -e
 RACINE="$(cd "$(dirname "$0")/.." && pwd)"
 MAQUETTE_PHOTOS="$RACINE/source-client/photos"
 HD="$RACINE/source-client/photos-hd"
-DEST="$RACINE/src/assets/photos"
+DEST="$RACINE/assets/photos"
 mkdir -p "$DEST" "$HD"
 
 # nom : largeur x hauteur de sortie (2x la taille d'affichage = net sur écran Retina)
@@ -51,4 +51,4 @@ for entree in "${PHOTOS[@]}"; do
   fi
 done
 echo
-echo "Photos prêtes dans src/assets/photos ($(du -sh "$DEST" | cut -f1)) — relancer : python3 tools/build.py"
+echo "Photos prêtes dans assets/photos ($(du -sh "$DEST" | cut -f1)) — à référencer dans index.html"

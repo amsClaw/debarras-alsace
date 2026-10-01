@@ -1,5 +1,5 @@
-// H10 — mesures réelles, hors npm test et sans dépendance du produit.
-// node tools/mesurer-v3.mjs [--capturer=avant|apres] [--paliers]
+// Mesures réelles du site (créé par H10), hors npm test et sans dépendance du produit.
+// node tools/mesurer-site.mjs [--capturer=avant|apres] [--paliers]
 // Playwright installé dans l'environnement de recette ; aucun navigateur téléchargé.
 import { createServer } from "node:http";
 import { readFile, mkdir, writeFile } from "node:fs/promises";
@@ -27,7 +27,7 @@ const serveur = createServer(async (req, res) => {
   } catch { res.writeHead(404).end(); }
 });
 await new Promise((resolve) => serveur.listen(0, "127.0.0.1", resolve));
-const base = `http://127.0.0.1:${serveur.address().port}/v3/`;
+const base = `http://127.0.0.1:${serveur.address().port}/`;
 const navigateur = await chromium.launch({ headless: true, args: ["--no-sandbox"] });
 const erreurs = [];
 const sorties = [];

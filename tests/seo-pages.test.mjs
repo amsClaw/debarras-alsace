@@ -1,14 +1,14 @@
-// Vérifications de préparation SEO, médias et pages annexes de la V3.
+// Vérifications de préparation SEO, médias et pages annexes du site.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { lire, compter, RACINE } from "./outils.mjs";
+import { lire, compter, RACINE, PAGES_SITE, fichiersDuSite } from "./outils.mjs";
 
-const page = lire("v3/index.html");
-const config = lire("v3/assets/config.js");
-const htmlPages = readdirSync(path.join(RACINE, "v3")).filter((nom) => nom.endsWith(".html"));
+const page = lire("index.html");
+const config = lire("assets/config.js");
+const htmlPages = PAGES_SITE;
 
 function meta(propriete) {
   return page.match(new RegExp(`<meta\\s+property="${propriete}"\\s+content="([^"]+)"`))?.[1];
@@ -62,16 +62,16 @@ test("images : chargement différé, dimensions explicites et héros prioritaire
   }
 });
 
-test("poids cumulé des photos V3 inférieur ou égal à 1,5 Mo", () => {
-  const dossier = path.join(RACINE, "v3/assets/photos");
+test("poids cumulé des photos du site inférieur ou égal à 1,5 Mo", () => {
+  const dossier = path.join(RACINE, "assets/photos");
   const taille = readdirSync(dossier).reduce((total, nom) => total + statSync(path.join(dossier, nom)).size, 0);
   assert.ok(taille <= 1_500_000, `poids constaté : ${taille} octets`);
 });
 
-test("pages légales adaptées au style V3 et page 404 avec retour accueil", () => {
-  const mentions = lire("v3/mentions-legales.html");
-  const confidentialite = lire("v3/confidentialite.html");
-  const erreur = lire("v3/404.html");
+test("pages légales adaptées au style du site et page 404 avec retour accueil", () => {
+  const mentions = lire("mentions-legales.html");
+  const confidentialite = lire("confidentialite.html");
+  const erreur = lire("404.html");
   for (const legal of [mentions, confidentialite]) {
     assert.match(legal, /class="entete"/);
     assert.match(legal, /class="pied"/);
@@ -84,10 +84,10 @@ test("pages légales adaptées au style V3 et page 404 avec retour accueil", () 
   assert.match(erreur, /href="index\.html"[^>]*>Retour à l’accueil/);
 });
 
-test("tous les liens internes des pages HTML V3 pointent vers un fichier ou une ancre existante", () => {
+test("tous les liens internes des pages HTML du site pointent vers un fichier ou une ancre existante", () => {
   for (const nom of htmlPages) {
-    const html = lire(`v3/${nom}`);
-    const source = path.join(RACINE, "v3", nom);
+    const html = lire(nom);
+    const source = path.join(RACINE, nom);
     const ids = new Set([...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]));
     const ancres = new Set([...html.matchAll(/<a\b[^>]*name="([^"]+)"/g)].map((match) => match[1]));
     for (const [, href] of html.matchAll(/<a\b[^>]*href="([^"]*)"/g)) {
@@ -114,8 +114,8 @@ test("tous les liens internes des pages HTML V3 pointent vers un fichier ou une 
 // référencement absolu, page 404 en profondeur, polices hébergées. ———
 
 const BASE = "https://amsclaw.github.io/debarras-alsace/";
-const pages = readdirSync(path.join(RACINE, "v3")).filter((nom) => nom.endsWith(".html"));
-const module = (nom) => import(pathToFileURL(path.join(RACINE, "v3", "assets", nom)).href);
+const pages = PAGES_SITE;
+const module = (nom) => import(pathToFileURL(path.join(RACINE, "assets", nom)).href);
 const { verifierZone } = await module("zone.js");
 const { VOLUMES } = await module("volume.js");
 // site.js est le point d'entrée de la page : on l'importe avec un document vide pour
@@ -127,7 +127,7 @@ const { composerMessage } = await module("message.js");
 
 function configuration() {
   const fenetre = {};
-  new Function("window", lire("v3/assets/config.js"))(fenetre);
+  new Function("window", lire("assets/config.js"))(fenetre);
   return fenetre.DEBARRAS;
 }
 
@@ -164,7 +164,7 @@ test("config.js : vraies coordonnées de l'entreprise, au seul endroit prévu", 
 test("coordonnées : tous les liens tel:, wa.me et mailto: des pages utilisent config.js", () => {
   const { telInternational, whatsapp, mail } = configuration();
   for (const nom of pages) {
-    const html = lire(`v3/${nom}`);
+    const html = lire(nom);
     for (const motif of ["33000000000", "XX XX", "contact@domaine", "[téléphone]", "[adresse e-mail]", "[06 "]) {
       assert.equal(compter(html, motif), 0, `${nom} : « ${motif} » ne doit plus apparaître`);
     }
@@ -179,7 +179,7 @@ test("coordonnées : tous les liens tel:, wa.me et mailto: des pages utilisent c
 });
 
 test("site.js : le devis WhatsApp / e-mail et les textes affichés lisent window.DEBARRAS", () => {
-  const js = lire("v3/assets/site.js");
+  const js = lire("assets/site.js");
   assert.match(js, /wa\.me\/\$\{whatsapp\}\?text=/);
   assert.match(js, /mailto:\$\{mail\}\?subject=/);
   assert.match(js, /\.texte-tel[\s\S]*?config\.tel/);
@@ -227,21 +227,21 @@ test("blocs en attente de l'entreprise : masqués par défaut, réaffichés par 
   assert.equal(fourchettePrix(rempli, "t2"), "à partir de …");
   assert.equal(identiteEntreprise(rempli), "Débarras Alsace SAS · SIRET\u00a0123");
 
-  const js = lire("v3/assets/site.js");
+  const js = lire("assets/site.js");
   assert.match(js, /modeleAvis\.replaceWith\(sectionAvis\)/);
   assert.match(js, /notePrix\.hidden = !fourchette/);
   assert.match(js, /textContent = auteur \?/, "les avis sont insérés en texte, jamais en HTML");
   assert.doesNotMatch(js, /innerHTML/);
-  const css = lire("v3/assets/style.css");
+  const css = lire("assets/style.css");
   assert.match(css, /\.realisation-meta p\[hidden\],\.estimateur-note\[hidden\],\.pied-identite\[hidden\]\{display:none\}/);
 });
 
 test("typographie : apostrophes courbes dans le texte visible de toutes les pages", () => {
   for (const nom of pages) {
-    const visible = texteVisible(lire(`v3/${nom}`));
+    const visible = texteVisible(lire(nom));
     assert.deepEqual(visible.match(/\w'\w/g) ?? [], [], `${nom} : apostrophe droite`);
   }
-  for (const [nom, attribut] of pages.flatMap((nom) => [...lire(`v3/${nom}`).matchAll(/\b(?:alt|aria-label|content|placeholder)="([^"]*)"/g)].map(([, v]) => [nom, v]))) {
+  for (const [nom, attribut] of pages.flatMap((nom) => [...lire(nom).matchAll(/\b(?:alt|aria-label|content|placeholder)="([^"]*)"/g)].map(([, v]) => [nom, v]))) {
     assert.doesNotMatch(attribut, /\w'\w/, `${nom} : apostrophe droite dans « ${attribut} »`);
   }
 });
@@ -250,7 +250,7 @@ test("typographie : espaces insécables entre nombre et unité et avant ? ! : ;"
   const unite = /\d[ ](?:h|m³|km|min|secondes|chiffres|jours?|journée)(?![\wÀ-ÿ])/;
   const ponctuation = /[^\s\u00a0][ ][?!:;](?=\s|$)/;
   for (const nom of pages) {
-    const visible = texteVisible(lire(`v3/${nom}`));
+    const visible = texteVisible(lire(nom));
     assert.doesNotMatch(visible, unite, `${nom} : espace ordinaire avant une unité`);
     assert.doesNotMatch(visible, ponctuation, `${nom} : espace ordinaire avant ? ! : ;`);
   }
@@ -275,7 +275,7 @@ test("référencement : canonical, og:url et og:image absolus sur la base du sit
   assert.match(page, new RegExp(`<meta property="og:url" content="${BASE.replace(/[.]/g, "\\.")}">`));
   const image = page.match(/<meta property="og:image" content="([^"]+)">/)[1];
   assert.equal(image, `${BASE}assets/photos/hero.jpg`);
-  assert.ok(existsSync(path.join(RACINE, "v3", new URL(image).pathname.replace("/debarras-alsace/", ""))), "l'image de partage existe");
+  assert.ok(existsSync(path.join(RACINE, new URL(image).pathname.replace("/debarras-alsace/", ""))), "l'image de partage existe");
   const donnees = JSON.parse(page.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
   assert.equal(donnees.telephone, "+33699544926");
   assert.equal(donnees.email, "moisenelson17@gmail.com");
@@ -283,7 +283,7 @@ test("référencement : canonical, og:url et og:image absolus sur la base du sit
 });
 
 test("page 404 : feuille de style, liens et images résolus à n'importe quelle profondeur d'adresse", () => {
-  const erreur = lire("v3/404.html");
+  const erreur = lire("404.html");
   const base = erreur.match(/<base href="([^"]+)">/)?.[1];
   assert.equal(base, "/debarras-alsace/", "une base sur la racine du site, quelle que soit la profondeur");
   assert.match(erreur, /<script>if \(!location\.pathname\.startsWith\("\/debarras-alsace\/"\)\) document\.querySelector\("base"\)\.href = "\.\/";<\/script>/, "aperçu local hors /debarras-alsace/ : base ramenée au dossier de la page");
@@ -296,43 +296,36 @@ test("page 404 : feuille de style, liens et images résolus à n'importe quelle 
       const cible = new URL(reference, new URL(base, profondeur));
       assert.ok(cible.href.startsWith(BASE), `${reference} depuis ${profondeur} → ${cible.href}`);
       const fichier = cible.pathname.replace("/debarras-alsace/", "") || "index.html";
-      assert.ok(statSync(path.join(RACINE, "v3", fichier), { throwIfNoEntry: false })?.isFile(), `${reference} → v3/${fichier} existe`);
+      assert.ok(statSync(path.join(RACINE, fichier), { throwIfNoEntry: false })?.isFile(), `${reference} → ${fichier} existe`);
     }
   }
 });
 
 test("polices hébergées : aucun appel à Google Fonts, woff2 locaux en font-display:swap", () => {
-  const fichiers = [];
-  (function parcourir(dossier) {
-    for (const entree of readdirSync(dossier, { withFileTypes: true })) {
-      const chemin = path.join(dossier, entree.name);
-      if (entree.isDirectory()) parcourir(chemin);
-      else if (/\.(html|css|js)$/.test(entree.name)) fichiers.push(chemin);
-    }
-  })(path.join(RACINE, "v3"));
+  const fichiers = fichiersDuSite(/\.(html|css|js)$/);
   for (const fichier of fichiers) {
     const contenu = readFileSync(fichier, "utf8");
     assert.doesNotMatch(contenu, /fonts\.(googleapis|gstatic)\.com/, `${path.relative(RACINE, fichier)} appelle Google Fonts`);
   }
-  const css = lire("v3/assets/style.css");
+  const css = lire("assets/style.css");
   const faces = [...css.matchAll(/@font-face\{([^}]*)\}/g)].map(([, regle]) => regle);
   assert.equal(faces.length, 3);
   for (const regle of faces) {
     assert.match(regle, /font-display:swap/);
     const fichier = regle.match(/url\("([^"]+\.woff2)"\)/)?.[1];
     assert.ok(fichier, "source woff2 attendue");
-    const chemin = path.join(RACINE, "v3/assets", fichier);
+    const chemin = path.join(RACINE, "assets", fichier);
     assert.ok(existsSync(chemin), `${fichier} présent`);
     assert.equal(readFileSync(chemin).subarray(0, 4).toString("latin1"), "wOF2", `${fichier} est un vrai woff2`);
   }
   for (const famille of ["font-family:Fraunces", 'font-family:"Public Sans"']) {
     assert.ok(faces.some((r) => r.includes(famille)), famille);
   }
-  assert.match(lire("v3/confidentialite.html"), /polices de caractères sont hébergées sur le site lui-même&nbsp;: aucune requête n’est envoyée à Google Fonts/);
+  assert.match(lire("confidentialite.html"), /polices de caractères sont hébergées sur le site lui-même&nbsp;: aucune requête n’est envoyée à Google Fonts/);
 });
 
 test("mentions légales : hébergeur et contact remplis, champs de l'entreprise signalés", () => {
-  const mentions = lire("v3/mentions-legales.html");
+  const mentions = lire("mentions-legales.html");
   assert.match(mentions, /Hébergeur&nbsp;: GitHub Pages — GitHub, Inc\./);
   assert.match(mentions, /88 Colin P\. Kelly Jr\. Street, San Francisco, CA 94107, États-Unis/);
   assert.match(mentions, /href="mailto:moisenelson17@gmail\.com"/);
@@ -360,7 +353,7 @@ function documentDe(html) {
 test("pages légales : les coordonnées suivent config.js (liens et textes), secours identiques sans JS", () => {
   const essai = { tel: "01 23 45 67 89", telInternational: "33123456789", whatsapp: "33123456789", mail: "test@example.invalid" };
   for (const nom of ["mentions-legales.html", "confidentialite.html", "index.html"]) {
-    const html = lire(`v3/${nom}`);
+    const html = lire(nom);
     assert.match(html, /<script src="assets\/config\.js" defer><\/script>\s*<script type="module" src="assets\/site\.js"><\/script>/, `${nom} : config.js puis site.js chargés`);
     const doc = documentDe(html);
     // Les deux liens du devis (envoi WhatsApp, « Préférer l’e-mail ») sont reconstruits au clic par site.js.
@@ -377,7 +370,7 @@ test("pages légales : les coordonnées suivent config.js (liens et textes), sec
     for (const lien of doc.querySelectorAll(".texte-mail")) assert.equal(lien.textContent, essai.mail);
   }
   for (const nom of ["mentions-legales.html", "confidentialite.html"]) {
-    const doc = documentDe(lire(`v3/${nom}`));
+    const doc = documentDe(lire(nom));
     assert.equal(doc.querySelectorAll(".texte-tel").length, 1, `${nom} : numéro affiché relié`);
     assert.equal(doc.querySelectorAll(".texte-mail").length, 1, `${nom} : e-mail affiché relié`);
   }
@@ -393,5 +386,5 @@ test("récapitulatif du devis (étape 3) : insécable avant « : », message env
   assert.doesNotMatch(recap, / [:;?!]/, "aucune espace ordinaire avant : ; ? !");
   assert.equal(recap.replace(/\u00a0/g, " "), composerMessage(champs), "même contenu que le message envoyé");
   assert.match(composerMessage(champs), /Type : Maison/, "le message WhatsApp / e-mail reste en texte brut");
-  assert.match(lire("v3/assets/site.js"), /recap\.textContent = texteRecap\(/, "le récapitulatif affiché passe par texteRecap");
+  assert.match(lire("assets/site.js"), /recap\.textContent = texteRecap\(/, "le récapitulatif affiché passe par texteRecap");
 });
