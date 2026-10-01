@@ -59,14 +59,14 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
       [06 XX XX XX XX]
     </a>
-    <a class="bouton bouton-brique entete-devis" href="#devis">Devis gratuit</a>
+    <a class="bouton bouton-brique entete-devis" href="#devis" aria-label="Devis gratuit">Devis<span class="entete-devis-long">gratuit</span></a>
   </div>
 </header>
 
 <main id="contenu">
   <div class="conteneur hero">
     <div class="hero-texte">
-      <span class="pastille">Entreprise locale · Strasbourg, Eurométropole, Bas-Rhin</span>
+      <span class="pastille">Entreprise locale · Strasbourg, Eurométropole, <span class="mot-insecable">Bas-Rhin</span></span>
       <h1 class="hero-titre">Vous montrez ce qui doit partir. <em>On s'occupe du reste.</em></h1>
       <p class="hero-paragraphe">Maison, appartement, cave, succession ou local professionnel : on vide, on trie, on valorise ce qui peut l'être et on laisse la pièce propre. Prix ferme annoncé avant l'intervention.</p>
       <div class="hero-boutons">
@@ -82,7 +82,7 @@
       <ul class="reassurances">
         <li>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          <span><strong>Devis sous 24 h</strong><br>gratuit, sans engagement</span>
+          <span><strong>Devis sous 24&nbsp;h</strong><br>gratuit, sans engagement</span>
         </li>
         <li>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -148,7 +148,8 @@
       </form>
     </div>
   </div>
-  <section class="zone-verification conteneur" aria-labelledby="zone-titre">
+  <section class="bande bande-zone" aria-labelledby="zone-titre">
+    <div class="zone-verification conteneur">
     <div class="zone-introduction">
       <span class="zone-icone" aria-hidden="true">⌖</span>
       <div>
@@ -161,6 +162,7 @@
       <input id="zone-code-postal" aria-label="Votre code postal" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="ex. 67400">
     </label>
     <p id="zone-reponse" class="zone-reponse" aria-live="polite">Bas-Rhin (67) et Haut-Rhin (68) : oui, nous intervenons.</p>
+    </div>
   </section>
 
   <section id="prestations" class="prestations conteneur" aria-labelledby="prestations-titre">
@@ -215,14 +217,8 @@
     </div>
   </section>
 
-  <section id="diogene" class="diogene conteneur" aria-labelledby="diogene-titre">
-    <div class="diogene-media">
-      <img src="assets/photos/service-diogene.jpg" width="450" height="450" loading="lazy" alt="Pièce très encombrée avant intervention">
-      <div class="diogene-proche">
-        <strong>Vous êtes un proche ?</strong>
-        <span>Évitez la confrontation : proposez votre aide plutôt que de l'imposer. Appelez-nous d'abord, on vous conseille sur la façon d'aborder la situation, avant même de parler de devis.</span>
-      </div>
-    </div>
+  <section id="diogene" class="bande bande-diogene" aria-labelledby="diogene-titre">
+    <div class="diogene conteneur">
     <div class="diogene-texte">
       <span class="sur-titre">Syndrome de Diogène</span>
       <h2 id="diogene-titre">Un logement devenu impossible à vivre ? <em>On vous aide, sans jugement.</em></h2>
@@ -250,6 +246,14 @@
         <a class="bouton bouton-contour lien-whatsapp" href="https://wa.me/33000000000">Envoyer des photos</a>
       </div>
     </div>
+    <div class="diogene-media">
+      <img src="assets/photos/service-diogene.jpg" width="450" height="450" loading="lazy" alt="Pièce très encombrée avant intervention">
+      <div class="diogene-proche">
+        <strong>Vous êtes un proche ?</strong>
+        <span>Évitez la confrontation : proposez votre aide plutôt que de l'imposer. Appelez-nous d'abord, on vous conseille sur la façon d'aborder la situation, avant même de parler de devis.</span>
+      </div>
+    </div>
+    </div>
   </section>
 
   <section id="deroule" class="deroule conteneur" aria-labelledby="deroule-titre">
@@ -265,7 +269,7 @@
       </li>
       <li>
         <span class="deroule-numero">02</span>
-        <h3>Prix ferme sous 24 h</h3>
+        <h3>Prix ferme sous 24&nbsp;h</h3>
         <p>Gratuit et sans engagement. Le montant annoncé ne bouge pas le jour de l’intervention.</p>
       </li>
       <li>
@@ -277,7 +281,8 @@
     <p class="deroule-garantie">Aucune avance à verser : vous payez quand la pièce est vide et propre.</p>
   </section>
 
-  <section id="prix" class="prix conteneur" aria-labelledby="prix-titre">
+  <section id="prix" class="bande bande-prix" aria-labelledby="prix-titre">
+    <div class="prix conteneur">
     <div class="prix-argumentaire">
       <span class="sur-titre sur-titre-clair">Le prix, en clair</span>
       <h2 id="prix-titre">Un débarras n'est pas toujours payant.</h2>
@@ -303,12 +308,13 @@
         <label class="pastille-radio"><input type="radio" name="volume" value="pro" id="volume-pro"><span>Local pro</span></label>
       </fieldset>
       <div class="estimateur-tuiles">
-        <div class="estimateur-tuile"><span>Volume</span><strong id="estimateur-m3">15–30 m³</strong></div>
-        <div class="estimateur-tuile"><span>Camion 20 m³</span><strong id="estimateur-camions">1–2</strong></div>
-        <div class="estimateur-tuile"><span>Durée</span><strong id="estimateur-duree">1 journée</strong></div>
+        <div class="estimateur-tuile"><span>Volume</span><strong id="estimateur-m3">15–30&nbsp;m³</strong></div>
+        <div class="estimateur-tuile"><span>Camion 20&nbsp;m³</span><strong id="estimateur-camions">1–2</strong></div>
+        <div class="estimateur-tuile"><span>Durée</span><strong id="estimateur-duree">1&nbsp;journée</strong></div>
       </div>
       <p class="estimateur-note">Fourchette de prix pour ce volume : <strong>[fourchette validée par l'entreprise]</strong></p>
       <a class="bouton bouton-brique estimateur-cta" href="#devis">Recevoir mon prix ferme</a>
+    </div>
     </div>
   </section>
 
@@ -428,15 +434,15 @@
 <nav class="barre-mobile" aria-label="Actions rapides">
   <a class="barre-mobile-lien barre-mobile-appel lien-tel" href="tel:+330****0000">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
-    Appeler
+    <span>Appeler</span>
   </a>
   <a class="barre-mobile-lien barre-mobile-whatsapp lien-whatsapp" href="https://wa.me/33000000000">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"/></svg>
-    WhatsApp
+    <span>WhatsApp</span>
   </a>
   <a class="barre-mobile-lien barre-mobile-devis" href="#devis">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-    Devis photo
+    <span>Devis</span>
   </a>
 </nav>
 

@@ -9,11 +9,11 @@ const { estimer, VOLUMES } = await import(pathToFileURL(path.join(RACINE, "v3", 
 const page = lire("v3/index.html");
 
 test("estimer : les six choix renvoient les valeurs de la maquette", () => {
-  assert.deepEqual(estimer("cave"), { label: "Cave / garage", m3: "3–8 m³", camions: "1", duree: "2–3 h" });
-  assert.deepEqual(estimer("studio"), { label: "Studio", m3: "8–15 m³", camions: "1", duree: "½ journée" });
-  assert.deepEqual(estimer("t2"), { label: "T2 – T3", m3: "15–30 m³", camions: "1–2", duree: "1 journée" });
-  assert.deepEqual(estimer("t4"), { label: "T4 et +", m3: "30–45 m³", camions: "2–3", duree: "1–2 jours" });
-  assert.deepEqual(estimer("maison"), { label: "Maison", m3: "40–80 m³", camions: "2–4", duree: "2–3 jours" });
+  assert.deepEqual(estimer("cave"), { label: "Cave / garage", m3: "3–8\u00a0m³", camions: "1", duree: "2–3\u00a0h" });
+  assert.deepEqual(estimer("studio"), { label: "Studio", m3: "8–15\u00a0m³", camions: "1", duree: "½\u00a0journée" });
+  assert.deepEqual(estimer("t2"), { label: "T2 – T3", m3: "15–30\u00a0m³", camions: "1–2", duree: "1\u00a0journée" });
+  assert.deepEqual(estimer("t4"), { label: "T4 et +", m3: "30–45\u00a0m³", camions: "2–3", duree: "1–2\u00a0jours" });
+  assert.deepEqual(estimer("maison"), { label: "Maison", m3: "40–80\u00a0m³", camions: "2–4", duree: "2–3\u00a0jours" });
   assert.deepEqual(estimer("pro"), { label: "Local pro", m3: "sur visite", camions: "—", duree: "selon accès" });
 });
 
@@ -32,8 +32,9 @@ test("prix : section en deux colonnes sur fond vert forêt avec les trois cas", 
   }
   const css = lire("v3/assets/style.css").replace(/\/\*[\s\S]*?\*\//g, "");
   assert.match(css, /\.prix\{[^}]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
-  assert.match(css, /\.prix\{[^}]*border-radius:32px/);
-  assert.match(css, /\.prix\{[^}]*background:var\(--vert\)/);
+  assert.match(section, /class="bande bande-prix"/);
+  assert.match(css, /\.bande\{[^}]*border-radius:32px/);
+  assert.match(css, /\.bande-zone,\.bande-prix\{background:var\(--vert\)/);
   assert.match(css, /@media\s*\(max-width:899\.98px\)[\s\S]*?\.prix\{grid-template-columns:1fr/);
 });
 
@@ -55,9 +56,9 @@ test("estimateur : six boutons radio exclusifs, T2 – T3 sélectionné par déf
 
 test("estimateur : les tuiles affichent les valeurs T2 – T3 sans JavaScript", () => {
   const section = page.match(/<section id="prix"[\s\S]*?<\/section>/)?.[0];
-  assert.match(section, /id="estimateur-m3">15–30 m³</);
+  assert.match(section, /id="estimateur-m3">15–30&nbsp;m³</);
   assert.match(section, /id="estimateur-camions">1–2</);
-  assert.match(section, /id="estimateur-duree">1 journée</);
+  assert.match(section, /id="estimateur-duree">1&nbsp;journée</);
 });
 
 test("estimateur : fourchette de prix en emplacement, bouton vers #devis, aucun prix inventé", () => {
@@ -71,4 +72,15 @@ test("estimateur : site.js met à jour les tuiles au choix, sans dupliquer les d
   const js = lire("v3/assets/site.js");
   assert.match(js, /import \{ estimer \} from ".\/volume.js"/);
   assert.match(js, /estimer\(choix\)/);
+});
+
+test("H10 : les unités restent insécables au départ comme après chaque choix", () => {
+  for (const choix of ["cave", "studio", "t2", "t4", "maison"]) {
+    assert.match(estimer(choix).m3, /\u00a0m³$/);
+    assert.match(estimer(choix).duree, /\u00a0(?:h|journée|jours)$/);
+  }
+  const css = lire("v3/assets/style.css");
+  assert.match(css, /\.estimateur-tuile strong\{[^}]*white-space:nowrap/);
+  assert.match(css, /\.estimateur-choix \.pastille-radio span\{[^}]*white-space:nowrap/);
+  assert.match(css, /@media \(max-width:599\.98px\)[\s\S]*?\.estimateur-choix\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}/);
 });

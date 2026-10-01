@@ -137,13 +137,15 @@ test("aucune affirmation invérifiable : ni certification, ni désinfection, ni 
   }
 });
 
-test("responsive : une colonne sous 900 px, marges latérales de 16 px, section sur fond #E4ECDF", () => {
-  assert.match(css, /\.diogene\{[^}]*margin:0 auto 40px/);
-  assert.match(css, /\.diogene\{[^}]*padding:64px/);
-  assert.match(css, /\.diogene\{[^}]*border-radius:32px/);
-  assert.match(css, /\.diogene\{[^}]*background:#E4ECDF/);
-  assert.match(css, /\.diogene\{[^}]*grid-template-columns:420px minmax\(0,1fr\)/);
+test("responsive : une colonne sous 900 px, gouttière commune, fond Diogène indépendant du contenu", () => {
+  assert.match(section("diogene"), /class="bande bande-diogene"/);
+  assert.match(section("diogene"), /class="diogene conteneur"/);
+  assert.match(css, /\.bande\{[^}]*margin:0 auto 40px/);
+  assert.match(css, /\.diogene\{[^}]*padding-block:64px/);
+  assert.match(css, /\.bande\{[^}]*border-radius:32px/);
+  assert.match(css, /\.bande-diogene\{background:#E4ECDF/);
+  assert.match(css, /\.diogene\{[^}]*grid-template-columns:minmax\(0,\.85fr\) minmax\(0,1fr\)/);
   assert.match(css, /@media\s*\(max-width:899\.98px\)[\s\S]*?\.diogene\{[^}]*grid-template-columns:1fr/);
-  assert.match(css, /@media\s*\(max-width:899\.98px\)[\s\S]*?\.diogene\{[^}]*margin:0 16px/);
+  assert.doesNotMatch(css, /\.diogene\{[^}]*margin:0 16px/, "la section ne doit pas ajouter sa propre marge à la gouttière");
   assert.match(css, /\.diogene-media img\{[^}]*max-width:100%|\.diogene-media img\{[^}]*width:100%/);
 });
