@@ -209,3 +209,26 @@ Demande d'Ams du 2026-09-26. Référence visuelle et textes exacts : section `<!
 **Ne touche pas :** la racine du site (V1), `v2/`, les autres sections (sauf la carte et la FAQ citées).
 
 **Résultat visible :** la page V3 montre une section Diogène claire et bienveillante ; la carte « Diogène & logement très encombré » y mène.
+
+## Histoire 12 — Nouveau haut de page : photo en fond sur ordinateur, titre sur la photo sur téléphone (recette d'Ams)
+
+**Titre :** Le haut de page ne pose plus la carte de devis à cheval sur la photo et n'a plus de vide : sur ordinateur, la photo devient le décor du héros et le devis est entier à droite ; sur téléphone, la photo s'affiche en grand avec le titre posé dessus. **C'est le checkpoint de recette d'Ams.**
+
+**Complexité :** standard
+
+**Demande d'Ams (recette de H8, 2026-10-01) :** « je n'aime toujours pas l'emplacement de la carte de devis qui chevauche la photo, et il y a une perte d'espace non exploitée ». Versions maquettées sur le vrai site ; **choix d'Ams : C sur ordinateur + D sur téléphone.** Référence obligatoire : `docs/maquette-hero/` (README + captures `C-ordinateur-1280.jpg`, `C-grand-ecran-1440.jpg`, `D-telephone-haut.jpg`, `D-telephone-devis.jpg`).
+
+**Critères d'acceptation :**
+1. **Ordinateur (≥ 900 px) — C** : la photo du héros est le décor de toute la bande du haut de page (pleine largeur, `object-fit: cover`, recadrage sur les personnes), sous un dégradé vert foncé de gauche (opaque) à droite (léger) ; à gauche, badge, titre, texte, deux boutons et trois garanties en clair (le bouton « Photos par WhatsApp » en contour blanc) ; à droite, la carte « Devis express » blanche **entière**, centrée verticalement, qui ne chevauche ni l'en-tête ni le bord de la bande. Le contenu reste aligné sur la grille de 1200 px.
+2. **Téléphone (< 900 px) — D** : sous l'en-tête, la photo pleine largeur (environ 340 px de haut) avec le badge et le titre en blanc sur son bas assombri ; ensuite, sur fond clair : texte, boutons, garanties, puis la carte de devis. Le bouton « Obtenir mon devis gratuit » est visible dans le premier écran à 375 × 812.
+3. **Lisibilité** : contraste du texte clair sur le dégradé ≥ 4,5:1 sur toute la zone du texte (vérifié sur la capture, pas seulement en théorie) ; la photo reste une vraie image (`<img>` avec texte alternatif, chargée en priorité), pas un fond CSS seul.
+4. **Détails relevés par Ams** : plus d'espace en trop dans le bouton « Devis gratuit » de l'en-tête ; « Bas-Rhin » sans espace parasite dans le badge (trait d'union insécable, aucune espace avant).
+5. **Parcours filmé** : ajouter les étapes « la carte de devis est entière et ne chevauche pas la photo ni l'en-tête (ordinateur) » et « le titre est sur la photo et le bouton de devis est visible dès l'ouverture (téléphone) » ; tout le parcours vert (ne retirer aucune étape).
+6. Captures 375 × 812, 1280 × 860 et 1440 × 900 du haut de page dans `docs/captures/h12-*.png`, à comparer aux maquettes.
+7. `docs/CAHIER_DE_RECETTE.md` : ajouter les cas de cette histoire (ordinateur, téléphone, les deux détails) avec la phrase « je valide H12 du projet debarras-alsace ». `npm test` vert.
+
+**Dépend de :** H8 (la bascule : les fichiers du site sont à la racine).
+
+**Ne touche pas :** le reste de la page, les textes, le parcours du devis.
+
+**Résultat visible :** un haut de page soigné, sans superposition bricolée, qui donne envie de demander un devis.
