@@ -12,17 +12,128 @@ import { verifierZone } from "./zone.js";
 import { estimer } from "./volume.js";
 import { etatInitial, etapeSuivante, etapePrecedente, NB_ETAPES } from "./etapes.js";
 
-// Les liens tel: et wa.me ont déjà un lien fonctionnel dans le HTML (mêmes
-// valeurs que config.js) : cette mise à jour ne fait que refléter une éventuelle
-// modification de window.DEBARRAS sans avoir à toucher le HTML.
-const config = window.DEBARRAS;
-if (config) {
-  document.querySelectorAll(".lien-tel").forEach((lien) => {
+// Contenus qui attendent une information de l'entreprise — fonctions pures, exportées
+// pour les tests : elles lisent la configuration (window.DEBARRAS) et renvoient ce qu'il
+// faut afficher, ou une valeur vide quand l'information n'a pas été fournie (le bloc
+// correspondant reste alors masqué).
+const texte = (valeur) => (typeof valeur === "string" ? valeur.trim() : valeur == null ? "" : String(valeur).trim());
+
+/**
+ * Avis clients : visibles seulement si au moins un avis réel est fourni.
+ * @returns {{visible:boolean, temoignages:{texte:string, auteur:string}[], note:{note:string, nombre:string}|null, lien:string}}
+ */
+export function avisAffiches(config = {}) {
+  const temoignages = (Array.isArray(config.avis) ? config.avis : [])
+    .map((avis) => (typeof avis === "string" ? { texte: texte(avis), auteur: "" } : { texte: texte(avis?.texte), auteur: texte(avis?.auteur) }))
+    .filter((avis) => avis.texte);
+  const note = config.noteGoogle && texte(config.noteGoogle.note) && texte(config.noteGoogle.nombre)
+    ? { note: texte(config.noteGoogle.note), nombre: texte(config.noteGoogle.nombre) }
+    : null;
+  const lien = /^https:\/\//.test(texte(config.lienAvisGoogle)) ? texte(config.lienAvisGoogle) : "";
+  return { visible: temoignages.length > 0, temoignages, note, lien };
+}
+
+/** Ligne « commune · volume » du chantier n° `index` (0, 1, 2), ou "" si inconnue. */
+export function ligneChantier(config = {}, index = 0) {
+  return Array.isArray(config.chantiers) ? texte(config.chantiers[index]) : "";
+}
+
+/** Fourchette de prix validée par l'entreprise pour un choix de l'estimateur, ou "". */
+export function fourchettePrix(config = {}, choix = "") {
+  return config.fourchettes && typeof config.fourchettes === "object" ? texte(config.fourchettes[choix]) : "";
+}
+
+/** « Raison sociale · SIRET 123… » pour le pied de page, ou "" tant que rien n'est fourni. */
+export function identiteEntreprise(config = {}) {
+  const morceaux = [texte(config.raisonSociale), texte(config.siret) && `SIRET\u00a0${texte(config.siret)}`].filter(Boolean);
+  return morceaux.join(" · ");
+}
+
+/**
+ * Texte affiché sur le site : espace insécable avant « : », « ; », « ? », « ! »
+ * (typographie française). Le message envoyé dans WhatsApp / l'e-mail n'est pas
+ * modifié ; seul ce qui s'affiche dans la page passe par ici.
+ */
+export function typographier(texteBrut = "") {
+  return String(texteBrut).replace(/ +([:;?!])/g, "\u00a0$1");
+}
+
+/** Récapitulatif affiché à l'étape 3 du devis : le message, en typographie française. */
+export function texteRecap(champs = {}) {
+  return typographier(composerMessage(champs));
+}
+
+/**
+ * Coordonnées de config.js appliquées à une page (accueil, mentions légales,
+ * confidentialité) : liens tel:, wa.me, mailto: et textes affichés. Le HTML porte
+ * déjà les mêmes valeurs en secours, pour que les liens marchent sans JavaScript.
+ */
+export function appliquerCoordonnees(doc, config) {
+  if (!doc || !config) return;
+  doc.querySelectorAll(".lien-tel").forEach((lien) => {
     lien.href = `tel:+${config.telInternational}`;
   });
-  document.querySelectorAll(".lien-whatsapp").forEach((lien) => {
+  doc.querySelectorAll(".lien-whatsapp").forEach((lien) => {
     lien.href = `https://wa.me/${config.whatsapp}`;
   });
+  doc.querySelectorAll(".lien-mail").forEach((lien) => {
+    lien.href = `mailto:${config.mail}`;
+  });
+  doc.querySelectorAll(".texte-tel").forEach((el) => {
+    el.textContent = config.tel;
+  });
+  doc.querySelectorAll(".texte-mail").forEach((el) => {
+    el.textContent = config.mail;
+  });
+}
+
+const config = window.DEBARRAS;
+if (config) {
+  appliquerCoordonnees(document, config);
+  afficherContenusEntreprise(config);
+}
+
+// Blocs qui attendent une information de l'entreprise : masqués dans le HTML
+// (attribut hidden), affichés seulement si config.js fournit la donnée.
+function afficherContenusEntreprise(cfg) {
+  const avis = avisAffiches(cfg);
+  const modeleAvis = document.getElementById("modele-avis");
+  if (modeleAvis && avis.visible) {
+    const sectionAvis = modeleAvis.content.firstElementChild.cloneNode(true);
+    const liste = sectionAvis.querySelector(".avis-emplacements");
+    avis.temoignages.forEach(({ texte, auteur }) => {
+      const citation = document.createElement("blockquote");
+      citation.textContent = auteur ? `${texte} — ${auteur}` : texte;
+      liste?.appendChild(citation);
+    });
+    const note = sectionAvis.querySelector(".avis-note");
+    if (note && avis.note) {
+      note.querySelector(".avis-note-valeur").textContent = avis.note.note;
+      note.querySelector(".avis-note-nombre").textContent = avis.note.nombre;
+      note.hidden = false;
+    }
+    const lien = sectionAvis.querySelector(".avis-lien");
+    if (lien && avis.lien) {
+      lien.href = avis.lien;
+      lien.hidden = false;
+    }
+    modeleAvis.replaceWith(sectionAvis);
+  }
+
+  document.querySelectorAll(".realisation-lieu").forEach((el, index) => {
+    const ligne = ligneChantier(cfg, index);
+    if (ligne) {
+      el.textContent = ligne;
+      el.hidden = false;
+    }
+  });
+
+  const identite = identiteEntreprise(cfg);
+  const pied = document.querySelector(".pied-identite");
+  if (pied && identite) {
+    pied.textContent = identite;
+    pied.hidden = false;
+  }
 }
 
 const form = document.getElementById("devis");
@@ -41,17 +152,27 @@ const tuileM3 = document.getElementById("estimateur-m3");
 const tuileCamions = document.getElementById("estimateur-camions");
 const tuileDuree = document.getElementById("estimateur-duree");
 if (radiosVolume.length && tuileM3 && tuileCamions && tuileDuree) {
+  const notePrix = document.querySelector(".estimateur-note");
+  const valeurPrix = document.getElementById("estimateur-prix");
   const mettreAJour = (choix) => {
     const valeurs = estimer(choix);
     tuileM3.textContent = valeurs.m3;
     tuileCamions.textContent = valeurs.camions;
     tuileDuree.textContent = valeurs.duree;
+    // La fourchette de prix n'apparaît que si l'entreprise l'a validée (config.js).
+    const fourchette = fourchettePrix(window.DEBARRAS, choix);
+    if (notePrix && valeurPrix) {
+      valeurPrix.textContent = fourchette;
+      notePrix.hidden = !fourchette;
+    }
   };
   radiosVolume.forEach((radio) => {
     radio.addEventListener("change", () => {
       if (radio.checked) mettreAJour(radio.value);
     });
   });
+  const choixInitial = [...radiosVolume].find((radio) => radio.checked);
+  if (choixInitial) mettreAJour(choixInitial.value);
 }
 
 function champsDevis(donnees) {
@@ -104,7 +225,7 @@ if (form) {
   // se mettre à jour à chaque saisie (téléphone, « quand »…), pas seulement lors
   // des changements d'étape.
   function mettreAJourRecap() {
-    if (recap) recap.textContent = composerMessage(champsDevis(new FormData(form)));
+    if (recap) recap.textContent = texteRecap(champsDevis(new FormData(form)));
   }
 
   function rendreEtape() {

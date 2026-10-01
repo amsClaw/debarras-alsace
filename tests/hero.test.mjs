@@ -52,7 +52,7 @@ test("heros : un seul <h1>, pastille, deux boutons, trois reassurances", () => {
   assert.equal(compter(page, /<h1[\s>]/), 1, "un seul <h1> sur la page");
   assert.match(main, /<h1[^>]*class="hero-titre"[^>]*>/, "le <h1> du heros est attendu");
   assert.match(main, /Vous montrez ce qui doit partir\./, "premiere phrase du titre");
-  assert.match(main, /<em>On s'occupe du reste\.<\/em>/, "seconde phrase en italique brique");
+  assert.match(main, /<em>On s’occupe du reste\.<\/em>/, "seconde phrase en italique brique");
 
   assert.match(main, /class="pastille"/, "la pastille est attendue");
   assert.match(main, /Entreprise locale/, "le texte de la pastille est attendu");
@@ -106,15 +106,15 @@ test("formulaire devis : code postal et telephone avec label, mention photos, bo
   assert.ok(champTel, "le champ Telephone doit avoir un label");
   assert.match(formulaire, new RegExp(`<input id="${champTel[1]}"`), "l'input Telephone doit correspondre au label");
 
-  assert.match(formulaire, /Ajoutez 2–3 photos dans WhatsApp après l'envoi/, "la mention photos est attendue");
+  assert.match(formulaire, /Ajoutez 2–3 photos dans WhatsApp après l’envoi/, "la mention photos est attendue");
 
   const boutonEnvoyer = formulaire.match(/<a[^>]*class="[^"]*devis-envoyer[^"]*"[^>]*>Envoyer sur WhatsApp<\/a>/);
   assert.ok(boutonEnvoyer, "le bouton d'envoi doit etre un lien wa.me fonctionnel sans JavaScript");
   assert.match(boutonEnvoyer[0], new RegExp(`href="https://wa\\.me/${WHATSAPP}`), "le lien de repli doit utiliser le numero WhatsApp de config.js");
 
-  const lienMail = formulaire.match(/<a[^>]*class="devis-mail"[^>]*>Préférer l'e-mail<\/a>/);
+  const lienMail = formulaire.match(/<a[^>]*class="devis-mail"[^>]*>Préférer l’e-mail<\/a>/);
   assert.ok(lienMail, "le lien e-mail est attendu");
-  assert.match(lienMail[0], /href="mailto:/, "le lien e-mail doit rester fonctionnel sans JavaScript");
+  assert.match(lienMail[0], /href="mailto:moisenelson17@gmail\.com"/, "le lien e-mail doit rester fonctionnel sans JavaScript");
 });
 
 test("v3/assets/message.js : composerMessage() est une fonction pure exportee", () => {

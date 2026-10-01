@@ -10,12 +10,12 @@ const { verifierZone } = await import(pathToFileURL(path.join(RACINE, "v3", "ass
 const page = lire("v3/index.html");
 
 test("verifierZone : départements 67 et 68 couverts, autres codes hors zone, saisie incomplète en attente", () => {
-  const couvert = "Oui, nous intervenons chez vous. Devis gratuit sous 24 h.";
+  const couvert = "Oui, nous intervenons chez vous. Devis gratuit sous 24\u00a0h.";
   assert.equal(verifierZone("67000"), couvert);
   assert.equal(verifierZone("68100"), couvert);
-  assert.equal(verifierZone("75001"), "Hors de notre zone habituelle : appelez-nous, on vous dit tout de suite.");
-  assert.equal(verifierZone("67"), "Saisissez un code postal à 5 chiffres.");
-  assert.equal(verifierZone(""), "Saisissez un code postal à 5 chiffres.");
+  assert.equal(verifierZone("75001"), "Hors de notre zone habituelle\u00a0: appelez-nous, on vous dit tout de suite.");
+  assert.equal(verifierZone("67"), "Saisissez un code postal à 5\u00a0chiffres.");
+  assert.equal(verifierZone(""), "Saisissez un code postal à 5\u00a0chiffres.");
 });
 
 test("zone : champ accessible limité à cinq chiffres, réponse annoncée poliment et vérification interactive", () => {
@@ -38,7 +38,7 @@ test("prestations : quatre cartes article avec leurs contenus et photos paresseu
     assert.ok(section.includes(titre), `titre attendu : ${titre}`);
   }
   assert.equal(compter(section, /loading="lazy"/g), 4);
-  assert.match(section, /Aussi\s*:/);
+  assert.match(section, /Aussi(?:\s|&nbsp;)*:/);
   assert.equal(compter(section, /class="prestations-aussi"[\s\S]*?<span>/g), 1);
   for (const activite of ["Succession &amp; après décès", "Vente immobilière", "Déménagement", "Nettoyage après débarras", "Encombrants"]) {
     assert.ok(section.includes(activite), `pastille attendue : ${activite}`);
