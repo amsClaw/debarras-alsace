@@ -61,7 +61,7 @@ async function mesures(page) {
       ecran: innerWidth, document: document.documentElement.scrollWidth,
       entete: entete.height, lignesEntete: [...document.querySelectorAll(".marque-nom,.entete-nav a,.entete-tel,.entete-devis")].filter(visible).map(lignes),
       marque: rect(".marque").x, hero: rect(".hero-texte").x,
-      espace: rect(".hero-texte").top - entete.bottom,
+      espace: rect(".hero-photo").top - entete.bottom,
       devis: rect(".carte-devis"), photo: rect(".hero-photo"), hautHero: rect(".hero").top,
       etapes: champs, diogeneTexte: rect(".diogene-texte"), diogeneMedia: rect(".diogene-media"),
       conteneurs: [...document.querySelectorAll(".conteneur")].map((el) => {
@@ -136,11 +136,11 @@ try {
     verifier(m.devis.top >= m.hautHero && m.devis.top >= m.entete, `${prefixe} : devis recouvre l'en-tête`);
     verifier(m.etapes.join() === "1", `${prefixe} : devis non guidé`);
     if (largeur < 900) {
-      verifier(m.espace >= 24 && m.espace <= 32, `${prefixe} : espace mobile ${m.espace}px`);
+      verifier(proche(m.espace, 0), `${prefixe} : vide avant la photo mobile ${m.espace}px`);
       verifier(m.diogeneTexte.bottom <= m.diogeneMedia.top, `${prefixe} : Diogène dans le mauvais ordre`);
       verifier(m.devis.top >= m.photo.bottom + 16, `${prefixe} : devis chevauche la photo mobile`);
     } else {
-      verifier(m.devis.top < m.photo.bottom && m.devis.top >= m.photo.top, `${prefixe} : devis ne chevauche pas seulement le bas de la photo`);
+      verifier(m.devis.top >= m.photo.top && m.devis.bottom <= m.photo.bottom, `${prefixe} : devis hors de la bande photo`);
     }
     if (largeur < 900) {
       verifier(m.boutonsHero.every((r) => proche(r.width, largeur - 2 * gutter) && r.height === 56 && r.lignes === 1), `${prefixe} : boutons héros`);

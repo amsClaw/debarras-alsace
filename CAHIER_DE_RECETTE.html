@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Recette H12 — Débarras Alsace</title>
+<style>
+:root{--papier:#f5f0e6;--encre:#1f221e;--vert:#1e3a2b;--blanc:#fff;--trait:#d6ccb6;--brique:#b5461b}
+*{box-sizing:border-box}body{margin:0;padding:24px 16px 48px;background:var(--papier);color:var(--encre);font:17px/1.6 system-ui,sans-serif;overflow-wrap:anywhere}
+main{max-width:840px;margin:auto}h1,h2{color:var(--vert);line-height:1.2}h1{font-size:clamp(28px,6vw,42px)}h2{font-size:24px;margin-top:32px}
+a{color:var(--vert);overflow-wrap:anywhere;text-underline-offset:3px}a:focus-visible,input:focus-visible{outline:3px solid var(--brique);outline-offset:4px}
+.intro,.ouvrir,.repondre{padding:20px;border:1px solid var(--trait);border-radius:16px;background:var(--blanc)}
+.cas{list-style:none;padding:0;counter-reset:cas}.cas>li{counter-increment:cas;margin:16px 0;padding:20px;background:var(--blanc);border:1px solid var(--trait);border-radius:16px}
+.cas label{display:flex;align-items:center;gap:12px;min-height:44px;font-weight:700;color:var(--vert)}.cas label::before{content:counter(cas) ".";font-size:20px}input{width:22px;height:22px;flex-shrink:0;accent-color:var(--vert)}
+.cas p{margin:12px 0 0}code{display:block;padding:12px;background:var(--papier);border-radius:8px;overflow-wrap:anywhere;font-size:15px}.phrase{font-weight:700;color:var(--vert);overflow-wrap:anywhere}
+@media print{body{padding:0}.cas>li{break-inside:avoid}.ouvrir{break-inside:avoid}}
+</style>
+</head>
+<body>
+<main>
+<h1>Débarras Alsace — recette H12</h1>
+<p class="intro">Le changement à valider : <strong>photo en décor sur ordinateur (C), titre sur la photo sur téléphone (D)</strong>.
+Les textes et le devis restent les mêmes. Coche chaque cas après l’avoir essayé. Aucun message n’est envoyé automatiquement.</p>
+<h2>Ouvrir H12 en local, avant sa mise en ligne</h2>
+<div class="ouvrir">
+<ol>
+<li>Dans le dossier de la livraison H12, double-clique <strong>CAHIER_DE_RECETTE.html</strong> : c’est cette page.</li>
+<li>Sur Mac, dans Finder, fais un clic droit sur le dossier de cette livraison, puis « Nouveau terminal au dossier » (parfois dans « Services »).
+Sur un autre ordinateur, ouvre un terminal dans ce dossier. Node.js doit être installé ; sinon demande à l’usine de lancer l’aperçu pour toi.</li>
+<li>Copie cette ligne dans le terminal, puis appuie sur Entrée : <code>node tools/verifier-hero.mjs --servir</code></li>
+<li>Attends 2 à 3 secondes, jusqu’au message « Site prêt ». Laisse la fenêtre du terminal ouverte.
+Si le port 8080 est déjà utilisé, demande à l’usine de fermer l’ancien aperçu : ne valide pas une autre version.</li>
+<li>Le navigateur ne s’ouvre pas tout seul : clique <a href="http://127.0.0.1:8080/debarras-alsace/" target="_blank" rel="noopener">ouvrir le site H12 en local</a>.
+Attends la photo et les polices, environ 2 secondes.</li>
+</ol>
+<p>Ne double-clique pas directement index.html pour ce parcours : les navigateurs peuvent bloquer le JavaScript en mode fichier.
+Pour le téléphone avant publication, rétrécis la fenêtre de l’aperçu ou demande la démonstration mobile à l’usine.
+L’adresse 127.0.0.1 fonctionne seulement sur l’ordinateur où l’aperçu est lancé.</p>
+<p><strong>Après la mise en ligne de H12 seulement :</strong> ouvre
+<a href="https://amsclaw.github.io/debarras-alsace/" target="_blank" rel="noopener">le site public</a>, sur ordinateur ou téléphone.
+Avant cela, cette adresse peut encore afficher H8. Vérifie que le titre est sur la photo sur téléphone ; sinon recharge la page.</p>
+<p><strong>Connexion et comptes de démonstration :</strong> aucun identifiant ni mot de passe. Le site est public ; il n’y a ni page de connexion ni back-office.</p>
+</div>
+<h2>Les 12 cas à essayer, dans cet ordre</h2>
+<ol class="cas">
+<li><label><input type="checkbox">Ordinateur : photo en décor et devis entier</label>
+<p><strong>Action :</strong> ouvre l’accueil dans une fenêtre large, sans faire défiler (références : 1280 × 860 et 1440 × 900).</p>
+<p><strong>Attendu :</strong> photo sur toute la bande sous l’en-tête, texte blanc à gauche, carte « Devis express » blanche entière à droite et centrée en hauteur.
+Elle ne recouvre ni le menu ni le bord de la bande. « Photos par WhatsApp » est en contour blanc.</p></li>
+<li><label><input type="checkbox">Téléphone : titre sur la photo, bouton visible</label>
+<p><strong>Action :</strong> ouvre l’accueil sur téléphone, sans faire défiler (référence : 375 × 812).</p>
+<p><strong>Attendu :</strong> photo en grand immédiatement sous l’en-tête ; badge et titre blancs sur son bas sombre.
+Le texte suivant est sur fond clair. « Obtenir mon devis gratuit » est entier et visible au-dessus de la barre du bas dès l’ouverture.</p></li>
+<li><label><input type="checkbox">Les deux petits détails corrigés</label>
+<p><strong>Action :</strong> regarde le bouton orange de l’en-tête sur ordinateur, puis le badge « Entreprise locale » sur téléphone.</p>
+<p><strong>Attendu :</strong> « Devis gratuit » a un espace normal entre les deux mots, pas un grand vide. Sur téléphone il dit « Devis ».
+« Bas‑Rhin » n’a pas d’espace avant son trait d’union et ne se coupe pas en deux ; badge et titre sont lisibles.</p></li>
+<li><label><input type="checkbox">Garanties puis devis sur téléphone</label>
+<p><strong>Action :</strong> fais défiler doucement sous la photo.</p>
+<p><strong>Attendu :</strong> texte, deux boutons, trois garanties (« Devis sous 24 h », « Prix ferme », « Tri &amp; réemploi »), puis carte de devis.
+« 24 h » ne se coupe pas. La page ne glisse pas de côté.</p></li>
+<li><label><input type="checkbox">Demander un devis jusqu’au message prêt</label>
+<p><strong>Action :</strong> dans « Devis express », choisis « Maison », tape 67000, « Continuer », choisis « Ascenseur », « Continuer », tape un numéro fictif,
+puis « Envoyer sur WhatsApp ». N’envoie pas le message dans WhatsApp.</p>
+<p><strong>Attendu :</strong> étapes 1, 2 et 3 ; récapitulatif actualisé ; WhatsApp propose un message reprenant les réponses, au bon destinataire de l’entreprise.
+Rien ne part sans ta confirmation dans WhatsApp.</p></li>
+<li><label><input type="checkbox">Retour sans perte de saisie</label>
+<p><strong>Action :</strong> reviens au site, clique « Retour » deux fois dans le devis. Sur téléphone, essaie aussi « Devis » dans la barre du bas.</p>
+<p><strong>Attendu :</strong> l’étape 1 revient et le code postal 67000 est gardé. Le bouton de la barre amène bien au devis.</p></li>
+<li><label><input type="checkbox">Vérifier la zone d’intervention</label>
+<p><strong>Action :</strong> dans « On vient chez vous ? », tape 13000, puis 67400.</p>
+<p><strong>Attendu :</strong> 13000 est hors de la zone habituelle ; 67400 affiche que l’entreprise intervient chez toi.</p></li>
+<li><label><input type="checkbox">Estimer le volume</label>
+<p><strong>Action :</strong> dans « Estimez votre volume », essaie « Studio », « Maison », puis « Cave / garage ».</p>
+<p><strong>Attendu :</strong> volume, camion et durée changent à chaque choix, sans dépassement de texte. Aucun prix en euros n’est inventé.</p></li>
+<li><label><input type="checkbox">Lire l’approche Diogène</label>
+<p><strong>Action :</strong> dans les prestations, clique « Notre approche, ci-dessous ».</p>
+<p><strong>Attendu :</strong> arrivée à la section dédiée, engagements sans jugement et encadré « Vous êtes un proche ? ».
+Sur téléphone, le titre et le texte passent avant la photo.</p></li>
+<li><label><input type="checkbox">Ouvrir les questions fréquentes</label>
+<p><strong>Action :</strong> descends à la FAQ et clique la deuxième question.</p>
+<p><strong>Attendu :</strong> sept questions ; la deuxième s’ouvre et se referme. Une question concerne le syndrome de Diogène.</p></li>
+<li><label><input type="checkbox">Pages légales et retour</label>
+<p><strong>Action :</strong> en bas de page, ouvre « Mentions légales », clique « Accueil », puis ouvre « Confidentialité ».</p>
+<p><strong>Attendu :</strong> pages lisibles, contact de l’entreprise et hébergeur GitHub indiqués ; « Accueil » revient au site.
+Les informations juridiques encore en attente sont clairement signalées.</p></li>
+<li><label><input type="checkbox">Adresse introuvable</label>
+<p><strong>Action :</strong> dans l’adresse de l’aperçu, ajoute a/b/c après debarras-alsace/, puis clique « Retour à l’accueil ».</p>
+<p><strong>Attendu :</strong> « Cette page n’existe pas. » sur fond crème, puis retour à l’accueil correctement mis en forme.</p></li>
+</ol>
+<h2>Ce qui est volontairement absent</h2>
+<ul>
+<li>Aucun compte, connexion ou back-office ; aucun paiement en ligne.</li>
+<li>Pas d’avis, note Google, tarif, commune ou volume de chantier inventés : les éléments en attente sont masqués.</li>
+<li>Les photos sont des illustrations, pas encore les chantiers réels de l’entreprise.</li>
+<li>Les données juridiques de l’entreprise encore entre crochets restent à fournir avant le lancement commercial.</li>
+<li>Pas de blog ni pages par ville ; ce changement concerne seulement le haut de page.</li>
+</ul>
+<h2>Comment répondre</h2>
+<div class="repondre"><p>Si tout est conforme, réponds exactement :</p>
+<p class="phrase">je valide H12 du projet debarras-alsace</p>
+<p>Sinon, donne le numéro du cas et le problème, par exemple : « cas 2 : le bouton est caché sous la barre du bas ».</p>
+<p>Les cases cochées ne sont pas envoyées ni enregistrées : elles t’aident seulement à suivre ta visite.</p></div>
+</main>
+</body>
+</html>

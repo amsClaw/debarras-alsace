@@ -1,0 +1,263 @@
+{
+  "mesures": [
+    {
+      "largeur": 320,
+      "hauteur": 900,
+      "photo": 340,
+      "devisHaut": 1016,
+      "devisBas": 1663.984375,
+      "boutonBas": 726
+    },
+    {
+      "largeur": 360,
+      "hauteur": 900,
+      "photo": 340,
+      "devisHaut": 985,
+      "devisBas": 1586,
+      "boutonBas": 695
+    },
+    {
+      "largeur": 375,
+      "hauteur": 812,
+      "photo": 340,
+      "devisHaut": 985,
+      "devisBas": 1586,
+      "boutonBas": 695
+    },
+    {
+      "largeur": 390,
+      "hauteur": 900,
+      "photo": 340,
+      "devisHaut": 954,
+      "devisBas": 1555,
+      "boutonBas": 664
+    },
+    {
+      "largeur": 414,
+      "hauteur": 900,
+      "photo": 340,
+      "devisHaut": 954,
+      "devisBas": 1555,
+      "boutonBas": 664
+    },
+    {
+      "largeur": 599,
+      "hauteur": 900,
+      "photo": 340,
+      "devisHaut": 923,
+      "devisBas": 1505.15625,
+      "boutonBas": 633
+    },
+    {
+      "largeur": 600,
+      "hauteur": 900,
+      "photo": 340,
+      "devisHaut": 828,
+      "devisBas": 1418.15625,
+      "boutonBas": 633
+    },
+    {
+      "largeur": 768,
+      "hauteur": 900,
+      "photo": 340,
+      "devisHaut": 828,
+      "devisBas": 1418.15625,
+      "boutonBas": 633
+    },
+    {
+      "largeur": 899,
+      "hauteur": 900,
+      "photo": 340,
+      "devisHaut": 807,
+      "devisBas": 1397.15625,
+      "boutonBas": 633
+    },
+    {
+      "largeur": 900,
+      "hauteur": 900,
+      "photo": 840.421875,
+      "devisHaut": 196.703125,
+      "devisBas": 805.703125,
+      "boutonBas": 599.421875
+    },
+    {
+      "largeur": 1024,
+      "hauteur": 900,
+      "photo": 754.03125,
+      "devisHaut": 162.9375,
+      "devisBas": 753.09375,
+      "boutonBas": 581.03125
+    },
+    {
+      "largeur": 1199,
+      "hauteur": 900,
+      "photo": 779.25,
+      "devisHaut": 175.546875,
+      "devisBas": 765.703125,
+      "boutonBas": 606.25
+    },
+    {
+      "largeur": 1200,
+      "hauteur": 900,
+      "photo": 779.390625,
+      "devisHaut": 175.609375,
+      "devisBas": 765.765625,
+      "boutonBas": 606.390625
+    },
+    {
+      "largeur": 1280,
+      "hauteur": 860,
+      "photo": 790.359375,
+      "devisHaut": 181.09375,
+      "devisBas": 771.25,
+      "boutonBas": 617.359375
+    },
+    {
+      "largeur": 1440,
+      "hauteur": 900,
+      "photo": 790.359375,
+      "devisHaut": 181.09375,
+      "devisBas": 771.25,
+      "boutonBas": 617.359375
+    },
+    {
+      "largeur": 1441,
+      "hauteur": 900,
+      "photo": 790.359375,
+      "devisHaut": 181.09375,
+      "devisBas": 771.25,
+      "boutonBas": 617.359375
+    },
+    {
+      "largeur": 1920,
+      "hauteur": 900,
+      "photo": 790.359375,
+      "devisHaut": 181.09375,
+      "devisBas": 771.25,
+      "boutonBas": 617.359375
+    }
+  ],
+  "contrastes": [
+    {
+      "largeur": 375,
+      "zones": [
+        {
+          "nom": "Entreprise locale · Strasbourg, Eurométropole, Bas‑Rhin",
+          "minimum": 6.571,
+          "echantillons": 5936
+        },
+        {
+          "nom": "Vous montrez ce qui doit partir. On s’occupe du reste.",
+          "minimum": 10.606,
+          "echantillons": 42240
+        }
+      ]
+    },
+    {
+      "largeur": 1280,
+      "zones": [
+        {
+          "nom": "Entreprise locale · Strasbourg, Eurométropole, Bas‑Rhin",
+          "minimum": 7.224,
+          "echantillons": 5640
+        },
+        {
+          "nom": "Vous montrez ce qui doit partir. On s’occupe du reste.",
+          "minimum": 8.838,
+          "echantillons": 100200
+        },
+        {
+          "nom": "Maison, appartement, cave, succession ou local professionnel : on vide, on trie, on valorise ce qui peut l’être et on laisse la pièce propre. Prix ferme annoncé avant l’intervention.",
+          "minimum": 8.891,
+          "echantillons": 40375
+        },
+        {
+          "nom": "Photos par WhatsApp",
+          "minimum": 10.197,
+          "echantillons": 3696
+        },
+        {
+          "nom": "Devis sous 24 hgratuit, sans engagement",
+          "minimum": 10.787,
+          "echantillons": 5310
+        },
+        {
+          "nom": "Prix fermeil ne bouge pas sur place",
+          "minimum": 10.93,
+          "echantillons": 4554
+        },
+        {
+          "nom": "Tri & réemploiun maximum sauvé de la benne",
+          "minimum": 10.764,
+          "echantillons": 5850
+        }
+      ]
+    },
+    {
+      "largeur": 1440,
+      "zones": [
+        {
+          "nom": "Entreprise locale · Strasbourg, Eurométropole, Bas‑Rhin",
+          "minimum": 7.262,
+          "echantillons": 5640
+        },
+        {
+          "nom": "Vous montrez ce qui doit partir. On s’occupe du reste.",
+          "minimum": 9.187,
+          "echantillons": 100200
+        },
+        {
+          "nom": "Maison, appartement, cave, succession ou local professionnel : on vide, on trie, on valorise ce qui peut l’être et on laisse la pièce propre. Prix ferme annoncé avant l’intervention.",
+          "minimum": 8.753,
+          "echantillons": 40375
+        },
+        {
+          "nom": "Photos par WhatsApp",
+          "minimum": 10.056,
+          "echantillons": 3696
+        },
+        {
+          "nom": "Devis sous 24 hgratuit, sans engagement",
+          "minimum": 10.611,
+          "echantillons": 5310
+        },
+        {
+          "nom": "Prix fermeil ne bouge pas sur place",
+          "minimum": 10.624,
+          "echantillons": 4554
+        },
+        {
+          "nom": "Tri & réemploiun maximum sauvé de la benne",
+          "minimum": 10.601,
+          "echantillons": 5850
+        }
+      ]
+    }
+  ],
+  "maquettes": [
+    {
+      "nom": "C-ordinateur-1280.jpg",
+      "width": 1280,
+      "height": 860,
+      "lignesBlanches": 419
+    },
+    {
+      "nom": "C-grand-ecran-1440.jpg",
+      "width": 1440,
+      "height": 900,
+      "lignesBlanches": 442
+    },
+    {
+      "nom": "D-telephone-haut.jpg",
+      "width": 750,
+      "height": 1624,
+      "lignesBlanches": 22
+    },
+    {
+      "nom": "D-telephone-devis.jpg",
+      "width": 750,
+      "height": 1624,
+      "lignesBlanches": 531
+    }
+  ]
+}
