@@ -169,14 +169,17 @@ test("v3/assets/style.css : page en Public Sans sur fond papier, conteneur 1200 
   assert.match(compact, /\.conteneur\{[^}]*max-width:1200px/, "le conteneur est limité à 1200 px");
   assert.match(
     compact,
-    /@media\(max-width:767(\.98)?px\)\{\.conteneur\{[^}]*padding:016px/,
-    "16 px de marge latérale sous 768 px"
+    /--gouttiere:16px/,
+    "16 px de marge latérale par défaut"
   );
   assert.match(
     compact,
-    /@media\(min-width:144[01]px\)\{\.conteneur\{[^}]*padding:0120px/,
-    "120 px de marge latérale au-delà de 1440 px"
+    /@media\(min-width:600px\)\{:root\{--gouttiere:24px\}\}/,
+    "24 px de marge latérale dès 600 px"
   );
+  assert.match(compact, /@media\(min-width:1200px\)\{:root\{--gouttiere:0px\}\}/, "contenu de 1200 px centré sur grand écran");
+  assert.match(compact, /\.conteneur\{[^}]*width:calc\(100%-2\*var\(--gouttiere\)\)/);
+  assert.doesNotMatch(compact, /\.conteneur\{[^}]*padding:0(?:32|120)px/, "aucun retrait additionnel propre au conteneur");
 });
 
 test("v3/assets/config.js : les coordonnées sont centralisées dans window.DEBARRAS", () => {

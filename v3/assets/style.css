@@ -15,11 +15,12 @@
   --trait:#D6CCB6;     /* bordures de champs, séparateurs — #E2D9C6 pour les traits clairs */
   --titres:Fraunces, Georgia, serif;
   --texte:"Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --gouttiere:16px;
 }
 
 /* Remise à zéro minimale */
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;scroll-padding-bottom:92px}
 body{margin:0;background:var(--papier);color:var(--encre);font-family:var(--texte);font-size:16px;line-height:1.6}
 img,svg{display:block;max-width:100%}
 h1,h2,h3{margin:0;color:var(--vert);font-family:var(--titres);font-weight:600;line-height:1.08;letter-spacing:-0.02em}
@@ -27,60 +28,82 @@ a{color:var(--vert);text-decoration:none}
 a:hover{color:var(--brique)}
 :focus-visible{outline:2px solid var(--brique);outline-offset:2px}
 
-/* Conteneur : 1200 px au plus, 16 px de marge sur mobile, 120 px sur grand écran */
-.conteneur{width:100%;max-width:1200px;margin:0 auto;padding:0 32px}
-@media (max-width:767.98px){.conteneur{padding:0 16px}}
-@media (min-width:1441px){.conteneur{padding:0 120px}}
+/* Une gouttière pour tous les contenus ; les fonds des bandeaux sont indépendants. */
+.conteneur{width:calc(100% - 2 * var(--gouttiere));max-width:1200px;margin:0 auto;padding-inline:0}
+@media (min-width:600px){:root{--gouttiere:24px}}
+@media (min-width:1200px){:root{--gouttiere:0px}}
+.bande{width:100%;max-width:1264px;margin:0 auto 40px;border-radius:32px}
+.bande-zone,.bande-prix{background:var(--vert)}
+.bande-diogene{background:#E4ECDF}
+@media (max-width:1199.98px){.bande{border-radius:0}}
 
 /* En-tête */
 .entete{border-bottom:1px solid var(--trait)}
-.entete-barre{display:flex;align-items:center;gap:40px;min-height:88px}
-.marque{display:flex;align-items:center;gap:12px;color:var(--vert)}
-.marque-logo{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:var(--vert);color:var(--papier)}
+.entete-barre{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:88px}
+.marque{display:flex;flex-shrink:0;align-items:center;gap:12px;color:var(--vert);white-space:nowrap}
+.marque-logo{display:flex;flex-shrink:0;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:var(--vert);color:var(--papier)}
 .marque-texte{display:flex;flex-direction:column;gap:2px}
 .marque-nom{font-family:var(--titres);font-size:22px;font-weight:600;letter-spacing:-0.01em}
 .marque-zone{font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--discret)}
 
-.entete-nav{display:flex;gap:28px;flex-grow:1;justify-content:center;font-size:15px;font-weight:500}
+.entete-nav{display:flex;gap:16px;flex-grow:1;justify-content:center;font-size:14px;font-weight:500;white-space:nowrap}
 .entete-nav a{color:var(--encre)}
-.entete-tel{display:flex;align-items:center;gap:8px;color:var(--vert);font-weight:700;font-size:16px}
+.entete-tel{display:flex;flex-shrink:0;align-items:center;gap:8px;color:var(--vert);font-weight:700;font-size:15px;white-space:nowrap}
 
 /* Bouton générique — la brique reste la seule couleur d'action */
-.bouton{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 28px;border-radius:14px;font-weight:700;font-size:17px}
+.bouton{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 28px;border-radius:14px;font-weight:700;font-size:17px;white-space:nowrap}
+.bouton svg{flex-shrink:0}
 .bouton[hidden]{display:none}
 .bouton-brique{background:var(--brique);color:#FFFFFF}
 .bouton-brique:hover{color:#FFFFFF;opacity:0.92}
 .bouton-contour{border:1.5px solid var(--vert);color:var(--vert)}
-.entete-devis{height:48px;padding:0 22px;font-size:15px}
+.entete-devis{flex-shrink:0;height:48px;padding:0 18px;font-size:15px}
+
+@media (max-width:1279.98px){
+  .entete-tel{display:none}
+  .entete-nav{gap:12px;font-size:13px}
+  .marque-nom{font-size:20px}
+}
 
 @media (max-width:899.98px){
   .entete-nav,.entete-tel{display:none}
+  .entete-barre{min-height:64px}
+}
+@media (max-width:599.98px){
+  .entete-barre{gap:12px}
+  .marque{gap:8px}
+  .marque-logo{width:36px;height:36px;border-radius:10px}
+  .marque-nom{font-size:19px}
+  .marque-zone,.entete-devis-long{display:none}
+  .entete-devis{height:44px;padding:0 14px;font-size:14px}
 }
 
 /* Héros */
-main{padding:56px 0}
-.hero{display:flex;flex-direction:column;gap:64px;align-items:center;padding:64px 0 72px}
-.hero-texte{display:flex;flex-direction:column;gap:28px}
-.pastille{align-self:flex-start;padding:8px 14px;border-radius:999px;background:#E4ECDF;color:var(--vert);font-size:13px;font-weight:700;letter-spacing:0.04em}
+main{padding:0}
+.hero{display:flex;flex-direction:column;gap:32px;align-items:stretch;padding-block:28px 48px}
+.hero-texte{display:flex;min-width:0;flex-direction:column;gap:24px}
+.mot-insecable{white-space:nowrap}
+.pastille{align-self:flex-start;padding:8px 14px;border-radius:999px;background:#E4ECDF;color:var(--vert);font-size:13px;font-weight:700;letter-spacing:0.04em;word-break:normal;hyphens:none}
 .hero-titre{font-family:var(--titres);font-weight:600;font-size:38px;line-height:1.02;letter-spacing:-0.025em;color:var(--vert)}
 .hero-titre em{font-style:italic;font-weight:500;color:var(--brique)}
 .hero-paragraphe{margin:0;font-size:20px;line-height:1.55;color:var(--texte-2);max-width:540px}
 .hero-boutons{display:flex;gap:12px;flex-wrap:wrap}
 .reassurances{list-style:none;margin:0;padding:8px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.reassurances li{display:flex;gap:10px;align-items:flex-start;color:var(--vert-2)}
+.reassurances li{display:flex;gap:10px;align-items:flex-start;color:var(--vert-2);min-width:0}
+.reassurances svg{flex-shrink:0}
 .reassurances li span{font-size:15px;line-height:1.4;color:var(--encre)}
 
-.hero-visuel{position:relative;min-height:auto;padding-top:24px;width:100%}
+.hero-visuel{position:relative;min-width:0;width:100%}
 .hero-photo{position:static;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:28px}
 
-.carte-devis{position:static;width:100%;margin-top:-40px;box-sizing:border-box;padding:28px;border-radius:22px;background:#FFFFFF;box-shadow:0 30px 60px -20px rgba(30,58,43,0.35);display:flex;flex-direction:column;gap:16px}
-.carte-devis-entete{display:flex;justify-content:space-between;align-items:baseline}
+.carte-devis{position:relative;width:100%;margin-top:24px;box-sizing:border-box;padding:24px;border-radius:22px;background:#FFFFFF;box-shadow:0 30px 60px -20px rgba(30,58,43,0.35);display:flex;flex-direction:column;gap:16px;scroll-margin-block:24px 92px}
+.carte-devis-entete{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:baseline}
 .carte-devis-titre{font-family:var(--titres);font-size:24px;font-weight:600;color:var(--vert)}
 .carte-devis-duree{font-size:13px;font-weight:600;color:var(--discret)}
 
-.devis-types{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.devis-types{min-width:0;border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
 .devis-types legend{font-size:14px;font-weight:700;padding:0;margin-bottom:10px}
-.devis-types-grille{display:flex;flex-wrap:wrap;gap:8px}
+.devis-types-grille{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .pastille-radio{position:relative}
 .pastille-radio input{position:absolute;opacity:0;width:1px;height:1px}
 .pastille-radio span{display:flex;align-items:center;min-height:44px;padding:0 14px;border-radius:999px;border:1.5px solid var(--trait);background:#FFFFFF;color:var(--encre);font-size:14px;font-weight:600;cursor:pointer}
@@ -91,36 +114,50 @@ main{padding:56px 0}
 .devis-champs label{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:700}
 .devis-champs input{height:46px;box-sizing:border-box;padding:0 12px;border:1.5px solid var(--trait);border-radius:10px;font:500 16px var(--texte);background:#FBF8F2}
 .devis-etape>label{display:flex;flex-direction:column;gap:6px;margin-top:10px;font-size:14px;font-weight:700}
-.devis-etape>label input{height:46px;box-sizing:border-box;padding:0 12px;border:1.5px solid var(--trait);border-radius:10px;font:500 16px var(--texte);background:#FBF8F2}
+.devis-etape>label input{width:100%;min-width:0;height:46px;box-sizing:border-box;padding:0 12px;border:1.5px solid var(--trait);border-radius:10px;font:500 16px var(--texte);background:#FBF8F2}
 .devis-facultatif{font-weight:500;color:var(--discret)}
-.devis-acces{border:0;margin:0;padding:0}
+.devis-acces{min-width:0;border:0;margin:0;padding:0}
 .devis-acces legend{font-size:14px;font-weight:700;padding:0;margin-bottom:10px}
-.devis-acces-grille{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.devis-acces-grille{display:grid;grid-template-columns:1fr;gap:8px}
 .devis-acces-grille .pastille-radio span{justify-content:center;text-align:center}
-.devis-recap{margin:10px 0 0;padding:14px 16px;border-radius:12px;background:#FBF8F2;color:var(--texte-2);font-size:14px;line-height:1.5;white-space:pre-line}
+.devis-recap{margin:10px 0 0;padding:14px 16px;border-radius:12px;background:#FBF8F2;color:var(--texte-2);font-size:14px;line-height:1.5;white-space:pre-line;overflow-wrap:anywhere}
 .devis-progression{height:4px;border-radius:2px;background:var(--trait);overflow:hidden}
 .devis-progression-barre{display:block;height:100%;background:var(--brique)}
 .devis-etape-label{margin:0;font-size:13px;font-weight:700;color:var(--discret)}
-.devis-navigation{display:flex;gap:10px}
+.devis-navigation{display:flex;flex-wrap:wrap;gap:10px}
 .devis-navigation .devis-retour{flex:0 0 auto}
 .devis-navigation .devis-continuer,.devis-navigation .devis-envoyer{flex:1 1 auto}
 
 .devis-mention{margin:0;font-size:13px;line-height:1.4;color:var(--discret)}
 .devis-envoyer{width:100%;height:54px;border:0}
 .devis-alternative{margin:0;font-size:13px;line-height:1.45;color:var(--discret);text-align:center}
+.devis-mail,.prestation-approche{display:inline-flex;align-items:center;min-height:44px}
+@media (max-width:899.98px){
+  .hero-boutons{flex-direction:column}
+  .hero-boutons .bouton{width:100%;padding:0 16px}
+}
+@media (max-width:599.98px){
+  .hero-boutons .bouton{font-size:15px}
+  .reassurances{grid-template-columns:1fr;gap:16px}
+  .carte-devis{padding:20px 16px}
+  .carte-devis .bouton{padding:0 12px;font-size:14px}
+  .pastille-radio span{padding:0 10px;font-size:13px}
+}
 
 @media (min-width:900px){
   .hero{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
-  .hero-titre{font-size:68px}
-  .hero-visuel{min-height:640px;padding-top:0}
-  .hero-photo{position:absolute;top:0;right:0;width:460px;height:600px;max-width:100%;aspect-ratio:auto}
-  .carte-devis{position:absolute;left:0;bottom:0;width:400px;margin-top:0}
+  .hero{gap:48px;align-items:start;padding-block:56px 72px}
+  .hero-titre{font-size:clamp(44px,4.7vw,60px)}
+  .hero-photo{width:100%;height:420px;aspect-ratio:auto}
+  /* Reste dans le flux, même à l'étape 3 ou sans JS : jamais ancrée par le bas. */
+  .carte-devis{width:calc(100% - 24px);margin-top:-56px}
+  .reassurances{grid-template-columns:1fr;gap:16px}
 }
 
 /* Vérification de zone, prestations et déroulé */
-.zone-verification{display:grid;grid-template-columns:minmax(0,1fr) 180px minmax(260px,360px);align-items:center;gap:28px;margin:0 auto 40px;padding:28px 36px;border-radius:22px;background:var(--vert);color:var(--papier)}
+.zone-verification{display:grid;grid-template-columns:minmax(0,1fr) 180px minmax(260px,360px);align-items:center;gap:28px;padding-block:28px;color:var(--papier)}
 .zone-introduction{display:flex;align-items:center;gap:14px}
-.zone-icone{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:#2A4A37;color:#F3C9AE;font-size:28px}
+.zone-icone{display:grid;flex-shrink:0;place-items:center;width:42px;height:42px;border-radius:50%;background:#2A4A37;color:#F3C9AE;font-size:28px}
 .zone-verification h2{color:var(--papier);font-size:24px}
 .zone-verification p{margin:4px 0 0;color:#CFDACB}
 .zone-champ input{width:100%;height:52px;padding:0 16px;border:0;border-radius:12px;background:var(--papier);color:var(--encre);font:600 17px var(--texte)}
@@ -156,7 +193,7 @@ main{padding:56px 0}
   .zone-reponse{grid-column:1/-1}
 }
 @media (max-width:599.98px){
-  .zone-verification{grid-template-columns:1fr;gap:16px;margin:0 16px 24px;padding:22px}
+  .zone-verification{grid-template-columns:1fr;gap:16px;padding-block:24px}
   .zone-reponse{grid-column:auto}
   .prestations,.deroule{padding-top:56px;padding-bottom:32px}
   .prestations-entete{align-items:flex-start;flex-direction:column;gap:16px}
@@ -168,13 +205,13 @@ main{padding:56px 0}
 }
 
 /* Diogène : section dédiée sous les prestations (maquette, fond #E4ECDF, rayon 32 px) */
-.diogene{margin:0 auto 40px;padding:64px;border-radius:32px;background:#E4ECDF;display:grid;grid-template-columns:420px minmax(0,1fr);gap:64px;align-items:start}
-.diogene-media{display:flex;flex-direction:column;gap:20px}
+.diogene{padding-block:64px;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1fr);gap:48px;align-items:start}
+.diogene-media{display:flex;flex-direction:column;gap:20px;grid-column:1;grid-row:1}
 .diogene-media img{width:100%;height:420px;object-fit:cover;border-radius:24px}
 .diogene-proche{padding:22px 24px;border-radius:18px;background:#FFFFFF;display:flex;flex-direction:column;gap:8px}
 .diogene-proche strong{font-family:var(--titres);font-size:20px;font-weight:600;color:var(--vert)}
 .diogene-proche span{font-size:15px;line-height:1.55;color:var(--texte-2)}
-.diogene-texte{display:flex;flex-direction:column;gap:22px}
+.diogene-texte{display:flex;flex-direction:column;gap:22px;grid-column:2;grid-row:1}
 .diogene-texte h2{font-size:44px}
 .diogene-texte h2 em{font-style:italic;font-weight:500}
 .diogene-paragraphe{margin:0;font-size:17px;line-height:1.6;color:var(--texte-2)}
@@ -186,19 +223,20 @@ main{padding:56px 0}
 .bouton-vert{background:var(--vert);color:var(--papier)}
 .bouton-vert:hover{color:var(--papier);opacity:.92}
 @media (max-width:899.98px){
-  .diogene{width:auto;grid-template-columns:1fr;gap:32px;margin:0 16px 24px;padding:40px 24px;border-radius:24px}
+  .diogene{grid-template-columns:1fr;gap:32px;padding-block:40px}
+  .diogene-media,.diogene-texte{grid-column:auto;grid-row:auto}
   .diogene-texte h2{font-size:34px}
   .diogene-media img{height:320px}
 }
 @media (max-width:599.98px){
-  .diogene{grid-template-columns:1fr;padding:28px 16px;border-radius:20px}
+  .diogene{grid-template-columns:1fr;padding-block:28px}
   .diogene-engagements{grid-template-columns:1fr}
   .diogene-media img{height:240px}
-  .diogene-actions .bouton{width:100%;height:auto;min-height:56px;padding:14px 16px;text-align:center}
+  .diogene-actions .bouton{width:100%;height:56px;padding:0 12px;font-size:15px;text-align:center}
 }
 
 /* Le prix, en clair + estimateur de volume */
-.prix{margin:0 auto 40px;padding:72px;border-radius:32px;background:var(--vert);color:var(--papier);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:64px}
+.prix{padding-block:64px;color:var(--papier);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px}
 .prix-argumentaire{display:flex;flex-direction:column;gap:24px}
 .sur-titre-clair{color:#F3C9AE}
 .prix h2{color:var(--papier);font-size:44px}
@@ -207,21 +245,33 @@ main{padding:56px 0}
 .prix-cas-carte{padding:18px 20px;border-radius:16px;background:#2A4A37;display:flex;gap:16px;align-items:baseline}
 .prix-cas-carte strong{width:110px;flex-shrink:0;font-size:16px;color:#F3C9AE}
 .prix-cas-carte span{font-size:15px;line-height:1.5;color:#E4ECDF}
-.carte-estimateur{padding:36px;border-radius:24px;background:var(--papier);color:var(--encre);display:flex;flex-direction:column;gap:22px}
+.carte-estimateur{min-width:0;padding:24px;border-radius:24px;background:var(--papier);color:var(--encre);display:flex;flex-direction:column;gap:22px}
 .carte-estimateur-entete{display:flex;flex-direction:column;gap:6px}
 .carte-estimateur-titre{font-family:var(--titres);font-size:28px;font-weight:600;color:var(--vert)}
 .carte-estimateur-sous-titre{font-size:15px;color:var(--discret)}
-.estimateur-choix{border:0;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.estimateur-choix .pastille-radio span{justify-content:center;width:100%}
-.estimateur-tuiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.estimateur-tuile{padding:18px;border-radius:16px;background:#FFFFFF;display:flex;flex-direction:column;gap:6px}
+.estimateur-choix{min-width:0;border:0;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.estimateur-choix .pastille-radio span{justify-content:center;width:100%;padding:0 8px;font-size:13px;white-space:nowrap}
+.estimateur-tuiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.estimateur-tuile{min-width:0;padding:12px 8px;border-radius:16px;background:#FFFFFF;display:flex;flex-direction:column;gap:6px}
 .estimateur-tuile span{font-size:13px;font-weight:600;color:var(--discret)}
-.estimateur-tuile strong{font-family:var(--titres);font-size:26px;font-weight:600;color:var(--vert)}
+.estimateur-tuile strong{font-family:var(--titres);font-size:20px;font-weight:600;color:var(--vert);white-space:nowrap}
 .estimateur-note{margin:0;padding:16px 18px;border-radius:14px;border:1.5px dashed var(--trait);font-size:15px;line-height:1.5;color:var(--texte-2)}
 .estimateur-cta{width:100%;height:54px;border:0}
 @media (max-width:899.98px){
-  .prix{grid-template-columns:1fr;margin:0 16px 24px;padding:40px 24px;border-radius:24px}
+  .prix{grid-template-columns:1fr;padding-block:40px;gap:32px}
   .prix h2{font-size:34px}
+}
+@media (min-width:900px) and (max-width:1199.98px){
+  .estimateur-choix{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .estimateur-tuiles{grid-template-columns:1fr}
+}
+@media (max-width:599.98px){
+  .prix-cas-carte{flex-direction:column;gap:8px}
+  .carte-estimateur{padding:20px 16px}
+  .estimateur-choix{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .estimateur-tuiles{grid-template-columns:1fr}
+  .estimateur-tuile{flex-direction:row;align-items:baseline;justify-content:space-between;padding:14px 16px}
+  .estimateur-cta{padding:0 12px;font-size:15px}
 }
 
 /* Réalisations, avis, communes et FAQ */
@@ -236,7 +286,7 @@ main{padding:56px 0}
 .realisation-paire img{width:100%;height:240px;object-fit:cover}
 .realisation-paire figcaption{position:absolute;top:10px;left:10px;padding:5px 10px;border-radius:8px;background:var(--encre);color:#fff;font-size:12px;font-weight:700}
 .realisation-paire figure+figure figcaption{background:var(--vert)}
-.realisation-meta{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.realisation-meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:12px}
 .realisation-meta h3{font-size:21px}
 .realisation-meta p{margin:0;color:var(--discret);font-size:14px;white-space:nowrap}
 .avis{padding-top:32px;padding-bottom:32px}
@@ -294,15 +344,15 @@ main{padding:56px 0}
 /* Pied de page */
 .pied{background:var(--vert);color:#CFDACB;font-size:15px;line-height:1.7}
 .pied-grille{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:40px;padding-top:48px;padding-bottom:48px}
-.pied-bloc{display:flex;flex-direction:column;gap:6px}
+.pied-bloc{display:flex;flex-direction:column;gap:6px;min-width:0;max-width:100%;overflow-wrap:anywhere}
 .pied-marque{font-family:var(--titres);font-size:22px;font-weight:600;color:var(--papier)}
 .pied-titre{color:var(--papier);font-weight:700}
-.pied a{color:#CFDACB}
+.pied a{color:#CFDACB;display:inline-flex;align-items:center;min-height:44px}
 .pied a:hover{color:var(--papier)}
 
 /* Pages d'information : même rythme et mêmes couleurs que la V3. */
 .page-legale{min-height:60vh;padding:72px 0 88px;background:var(--papier)}
-.page-legale-contenu{max-width:780px}
+.page-legale-contenu>p{max-width:780px}
 .page-legale h1{margin-bottom:16px;font-size:clamp(36px,6vw,56px)}
 .page-legale h2{margin:36px 0 10px;font-size:clamp(23px,3vw,30px)}
 .page-legale p{max-width:72ch;color:var(--texte-2);line-height:1.75}
@@ -324,12 +374,10 @@ main{padding:56px 0}
   .barre-mobile-devis{background:var(--brique)}
 }
 
-/* Devis en 3 étapes (sous 768px uniquement) : amélioration progressive.
+/* Devis en 3 étapes à toutes les largeurs : amélioration progressive.
    Sans JavaScript, le formulaire ne reçoit jamais la classe .mode-etapes et
-   toutes les étapes restent visibles d'un bloc, comme au-delà de 768px. */
-@media (max-width:767.98px){
+   toutes les étapes restent visibles d'un bloc, dans le flux du héros. */
   .carte-devis.mode-etapes .devis-progression,
   .carte-devis.mode-etapes .devis-etape-label{display:block;visibility:visible}
   .carte-devis.mode-etapes .devis-etape{display:none}
   .carte-devis.mode-etapes .devis-etape.devis-etape-active{display:block}
-}

@@ -63,7 +63,7 @@ test("heros : un seul <h1>, pastille, deux boutons, trois reassurances", () => {
   const reassurances = main.match(/<ul class="reassurances">[\s\S]*?<\/ul>/);
   assert.ok(reassurances, "la liste de reassurances est attendue");
   assert.equal(compter(reassurances[0], "<svg"), 3, "trois icones SVG en ligne");
-  assert.match(reassurances[0], /Devis sous 24 h/);
+  assert.match(reassurances[0], /Devis sous 24&nbsp;h/);
   assert.match(reassurances[0], /Prix ferme/);
   assert.match(reassurances[0], /Tri &amp; réemploi/);
 });
@@ -152,4 +152,64 @@ test("v3/assets/site.js : compose le message et ouvre wa.me / mailto avec les co
   assert.match(source, /https:\/\/wa\.me\/\$\{[^}]*whatsapp[^}]*\}/, "le lien wa.me doit utiliser whatsapp de la config");
   assert.match(source, /mailto:\$\{[^}]*mail[^}]*\}/, "le lien mailto doit utiliser mail de la config");
   assert.match(source, /encodeURIComponent/, "le message doit etre encode dans l'URL");
+});
+
+// H10 : régressions de présentation, sans dépendance ni navigateur dans npm test.
+const css = lire("v3/assets/style.css").replace(/\/\*[\s\S]*?\*\//g, "");
+test("H10 : le héros ne remet jamais sa gouttière horizontale à zéro", () => {
+  const regles = [...css.matchAll(/\.hero\{([^}]+)\}/g)].map((m) => m[1]);
+  assert.ok(regles.some((r) => /padding-block:28px 48px/.test(r)));
+  assert.ok(regles.every((r) => !/(?:^|;)padding:/.test(r)), "utiliser padding-block, pas un raccourci qui écrase les gouttières");
+  assert.match(css, /main\{padding:0\}/, "pas de deuxième espace sous l'en-tête");
+});
+
+test("H10 : devis dans le flux, chevauchement de photo réservé au desktop", () => {
+  const regles = [...css.matchAll(/\.carte-devis\{([^}]+)\}/g)].map((m) => m[1]);
+  assert.ok(regles.every((r) => !/position:absolute|bottom:0/.test(r)));
+  assert.match(regles[0], /position:relative/);
+  assert.match(regles[0], /margin-top:24px/);
+  assert.match(css, /@media \(min-width:900px\)[\s\S]*?\.carte-devis\{[^}]*margin-top:-56px/);
+});
+
+test("H10 : même parcours progressif sur téléphone et ordinateur, sans redémarrage au redimensionnement", () => {
+  const js = lire("v3/assets/site.js");
+  assert.doesNotMatch(js, /matchMedia|requeteMobile/);
+  assert.match(js, /activerModeEtapes\(\);/);
+  const fin = css.slice(css.indexOf(".carte-devis.mode-etapes .devis-progression"));
+  assert.doesNotMatch(fin, /@media/);
+  assert.match(fin, /\.carte-devis\.mode-etapes \.devis-etape\{display:none\}/);
+});
+
+test("H10 : ordre HTML Diogène, titre et texte avant la photo et l'encadré", () => {
+  const section = page.match(/<section id="diogene"[\s\S]*?<\/section>/)[0];
+  assert.ok(section.indexOf('class="diogene-texte"') < section.indexOf('class="diogene-media"'));
+  assert.ok(section.indexOf('id="diogene-titre"') < section.indexOf("<img"));
+  assert.match(css, /\.diogene-media,\.diogene-texte\{grid-column:auto;grid-row:auto\}/);
+});
+
+test("H10 : libellés sous les icônes de la barre du bas", () => {
+  const nav = page.match(/<nav class="barre-mobile"[\s\S]*?<\/nav>/)[0];
+  assert.deepEqual([...nav.matchAll(/<span>([^<]+)<\/span>/g)].map((m) => m[1]), ["Appeler", "WhatsApp", "Devis"]);
+  assert.match(css, /\.barre-mobile-lien\{[^}]*flex-direction:column/);
+  assert.match(css, /scroll-padding-bottom:92px/);
+});
+
+test("H10 : boutons héros pleine largeur et liens secondaires de 44 px", () => {
+  assert.match(css, /\.hero-boutons\{flex-direction:column\}/);
+  assert.match(css, /\.hero-boutons \.bouton\{width:100%/);
+  assert.match(css, /\.devis-mail,\.prestation-approche\{[^}]*min-height:44px/);
+  assert.match(css, /\.pied a\{[^}]*min-height:44px/);
+});
+
+test("H10 : marque et bouton d'en-tête compacts, aucun retour de navigation", () => {
+  assert.match(css, /\.marque\{[^}]*white-space:nowrap/);
+  assert.match(css, /\.entete-nav\{[^}]*white-space:nowrap/);
+  assert.match(css, /\.marque-zone,\.entete-devis-long\{display:none\}/);
+  for (const nom of ["mentions-legales", "confidentialite"]) {
+    assert.match(lire(`v3/${nom}.html`), /class="bouton bouton-brique entete-devis" href="index.html">Accueil</);
+  }
+});
+
+test("H10 : les métadonnées des réalisations passent à la ligne, jamais hors de leur carte", () => {
+  assert.match(css, /\.realisation-meta\{[^}]*flex-wrap:wrap/);
 });

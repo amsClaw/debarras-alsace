@@ -3,7 +3,7 @@
 // Chargé en `type="module"` pour que les comportements de la page puissent vivre
 // dans des modules à part (fonctions pures importables et testables), et non dans
 // ce fichier. Cette histoire ajoute le formulaire « Devis express » : il envoie
-// vers WhatsApp par défaut, avec un lien e-mail alternatif. Sous 768 px, le
+// vers WhatsApp par défaut, avec un lien e-mail alternatif. À toute largeur, le
 // formulaire devient un parcours guidé en 3 étapes (amélioration progressive :
 // sans JavaScript, toutes les étapes restent visibles d'un bloc).
 
@@ -90,10 +90,8 @@ if (form) {
     });
   }
 
-  // Parcours en 3 étapes, uniquement sous 768 px. Sans JavaScript (ou au-dessus
-  // de 768 px), aucune classe n'est ajoutée : le CSS montre alors toutes les
-  // étapes d'un bloc, comme la maquette desktop.
-  const requeteMobile = window.matchMedia("(max-width: 767.98px)");
+  // Même parcours sur téléphone et ordinateur. Sans JavaScript, aucune classe
+  // n'est ajoutée : toutes les étapes restent dans le flux, sans chevauchement.
   const etapesEl = form.querySelectorAll(".devis-etape");
   const barreProgression = form.querySelector(".devis-progression-barre");
   const labelEtapeNumero = form.querySelector(".devis-etape-numero");
@@ -128,18 +126,6 @@ if (form) {
     rendreEtape();
   }
 
-  function desactiverModeEtapes() {
-    form.classList.remove("mode-etapes");
-    if (boutonRetour) boutonRetour.hidden = true;
-    if (boutonContinuer) boutonContinuer.hidden = true;
-    if (boutonWhatsapp) boutonWhatsapp.hidden = false;
-  }
-
-  function configurerEtapes() {
-    if (requeteMobile.matches) activerModeEtapes();
-    else desactiverModeEtapes();
-  }
-
   if (boutonRetour) {
     boutonRetour.addEventListener("click", () => {
       etat = etapePrecedente(etat);
@@ -153,8 +139,7 @@ if (form) {
     });
   }
 
-  configurerEtapes();
-  requeteMobile.addEventListener("change", configurerEtapes);
+  activerModeEtapes();
 
   // Toute saisie (téléphone, « quand », accès, type…) met à jour le récapitulatif
   // immédiatement, sans attendre un changement d'étape.
