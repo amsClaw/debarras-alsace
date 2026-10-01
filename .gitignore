@@ -10,5 +10,5 @@ build/
 /data/
 tmp/
 
-# visuels sources générés localement (les versions publiées sont dans src/assets/photos)
+# visuels sources générés localement (les versions publiées sont dans assets/photos)
 source-client/photos-hd/

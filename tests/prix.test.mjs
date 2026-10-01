@@ -1,12 +1,12 @@
-// Tests de l'histoire 4 : le prix en clair et l'estimateur de volume de la page V3.
+// Tests de l'histoire 4 : le prix en clair et l'estimateur de volume de la page d’accueil.
 import test from "node:test";
 import assert from "node:assert/strict";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { lire, compter, RACINE } from "./outils.mjs";
 
-const { estimer, VOLUMES } = await import(pathToFileURL(path.join(RACINE, "v3", "assets", "volume.js")));
-const page = lire("v3/index.html");
+const { estimer, VOLUMES } = await import(pathToFileURL(path.join(RACINE, "assets", "volume.js")));
+const page = lire("index.html");
 
 test("estimer : les six choix renvoient les valeurs de la maquette", () => {
   assert.deepEqual(estimer("cave"), { label: "Cave / garage", m3: "3–8\u00a0m³", camions: "1", duree: "2–3\u00a0h" });
@@ -30,7 +30,7 @@ test("prix : section en deux colonnes sur fond vert forêt avec les trois cas", 
   for (const cas of ["Indemnisé", "Gratuit", "Payant"]) {
     assert.ok(section.includes(`<strong>${cas}</strong>`), `cas attendu : ${cas}`);
   }
-  const css = lire("v3/assets/style.css").replace(/\/\*[\s\S]*?\*\//g, "");
+  const css = lire("assets/style.css").replace(/\/\*[\s\S]*?\*\//g, "");
   assert.match(css, /\.prix\{[^}]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
   assert.match(section, /class="bande bande-prix"/);
   assert.match(css, /\.bande\{[^}]*border-radius:32px/);
@@ -69,7 +69,7 @@ test("estimateur : fourchette de prix masquée tant que l'entreprise ne l'a pas 
 });
 
 test("estimateur : site.js met à jour les tuiles au choix, sans dupliquer les données", () => {
-  const js = lire("v3/assets/site.js");
+  const js = lire("assets/site.js");
   assert.match(js, /import \{ estimer \} from ".\/volume.js"/);
   assert.match(js, /estimer\(choix\)/);
 });
@@ -79,7 +79,7 @@ test("H10 : les unités restent insécables au départ comme après chaque choix
     assert.match(estimer(choix).m3, /\u00a0m³$/);
     assert.match(estimer(choix).duree, /\u00a0(?:h|journée|jours)$/);
   }
-  const css = lire("v3/assets/style.css");
+  const css = lire("assets/style.css");
   assert.match(css, /\.estimateur-tuile strong\{[^}]*white-space:nowrap/);
   assert.match(css, /\.estimateur-choix \.pastille-radio span\{[^}]*white-space:nowrap/);
   assert.match(css, /@media \(max-width:599\.98px\)[\s\S]*?\.estimateur-choix\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}/);
