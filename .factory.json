@@ -3,11 +3,24 @@
   "tests_requis": true,
   "typecheck_requis": false,
   "start": {
-    "commande": "npx --yes serve -l 8080 .",
-    "sante": "http://localhost:8080/",
-    "delai_s": 90
+    "commande": "mkdir -p /tmp/site && ln -sfn /w /tmp/site/debarras-alsace && cp /w/404.html /tmp/site/404.html && npx --yes serve --symlinks -l 8080 /tmp/site",
+    "sante": "http://localhost:8080/debarras-alsace/",
+    "delai_s": 120
   },
-  "design": { "bloquant": false, "cibles": ["v3"] },
+  "design": {
+    "bloquant": false,
+    "cibles": [
+      "index.html",
+      "mentions-legales.html",
+      "confidentialite.html",
+      "404.html",
+      "assets"
+    ]
+  },
   "ameliorations": false,
-  "budget_mensuel_usd": 20
+  "budget_mensuel_usd": 20,
+  "video": {
+    "commande": "node tests/e2e-video/parcours.cjs",
+    "delai_s": 900
+  }
 }

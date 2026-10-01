@@ -12,3 +12,6 @@ tmp/
 
 # visuels sources générés localement (les versions publiées sont dans assets/photos)
 source-client/photos-hd/
+
+# sortie du parcours filmé (vidéos, captures, rapport) — archivée par l’usine
+tests/e2e-video/sortie/
