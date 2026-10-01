@@ -52,6 +52,41 @@ filmer(async ({ page, etape, ecran, URL_APP: RACINE, dansLEcran, pasDeDebordemen
     }, { capture: false });
   }
 
+  if (telephone) {
+    await etape('H12 · Le titre est sur la photo et le bouton de devis est visible dès l’ouverture (téléphone)', async () => {
+      await page.evaluate(() => document.fonts.ready);
+      const m = await page.evaluate(() => {
+        const rect = (sel) => document.querySelector(sel).getBoundingClientRect();
+        const photo = rect('.hero-photo'), titre = rect('.hero-titre'), badge = rect('.pastille');
+        const bouton = rect('.hero-boutons a[href="#devis"]');
+        const barre = document.querySelector('.barre-mobile');
+        const limite = barre && getComputedStyle(barre).display !== 'none' ? rect('.barre-mobile').top : innerHeight;
+        return { surPhoto: badge.top >= photo.top && titre.bottom <= photo.bottom, visible: bouton.top >= 0 && bouton.bottom <= limite };
+      });
+      if (!m.surPhoto || !m.visible) throw new Error('titre hors photo ou bouton de devis caché au premier écran');
+      await pasDeDebordement(page);
+    });
+  } else {
+    await etape('H12 · La carte de devis est entière et ne chevauche pas la photo ni l’en-tête (ordinateur)', async () => {
+      const m = await page.evaluate(() => {
+        const rect = (sel) => document.querySelector(sel).getBoundingClientRect();
+        const carte = rect('#devis'), hero = rect('.hero'), texte = rect('.hero-texte');
+        const entete = rect('.entete'), photo = rect('.hero-photo');
+        return { entiere: carte.top >= entete.bottom && carte.bottom <= hero.bottom && carte.right <= innerWidth,
+          distincte: carte.left >= texte.right, decor: Math.abs(photo.width - innerWidth) < 1 && Math.abs(photo.height - hero.height) < 1 };
+      });
+      // La photo est le décor de TOUTE la bande : pas de carte à cheval sur un bord d’image.
+      if (!m.entiere || !m.distincte || !m.decor) throw new Error('carte hors bande ou non distincte de la colonne de texte');
+      await dansLEcran(page, page.locator('#devis'), 'Carte de devis entière');
+    });
+  }
+
+  await etape('H12 · Bouton d’en-tête compact et Bas‑Rhin sans espace parasite', async () => {
+    const details = await page.evaluate(() => ({ gap: getComputedStyle(document.querySelector('.entete-devis')).gap,
+      badge: document.querySelector('.pastille').textContent }));
+    if (details.gap !== '0px' || !/, Bas\u2011Rhin$/.test(details.badge)) throw new Error('espacement d’en-tête ou trait d’union de Bas‑Rhin incorrect');
+  }, { capture: false });
+
   await etape('Cas 2 et 8 · Devis en 3 étapes jusqu’à WhatsApp', async () => {
     await page.locator('#devis').scrollIntoViewIfNeeded();
     if (telephone) await visible('.barre-mobile-devis').click();

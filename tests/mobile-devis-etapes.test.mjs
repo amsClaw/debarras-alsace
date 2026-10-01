@@ -110,8 +110,8 @@ test("composerMessage inclut le champ « quand » quand il est fourni", () => {
 test("desktop (≥900px) : le héros reste en grille à deux colonnes", () => {
   assert.match(
     css,
-    /@media \(min-width:900px\)\{\s*\.hero\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)\}/,
-    "à ≥900px, .hero doit repasser en display:grid (et non rester en flex-column)"
+    /@media \(min-width:900px\)\{\s*\.hero-grille\{display:grid;grid-template-columns:minmax\(0,1\.15fr\) minmax\(0,1fr\);/,
+    "à ≥900px, le contenu du héros doit repasser en grille à deux colonnes"
   );
 });
 

@@ -1,0 +1,172 @@
+{
+  "etapes": [
+    {
+      "nom": "Cas 1 · La page d’accueil",
+      "largeur": 375,
+      "ok": true,
+      "capture": "01-telephone-cas-1-la-page-d-accueil.png"
+    },
+    {
+      "nom": "Cas 14 · En-tête sur une ligne",
+      "largeur": 375,
+      "ok": true,
+      "capture": null
+    },
+    {
+      "nom": "H12 · Le titre est sur la photo et le bouton de devis est visible dès l’ouverture (téléphone)",
+      "largeur": 375,
+      "ok": true,
+      "capture": "03-telephone-h12-le-titre-est-sur-la-photo-et-le-bouton-de-devis-est-visible-des-l-ouverture-telephone-.png"
+    },
+    {
+      "nom": "H12 · Bouton d’en-tête compact et Bas‑Rhin sans espace parasite",
+      "largeur": 375,
+      "ok": true,
+      "capture": null
+    },
+    {
+      "nom": "Cas 2 et 8 · Devis en 3 étapes jusqu’à WhatsApp",
+      "largeur": 375,
+      "ok": true,
+      "capture": "05-telephone-cas-2-et-8-devis-en-3-etapes-jusqu-a-whatsapp.png"
+    },
+    {
+      "nom": "Cas 3 · Zone hors secteur et zone desservie",
+      "largeur": 375,
+      "ok": true,
+      "capture": "06-telephone-cas-3-zone-hors-secteur-et-zone-desservie.png"
+    },
+    {
+      "nom": "Cas 4 et 18 · Estimateur de volume lisible",
+      "largeur": 375,
+      "ok": true,
+      "capture": "07-telephone-cas-4-et-18-estimateur-de-volume-lisible.png"
+    },
+    {
+      "nom": "Cas 5 et 19 · Section Diogène",
+      "largeur": 375,
+      "ok": true,
+      "capture": "08-telephone-cas-5-et-19-section-diogene.png"
+    },
+    {
+      "nom": "Cas 6 · La FAQ (7 questions)",
+      "largeur": 375,
+      "ok": true,
+      "capture": "09-telephone-cas-6-la-faq-7-questions-.png"
+    },
+    {
+      "nom": "Cas 7 et 20 · Barre du bas avec libellés",
+      "largeur": 375,
+      "ok": true,
+      "capture": "10-telephone-cas-7-et-20-barre-du-bas-avec-libelles.png"
+    },
+    {
+      "nom": "Cas 21 à 23 · Vrais numéro, WhatsApp et e-mail",
+      "largeur": 375,
+      "ok": true,
+      "capture": null
+    },
+    {
+      "nom": "Cas 15 et 27 · « 24 h » et ponctuation insécables",
+      "largeur": 375,
+      "ok": true,
+      "capture": null
+    },
+    {
+      "nom": "Cas 9, 25 et 26 · Pages légales",
+      "largeur": 375,
+      "ok": true,
+      "capture": "13-telephone-cas-9-25-et-26-pages-legales.png"
+    },
+    {
+      "nom": "Cas 12 · Page introuvable en profondeur",
+      "largeur": 375,
+      "ok": true,
+      "capture": "14-telephone-cas-12-page-introuvable-en-profondeur.png"
+    },
+    {
+      "nom": "Cas 1 · La page d’accueil",
+      "largeur": 1280,
+      "ok": true,
+      "capture": "15-ordinateur-cas-1-la-page-d-accueil.png"
+    },
+    {
+      "nom": "Cas 14 · En-tête sur une ligne",
+      "largeur": 1280,
+      "ok": true,
+      "capture": null
+    },
+    {
+      "nom": "Cas 13 · Le devis ne recouvre pas l’en-tête",
+      "largeur": 1280,
+      "ok": true,
+      "capture": null
+    },
+    {
+      "nom": "H12 · La carte de devis est entière et ne chevauche pas la photo ni l’en-tête (ordinateur)",
+      "largeur": 1280,
+      "ok": true,
+      "capture": "18-ordinateur-h12-la-carte-de-devis-est-entiere-et-ne-chevauche-pas-la-photo-ni-l-en-tete-ordinateur-.png"
+    },
+    {
+      "nom": "H12 · Bouton d’en-tête compact et Bas‑Rhin sans espace parasite",
+      "largeur": 1280,
+      "ok": true,
+      "capture": null
+    },
+    {
+      "nom": "Cas 2 et 8 · Devis en 3 étapes jusqu’à WhatsApp",
+      "largeur": 1280,
+      "ok": true,
+      "capture": "20-ordinateur-cas-2-et-8-devis-en-3-etapes-jusqu-a-whatsapp.png"
+    },
+    {
+      "nom": "Cas 3 · Zone hors secteur et zone desservie",
+      "largeur": 1280,
+      "ok": true,
+      "capture": "21-ordinateur-cas-3-zone-hors-secteur-et-zone-desservie.png"
+    },
+    {
+      "nom": "Cas 4 et 18 · Estimateur de volume lisible",
+      "largeur": 1280,
+      "ok": true,
+      "capture": "22-ordinateur-cas-4-et-18-estimateur-de-volume-lisible.png"
+    },
+    {
+      "nom": "Cas 5 et 19 · Section Diogène",
+      "largeur": 1280,
+      "ok": true,
+      "capture": "23-ordinateur-cas-5-et-19-section-diogene.png"
+    },
+    {
+      "nom": "Cas 6 · La FAQ (7 questions)",
+      "largeur": 1280,
+      "ok": true,
+      "capture": "24-ordinateur-cas-6-la-faq-7-questions-.png"
+    },
+    {
+      "nom": "Cas 21 à 23 · Vrais numéro, WhatsApp et e-mail",
+      "largeur": 1280,
+      "ok": true,
+      "capture": null
+    },
+    {
+      "nom": "Cas 15 et 27 · « 24 h » et ponctuation insécables",
+      "largeur": 1280,
+      "ok": true,
+      "capture": null
+    },
+    {
+      "nom": "Cas 9, 25 et 26 · Pages légales",
+      "largeur": 1280,
+      "ok": true,
+      "capture": "27-ordinateur-cas-9-25-et-26-pages-legales.png"
+    },
+    {
+      "nom": "Cas 12 · Page introuvable en profondeur",
+      "largeur": 1280,
+      "ok": true,
+      "capture": "28-ordinateur-cas-12-page-introuvable-en-profondeur.png"
+    }
+  ]
+}

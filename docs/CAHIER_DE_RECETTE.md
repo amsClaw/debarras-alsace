@@ -1,20 +1,21 @@
-# Cahier de recette — Débarras Alsace (H8 : le nouveau site devient le site en ligne)
+# Cahier de recette — Débarras Alsace (H12 : nouveau haut de page)
 
-Ce cahier sert à valider la **bascule H8** : le nouveau site d’une seule page (la « V3 »)
-remplace l’ancien site. Il reprend les 12 cas de la première recette, puis un cas pour
-chacune de tes remarques du 1ᵉʳ octobre (mise en page : histoire H10 ; textes, coordonnées,
-référencement : histoire H11).
+Ce cahier sert maintenant à valider **H12 : C sur ordinateur + D sur téléphone**.
+La bascule H8 est déjà faite. Les 29 cas précédents sont conservés ; les cas 30 à 33
+portent sur le nouveau haut de page. La version simple à cocher est
+`CAHIER_DE_RECETTE.html`, à la racine de la livraison (12 cas dans l’ordre d’une visite).
 
 Il n’y a **aucun compte ni mot de passe** : c’est un site public, sans espace de connexion.
 
 ## 1. Comment ouvrir le site
 
-**Avant la fusion de H8 (maintenant)** — rien à installer, aucune commande : la bascule
-attend ton accord, l’adresse principale montre donc encore l’ancien site. Le nouveau site,
-identique à ce que la bascule mettra en ligne, est à l’adresse
-**https://amsclaw.github.io/debarras-alsace/v3/** (elle disparaîtra avec la fusion).
+**Avant la mise en ligne de H12** — l’adresse publique affiche encore H8.
+Pour vérifier la livraison H12 sans confondre les versions : double-clique
+`CAHIER_DE_RECETTE.html` dans le dossier de la livraison et suis « Ouvrir H12 en local ».
+Le site s’ouvre à **http://127.0.0.1:8080/debarras-alsace/** après le lancement décrit
+dans ce cahier. Ne valide pas H12 sur une ancienne copie du site.
 
-**Après la fusion de H8** — rien à installer, aucune commande :
+**Après la mise en ligne de H12** — rien à installer, aucune commande :
 
 1. Sur ton téléphone ou ton ordinateur, ouvre cette adresse dans le navigateur (Safari, Chrome…) :
    **https://amsclaw.github.io/debarras-alsace/**
@@ -98,8 +99,9 @@ largeur d’un téléphone (la barre « Appeler · WhatsApp · Devis » apparaî
 
 13. - [ ] **Devis sur ordinateur**
     Sur un ordinateur, fenêtre large.
-    Attendu : la carte « Devis express » chevauche seulement le bas de la photo ; elle ne recouvre
-    jamais le menu ni le bouton « Devis gratuit » de l’en-tête.
+    Attendu (H12 remplace la présentation H10) : la photo est le décor de toute la bande ;
+    la carte « Devis express » est entière à droite, sans être à cheval sur un bord de photo,
+    et ne recouvre jamais le menu ni le bouton « Devis gratuit » de l’en-tête.
 
 14. - [ ] **En-tête sur une ligne**
     Regarde l’en-tête sur téléphone puis sur ordinateur.
@@ -120,7 +122,7 @@ largeur d’un téléphone (la barre « Appeler · WhatsApp · Devis » apparaî
 
 17. - [ ] **Espace sous l’en-tête**
     Sur téléphone, en haut de page.
-    Attendu : un petit espace normal entre l’en-tête et le premier bloc (plus de grand vide) ;
+    Attendu (H12) : la photo commence immédiatement sous l’en-tête (plus de grand vide) ;
     le bandeau « Entreprise locale » ne coupe aucun mot, les deux boutons du haut ont la même
     largeur, et la carte « Devis express » commence sous la photo (rien à cheval dessus).
 
@@ -191,11 +193,41 @@ largeur d’un téléphone (la barre « Appeler · WhatsApp · Devis » apparaî
 
 29. - [ ] **Preuves automatiques**
     Rien à faire de ton côté : l’usine fait tourner les tests à chaque modification.
-    Vérifié par l’usine (92 tests, tous verts) : coordonnées réelles partout (plus aucun faux
+    Vérifié par l’usine : coordonnées réelles partout (plus aucun faux
     numéro), aucun crochet visible sur l’accueil, insécables entre un nombre et son unité et avant
     « ? ! : ; », adresses absolues pour Google, page introuvable correcte à n’importe quelle
     profondeur, aucune requête vers Google Fonts, coordonnées des pages légales reliées au réglage
     unique. Le juge les relance avant la fusion ; un seul test rouge bloque la fusion.
+
+## Nouveau haut de page — recette H12
+
+30. - [ ] **Ordinateur : version C, photo en décor et devis entier**
+    Ouvre l’accueil dans une fenêtre large (au moins 900 pixels), sans faire défiler.
+    Attendu : la photo couvre toute la bande sous l’en-tête ; à gauche, badge, titre, texte,
+    boutons et trois garanties en clair ; à droite, le devis blanc est entier, centré en hauteur.
+    « Photos par WhatsApp » a un contour blanc. Rien ne recouvre l’en-tête ni ne déborde de la bande.
+
+31. - [ ] **Téléphone : version D, titre sur la photo et devis visible dès l’ouverture**
+    Ouvre l’accueil sur téléphone (référence : 375 × 812), sans faire défiler.
+    Attendu : une photo en grand juste sous l’en-tête, badge et titre blancs sur son bas sombre.
+    En dessous, le texte est sur fond clair et « Obtenir mon devis gratuit » est entièrement
+    visible au-dessus de la barre du bas. Fais défiler : boutons, garanties, puis devis.
+
+32. - [ ] **En-tête : plus de grand espace dans « Devis gratuit »**
+    Regarde le bouton orange en haut à droite sur ordinateur, puis sur téléphone.
+    Attendu : « Devis gratuit » ressemble à deux mots normalement espacés, pas deux morceaux
+    éloignés. Sur téléphone, le bouton reste compact et dit « Devis ».
+
+33. - [ ] **Badge : « Bas‑Rhin » net et insécable**
+    Regarde le badge « Entreprise locale » sur ordinateur et téléphone.
+    Attendu : « Bas‑Rhin » a un trait d’union sans espace parasite avant ; le département
+    ne se coupe pas en deux. Le badge comme le titre restent lisibles sur la photo assombrie.
+
+Preuves rejouables : `node tools/verifier-hero.mjs` (géométrie, trois étapes et repli sans JS,
+contraste calculé sur les pixels rendus) ; `node tools/mesurer-site.mjs --paliers`
+(non-régression de toute la page) ; `tests/e2e-video/parcours.cjs` (toutes les étapes conservées).
+Captures : `docs/captures/h12-375.png`, `h12-1280.png`, `h12-1440.png`.
+Parcours filmé, captures intermédiaires et rapport : `docs/captures/h12-parcours.zip`.
 
 ## Correspondance des demandes avec les cas
 
@@ -222,6 +254,9 @@ largeur d’un téléphone (la barre « Appeler · WhatsApp · Devis » apparaî
 | H11, critère 7 — mentions légales | 26, 9 |
 | H11, critère 8 — ce cahier | tout le document |
 | H11, critère 9 — tests automatiques | 29 |
+| H12, critères 1 et 2 — versions C + D | 30, 31 |
+| H12, critères 3 et 4 — lisibilité et détails | 32, 33 |
+| H12, critères 5 à 7 — parcours, captures, cahier | 29 à 33 |
 
 ## 4. Ce qui est volontairement absent (ce n’est pas un défaut)
 
@@ -242,7 +277,7 @@ largeur d’un téléphone (la barre « Appeler · WhatsApp · Devis » apparaî
 
 Si tous les cas sont conformes, réponds avec la phrase exacte :
 
-**je valide H8 du projet debarras-alsace**
+**je valide H12 du projet debarras-alsace**
 
 Sinon, donne le numéro du cas et ce que tu as vu, par exemple : « cas 22 : WhatsApp ouvre un
 autre numéro ».

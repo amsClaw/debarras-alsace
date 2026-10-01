@@ -30,9 +30,9 @@ test("bascule : les pages du site sont à la racine et le dossier v3/ n'existe p
   assert.equal(existsSync(path.join(RACINE, "v3")), false, "v3/ supprimé");
 });
 
-test("bascule : aucun fichier HTML hors des quatre pages du site et de docs/design/", () => {
+test("bascule : seules les quatre pages du site, les maquettes et le cahier de recette HTML existent", () => {
   const html = fichiersDuDepot().filter((f) => f.endsWith(".html"));
-  const intrus = html.filter((f) => !PAGES_SITE.includes(f) && !f.startsWith("docs/design/"));
+  const intrus = html.filter((f) => !PAGES_SITE.includes(f) && f !== "CAHIER_DE_RECETTE.html" && !f.startsWith("docs/design/"));
   assert.deepEqual(intrus, []);
   for (const nom of PAGES_SITE) assert.ok(html.includes(nom));
 });
